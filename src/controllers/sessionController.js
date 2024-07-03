@@ -1,0 +1,80 @@
+const bcrypt = require('bcrypt');
+const passport = require('passport');
+const UserService = require('../services/UserService.js');
+
+const service_User = new UserService();
+
+exports.register = async (req, res) => {
+  const { first_name, last_name, email, age, password } = req.body;
+  try {
+    await service_User.addUser(first_name, last_name, email, age, password);
+    res.redirect('/login');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Error al registrar usuario');
+  }
+};
+
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await service_User.getUserById(email);
+    if (!user) return res.status(404).send('Usuario no encontrado');
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).send('Contraseña incorrecta');
+
+    const carts = await service_User.getCartsById(user._id);
+
+    req.session.user = {
+      id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      age: user.age,
+      cart: carts.cart_id,
+      role: user.role,
+    };
+    res.redirect('/realtimeproducts');
+  } catch (err) {
+    res.status(500).send('Error al iniciar sesión');
+  }
+};
+
+exports.logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) return res.status(500).send('Error al cerrar sesión');
+    res.redirect('/login');
+  });
+};
+
+exports.github = passport.authenticate('github', { scope: ['user:email'] }),
+async (req, res) => {}
+
+exports.githubCallback = (req, res, next) => {
+  passport.authenticate('github', { failureRedirect: '/login' }, async (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect('/login');
+    }
+    req.logIn(user, async (err) => {
+      if (err) {
+        return next(err);
+      }
+      const carts = await service_User.getCartsById(user._id);
+
+      req.session.user = {
+        id: user._id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        age: user.age,
+        cart: carts.cart_id,
+        role: user.role,
+      };
+      res.redirect('/realtimeproducts');
+    });
+  })(req, res, next);
+};

@@ -1,0 +1,107 @@
+<style>
+    #email-input,
+    #message-input {
+        margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .Chat {
+        background-color: #f9f9f9;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .Chat h2 {
+        margin-bottom: 5px;
+        color: #007bff;
+    }
+
+    .Chat p {
+        margin: 0;
+    }
+</style>
+
+<div id="email-input">
+    <input type="text" id="email" placeholder="Ingresa tu correo electrónico">
+    <button id="btn-email" onclick="validarEmail()">Enviar mail</button>
+</div>
+
+<div id="message-input" style="display: none;">
+    <input type="text" id="mensaje" placeholder="Escribe un mensaje">
+    <button id="btn-send" onclick="enviarMensaje()">Enviar Mensaje</button>
+</div>
+
+<div id="mensajes-container"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    const socket = io()
+    let userEmail = null
+    socket.emit('cargarmensajes', "")
+
+    function validarEmail() {
+        const email = document.getElementById('email').value
+        
+        if (!validarEmailFormato(email)) {
+            alert('Por favor, ingresa un correo electrónico válido.')
+            return
+        }
+
+        userEmail = email
+        document.getElementById('email-input').style.display = 'none'
+        document.getElementById('message-input').style.display = 'block'
+    }
+
+    function validarEmailFormato(email) {
+        const re = /\S+@\S+\.\S+/
+        return re.test(email)
+    }
+
+    function enviarMensaje() {
+        const mensaje = document.getElementById('mensaje').value
+        
+        socket.emit('mensaje', { email: userEmail, message: mensaje })
+    }
+
+    function agregarMensajeAlHTML(mensaje) {
+        const mensajesContainer = document.getElementById('mensajes-container')
+        const nuevoMensaje = document.createElement('div');
+        nuevoMensaje.classList.add('Chat');
+        nuevoMensaje.innerHTML = `
+             <h2> user : ${mensaje.user}</h2>
+             <p>message : ${mensaje.message}</p>
+        `;
+        mensajesContainer.appendChild(nuevoMensaje);
+    }
+
+    socket.on('mensaje1', (data) => {
+        const mensajesContainer = document.getElementById('mensajes-container')
+        mensajesContainer.innerHTML = ''; 
+        data.forEach(mensaje => {
+            agregarMensajeAlHTML(mensaje);
+        })
+    })
+</script>

@@ -1,0 +1,149 @@
+<style>
+    .product {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    }
+    button:disabled {
+    background-color: #d3d3d3; 
+    color: #7a7a7a; 
+    cursor: not-allowed;
+    }
+</style>
+<div>
+    <h1>Perfil de {{user.first_name}} {{user.last_name}}</h1>
+    <p>Email: {{user.email}}</p>
+    <p>Edad: {{user.age}}</p>
+    <p>Rol: {{user.role}}</p>
+    <p>cart: {{user.cart}}</p>
+    <form action="/api/sessions/logout" method="POST">
+        <button type="submit">Cerrar Sesión</button>
+    </form>
+    <button id="viewCart" data-user-id="12345">Ver Carrito</button>
+    <form id="productForm">
+        <h2>Agregar Nuevo Producto</h2>
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" required><br>
+        <label for="description">Descripción:</label>
+        <input type="text" id="description" name="description" required><br>
+        <label for="code">Código:</label>
+        <input type="text" id="code" name="code" required><br>
+        <label for="price">Precio:</label>
+        <input type="number" id="price" name="price" required><br>
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" required><br>
+        <label for="category">Categoría:</label>
+        <input type="text" id="category" name="category" required><br>
+        <button type="submit">Agregar Producto</button>
+    </form>
+    <h1>Lista de Productos</h1>
+    <div id="productList"></div>
+    <button id="prevButton" disabled>Anterior</button>
+    <button id="nextButton" disabled>Siguiente</button>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    let currentPage = 1;
+    let hasPrevPage, hasNextPage, prevPage, nextPage;
+    let idcarrot= {{user.cart}}
+
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+
+    function loadProducts(page) {
+        socket.emit('new', { page: page });
+    }
+
+
+    document.getElementById('productForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const newProduct = {};
+        formData.forEach((value, key) => {
+            newProduct[key] = value;
+        });
+        socket.emit('productos', newProduct);
+        event.target.reset();
+    });
+
+    document.getElementById('viewCart').addEventListener('click', function () {
+        {{!-- const userId = this.getAttribute('data-user-id');  --}}
+        window.location.href = `/carts/${idcarrot}`;
+    });
+
+    
+
+    prevButton.addEventListener('click', () => {
+        if (hasPrevPage) {
+            loadProducts(prevPage);
+        }
+    });
+
+    nextButton.addEventListener('click', () => {
+        if (hasNextPage) {
+            loadProducts(nextPage);
+        }
+    });
+
+
+    socket.on('realTimeProducts', productos => {
+        const productList = document.getElementById('productList');
+        productList.innerHTML = '';
+
+
+        hasPrevPage = productos.hasPrevPage
+        hasNextPage = productos.hasNextPage
+        prevPage = productos.prevPage
+        nextPage = productos.nextPage
+
+        prevButton.disabled = !hasPrevPage;
+        nextButton.disabled = !hasNextPage;
+        productos.docs.forEach(producto => {
+            const productDiv = document.createElement('div');
+            productDiv.classList.add('product');
+            productDiv.innerHTML = `
+                <h2>${producto.idProduct}</h2>
+                <h2>${producto.title}</h2>
+                <p>${producto.description}</p>
+                <p>Código: ${producto.code}</p>
+                <p>Precio: $${producto.price}</p>
+                <p>Stock: ${producto.stock}</p>
+                <p>Categoría: ${producto.category}</p>
+                <button class="deleteButton" data-product-code="${producto.idProduct}">Eliminar</button>
+                {{!-- <div>
+                    <button class="decreaseQuantity" data-product-code="${producto.idProduct}">-</button>
+                    <span id="quantity-${producto.idProduct}">1</span>
+                    <button class="increaseQuantity" data-product-code="${producto.idProduct}">+</button>
+                </div> --}}
+                <button class="addToCartButton" data-product-code="${producto.idProduct}">Agregar al Carrito</button>
+            `;
+            productList.appendChild(productDiv);
+        });
+
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function () {
+                const productCode = this.getAttribute('data-product-code');
+                socket.emit('eliminarProducto', productCode);
+            });
+        });
+
+        document.querySelectorAll('.addToCartButton').forEach(button => {
+            button.addEventListener('click', function () {
+                const productCode = this.getAttribute('data-product-code');
+                {{!-- const quantity = document.getElementById(`quantity-${productCode}`).innerText; --}}
+                socket.emit('agregarAlCarrito', { idcarrot ,productCode: productCode});
+            });
+        });
+    });
+
+    loadProducts(currentPage);
+</script>
+
