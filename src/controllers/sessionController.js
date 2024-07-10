@@ -1,13 +1,11 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const UserService = require('../services/UserService.js');
-
-const service_User = new UserService();
+const { userService } = require('../services/repository.js');
 
 exports.register = async (req, res) => {
   const { first_name, last_name, email, age, password } = req.body;
   try {
-    await service_User.addUser(first_name, last_name, email, age, password);
+    await userService.addUser(first_name, last_name, email, age, password);
     res.redirect('/login');
   } catch (err) {
     console.log(err);
@@ -18,16 +16,17 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await service_User.getUserById(email);
+    const user = await userService.getUserById(email);
     if (!user) return res.status(404).send('Usuario no encontrado');
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).send('Contraseña incorrecta');
 
-    const carts = await service_User.getCartsById(user._id);
+    const carts = await userService.getCartsById(user._id || user.id);
+    console.log(carts);
 
     req.session.user = {
-      id: user._id,
+      id: user._id || user.id,
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
@@ -35,7 +34,12 @@ exports.login = async (req, res) => {
       cart: carts.cart_id,
       role: user.role,
     };
-    res.redirect('/realtimeproducts');
+
+    if (user.role === 'admin') {
+      res.redirect('/realtimeproductsAdmin');
+    } else {
+      res.redirect('/realtimeproductsUser');
+    }
   } catch (err) {
     res.status(500).send('Error al iniciar sesión');
   }
@@ -49,7 +53,7 @@ exports.logout = (req, res) => {
 };
 
 exports.github = passport.authenticate('github', { scope: ['user:email'] }),
-async (req, res) => {}
+async (req, res) => {};
 
 exports.githubCallback = (req, res, next) => {
   passport.authenticate('github', { failureRedirect: '/login' }, async (err, user, info) => {
@@ -63,7 +67,7 @@ exports.githubCallback = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      const carts = await service_User.getCartsById(user._id);
+      const carts = await userService.getCartsById(user._id);
 
       req.session.user = {
         id: user._id,
@@ -74,7 +78,12 @@ exports.githubCallback = (req, res, next) => {
         cart: carts.cart_id,
         role: user.role,
       };
-      res.redirect('/realtimeproducts');
+
+      if (user.role === 'admin') {
+        res.redirect('/realtimeproductsAdmin');
+      } else {
+        res.redirect('/realtimeproductsUser');
+      }
     });
   })(req, res, next);
 };

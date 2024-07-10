@@ -1,12 +1,11 @@
-const cartsModel = require("../models/carts.model.js");
-const ProductService = require('./ProductService.js');
+const cartsModel = require("../../models/carts.model.js");
+const productServices = require('./ProductManagerMongo.js');
 
-const serviceProduct = new ProductService();
+const productService = new productServices();
 
-class CartService {
+class CartsManagerMongo {
   constructor() {
-    this.products = {};
-    this.countId = 1;
+    this.Carts = {};
   }
 
   async addCarts() {
@@ -24,10 +23,11 @@ class CartService {
     }
   }
 
-  async getCartsById(cart_id) {
+  async getCartById(cart_id) {
     try {
       const cart = await cartsModel.findOne({ id: cart_id }).populate("products.product");
-      return cart;
+      console.log(cart)
+      return cart.products;
     } catch (error) {
       console.error("Error al consultar Carrito", error);
       throw new Error("Error al consultar Carrito: " + error.message);
@@ -36,16 +36,16 @@ class CartService {
 
   async readCarts() {
     try {
-      const datos = await cartsModel.find().populate("products.product");
-      return datos;
+      const carts = await cartsModel.find().populate("products.product");
+      return carts;
     } catch (error) {
       throw new Error("Error al leer carritos: " + error.message);
     }
   }
 
-  async updateProduct(cartId, productId) {
+  async addProductToCart(cartId, productId) {
     try {
-      const product = await serviceProduct.getProductById(productId);
+      const product = await productService.getProductById(productId);
       if (!product) {
         throw new Error("El producto no existe");
       }
@@ -70,12 +70,13 @@ class CartService {
       return cart;
     } catch (error) {
       console.error("Error al actualizar el producto en el carrito", error);
-      throw error;
+      throw new Error("Error al actualizar el producto en el carrito: " + error.message);
     }
   }
 
   async deleteProductFromCart(cartId, productId) {
     try {
+
       const cart = await cartsModel.findOne({ id: cartId });
       if (!cart) {
         throw new Error("ID de carrito no encontrado");
@@ -85,7 +86,7 @@ class CartService {
       return cart;
     } catch (error) {
       console.error("Error al eliminar el producto del carrito", error);
-      throw error;
+      throw new Error("Error al eliminar el producto del carrito: " + error.message);
     }
   }
 
@@ -95,14 +96,14 @@ class CartService {
         { id: cartId },
         { products },
         { new: true }
-      );
+      ).populate("products.product");
       if (!cart) {
         throw new Error("ID de carrito no encontrado");
       }
       return cart;
     } catch (error) {
       console.error("Error al actualizar el carrito", error);
-      throw error;
+      throw new Error("Error al actualizar el carrito: " + error.message);
     }
   }
 
@@ -122,7 +123,7 @@ class CartService {
       }
     } catch (error) {
       console.error("Error al actualizar la cantidad del producto", error);
-      throw error;
+      throw new Error("Error al actualizar la cantidad del producto: " + error.message);
     }
   }
 
@@ -137,9 +138,9 @@ class CartService {
       return cart;
     } catch (error) {
       console.error("Error al eliminar todos los productos del carrito", error);
-      throw error;
+      throw new Error("Error al eliminar todos los productos del carrito: " + error.message);
     }
   }
 }
 
-module.exports = CartService;
+module.exports = CartsManagerMongo;

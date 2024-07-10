@@ -1,0 +1,44 @@
+const config = require("../config/Config.js");
+const mongoose = require("mongoose");
+
+const CartsMongo = require("./managerMongoDB/CartsManagerMongo.js");
+const ProductsMongo = require("./managerMongoDB/ProductManagerMongo.js");
+const UsersMongo = require("./managerMongoDB/UserManagerMongo.js");
+const ChatMongo = require("./managerMongoDB/ChatManagerMongo.js");
+
+const CartsFS = require("./managersFileSystem/CartManagerFileSystem.js");
+const ProductsFS = require("./managersFileSystem/ProductManagerFileSystem.js");
+const UsersFS = require("./managersFileSystem/UserManagerFileSystem");
+const ChatFS = require("./managersFileSystem/ChatManagerFileSystem.js");
+
+let carts;
+let products;
+let users;
+let chat;
+
+switch (config.PERSISTENCE) {
+  case "MONGO":
+    console.log("---------------Estoy Usando MONGO--------------");
+
+    carts = new CartsMongo();
+    products = new ProductsMongo();
+    users = new UsersMongo();
+    chat = new ChatMongo();
+    break;
+
+  case "FILE_SYSTEM":
+      console.log("---------------Estoy Usando FS--------------");
+
+      carts = new CartsFS();
+      products = new ProductsFS();
+      users = new UsersFS();
+      chat = new ChatFS();
+    break;
+}
+
+module.exports = {
+  carts,
+  products,
+  users,
+  chat,
+};

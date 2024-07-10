@@ -27,22 +27,6 @@
         <button type="submit">Cerrar Sesión</button>
     </form>
     <button id="viewCart" data-user-id="12345">Ver Carrito</button>
-    <form id="productForm">
-        <h2>Agregar Nuevo Producto</h2>
-        <label for="title">Título:</label>
-        <input type="text" id="title" name="title" required><br>
-        <label for="description">Descripción:</label>
-        <input type="text" id="description" name="description" required><br>
-        <label for="code">Código:</label>
-        <input type="text" id="code" name="code" required><br>
-        <label for="price">Precio:</label>
-        <input type="number" id="price" name="price" required><br>
-        <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" required><br>
-        <label for="category">Categoría:</label>
-        <input type="text" id="category" name="category" required><br>
-        <button type="submit">Agregar Producto</button>
-    </form>
     <h1>Lista de Productos</h1>
     <div id="productList"></div>
     <button id="prevButton" disabled>Anterior</button>
@@ -61,18 +45,6 @@
     function loadProducts(page) {
         socket.emit('new', { page: page });
     }
-
-
-    document.getElementById('productForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const newProduct = {};
-        formData.forEach((value, key) => {
-            newProduct[key] = value;
-        });
-        socket.emit('productos', newProduct);
-        event.target.reset();
-    });
 
     document.getElementById('viewCart').addEventListener('click', function () {
         {{!-- const userId = this.getAttribute('data-user-id');  --}}
@@ -117,22 +89,9 @@
                 <p>Precio: $${producto.price}</p>
                 <p>Stock: ${producto.stock}</p>
                 <p>Categoría: ${producto.category}</p>
-                <button class="deleteButton" data-product-code="${producto.idProduct}">Eliminar</button>
-                {{!-- <div>
-                    <button class="decreaseQuantity" data-product-code="${producto.idProduct}">-</button>
-                    <span id="quantity-${producto.idProduct}">1</span>
-                    <button class="increaseQuantity" data-product-code="${producto.idProduct}">+</button>
-                </div> --}}
                 <button class="addToCartButton" data-product-code="${producto.idProduct}">Agregar al Carrito</button>
             `;
             productList.appendChild(productDiv);
-        });
-
-        document.querySelectorAll('.deleteButton').forEach(button => {
-            button.addEventListener('click', function () {
-                const productCode = this.getAttribute('data-product-code');
-                socket.emit('eliminarProducto', productCode);
-            });
         });
 
         document.querySelectorAll('.addToCartButton').forEach(button => {

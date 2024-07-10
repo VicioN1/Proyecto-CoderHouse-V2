@@ -1,6 +1,6 @@
-const chatModel = require("../models/chat.model.js");
+const chatModel = require("../../models/chat.model.js");
 
-class ChatService {
+class ChatManagerMongo {
   constructor() {
     this.Chat = {};
   }
@@ -29,5 +29,4 @@ class ChatService {
   }
 }
 
-
-module.exports = ChatService;
+module.exports = ChatManagerMongo;

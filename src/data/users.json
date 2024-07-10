@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "first_name": "fer",
+    "last_name": "cba",
+    "email": "fer@fer.com",
+    "age": "23",
+    "password": "$2b$10$W1Ppq1ucIWjtSh6VtMqUleNJBbMdeU46peMMCRjNCABKvkzyhT0cC",
+    "carts": [
+      {
+        "cart_id": "1",
+        "cart": "1"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "id": "2",
+    "first_name": "fer2",
+    "last_name": "cba2",
+    "email": "fer2@fer.com",
+    "age": "12",
+    "password": "$2b$10$VjAEG8xD.CTCS5cVHCDIaO.A3LAXUIDDLwv6.lHkm7NjhH6o6/7uG",
+    "carts": [
+      {
+        "cart_id": "2",
+        "cart": "2"
+      }
+    ],
+    "role": "admin"
+  }
+]

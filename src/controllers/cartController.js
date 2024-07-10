@@ -1,9 +1,8 @@
-const CartsManager = require("../services/CartsService.js");
-const manager = new CartsManager();
+const { cartService }= require('../services/repository.js');
 
 exports.addCart = async (req, res) => {
   try {
-    const message = await manager.addCarts();
+    const message = await cartService.addCart();
     res.json({ message });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -13,7 +12,7 @@ exports.addCart = async (req, res) => {
 exports.getCartById = async (req, res) => {
   const cart_id = req.params.cid;
   try {
-    const cart = await manager.getCartsById(cart_id);
+    const cart = await cartService.getCartById(cart_id);
     const products = cart ? cart.products : "Not found";
     res.json({ products });
   } catch (error) {
@@ -25,7 +24,7 @@ exports.addProductToCart = async (req, res) => {
   try {
     const cart_id = req.params.cid;
     const product_id = req.params.pid;
-    const updatedCart = await manager.updateProduct(cart_id, product_id);
+    const updatedCart = await cartService.addProductToCart(cart_id, product_id);
     res.json({ message: updatedCart });
   } catch (error) {
     console.error("Error al agregar el producto:", error);
@@ -35,7 +34,7 @@ exports.addProductToCart = async (req, res) => {
 
 exports.deleteProductFromCart = async (req, res) => {
   try {
-    const result = await manager.deleteProductFromCart(req.params.cid, req.params.pid);
+    const result = await cartService.deleteProductFromCart(req.params.cid, req.params.pid);
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -44,7 +43,7 @@ exports.deleteProductFromCart = async (req, res) => {
 
 exports.updateCart = async (req, res) => {
   try {
-    const result = await manager.updateCart(req.params.cid, req.body.products);
+    const result = await cartService.updateCart(req.params.cid, req.body.products);
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -53,7 +52,7 @@ exports.updateCart = async (req, res) => {
 
 exports.updateProductQuantity = async (req, res) => {
   try {
-    const result = await manager.updateProductQuantity(req.params.cid, req.params.pid, req.body.quantity);
+    const result = await cartService.updateProductQuantity(req.params.cid, req.params.pid, req.body.quantity);
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -62,7 +61,7 @@ exports.updateProductQuantity = async (req, res) => {
 
 exports.deleteAllProductsFromCart = async (req, res) => {
   try {
-    const result = await manager.deleteAllProductsFromCart(req.params.cid);
+    const result = await cartService.deleteAllProductsFromCart(req.params.cid);
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });

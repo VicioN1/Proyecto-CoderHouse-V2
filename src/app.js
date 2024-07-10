@@ -6,18 +6,18 @@ const dotenv = require("dotenv");
 const MongoStore = require("connect-mongo");
 const session = require("express-session");
 const passport = require("passport");
+const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
 
-const viewsRouter = require("./routes/views.router.js");
-const productsRoutes = require("./routes/productRoutes");
-const cartsRoutes = require("./routes/cartRoutes.js");
-const sessionsRoutes = require("./routes/sessionsRoutes");
-
-const { handleSocketConnection } = require("./services/SocketService.js");
+const viewsRouter = require("./routers/views.router.js");
+const productsRoutes = require("./routers/productRouter.js");
+const cartsRoutes = require("./routers/cartRouter.js");
+const sessionsRoutes = require("./routers/sessionsRoutes");
+const config = require("./config/Config.js");
+const { handleSocketConnection } = require("./SocketService.js");
 const connectDB = require('./config/dbConfig.js');
 const initializePassport = require('./config/passport.config.js');
 
-dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,7 +30,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URL
+      mongoUrl: config.MONGO_URL
     }),
     // cookie: { maxAge: 180 * 60 * 1000 },
   })
@@ -40,10 +40,23 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Middleware para jwt, manejo de token en cookies:
+
+app.use(cookieParser());
+
 const httpServer = app.listen(
-  process.env.PORT || 8080,
-  () => console.log(`Server running on port ${process.env.PORT || 8080}`)
+  config.PORT || 8080,
+  () => console.log(`Server running on port ${config.PORT || 8080}`)
 );
+
+if (config.PERSISTENCE === 'MONGO') {
+  console.log('Using MongoDB for persistence');
+  // Inicia tu conexión a MongoDB y utiliza MongoDB como persistencia
+} else {
+  console.log('Using File System for persistence');
+  // Utiliza el sistema de archivos como persistencia
+}
+
 const socketServer = new Server(httpServer);
 handleSocketConnection(socketServer);
 

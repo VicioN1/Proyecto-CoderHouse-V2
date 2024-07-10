@@ -1,19 +1,17 @@
-const UserModel = require('../models/user.model.js');
-const CartsService = require('./CartsService.js');
+const UserModel = require('../../models/user.model.js');
+const cartServices  = require("./CartsManagerMongo");
 
-const service_Carts = new CartsService();
+const cartService = new cartServices();
 
-class UserService {
+class UserManagerMongo {
   constructor() {
     this.User = {};
   }
 
   async addUser(first_name, last_name, email, age, password) {
     try {
-      const carrito = await service_Carts.addCarts();
-      console.log("carrito"+carrito)
-      const idcarrito = await service_Carts.getCartsById(carrito); // Asegurarse de que se use el ID correcto del carrito
-      console.log("idcarrito"+idcarrito)
+      const carrito = await cartService.addCarts();
+      const idcarrito = await cartService.getCartById(carrito);
       const newUser = new UserModel({
         first_name,
         last_name,
@@ -59,4 +57,4 @@ class UserService {
   }
 }
 
-module.exports = UserService;
+module.exports = UserManagerMongo;

@@ -1,17 +1,16 @@
-const ProductService = require("./ProductService.js");
-const ChatService = require("./ChatService");
-const CartsService = require("./CartsService.js");
+const { productService } = require('./services/repository.js');
+const { chatService } = require("./services/chat.repository");
+const { cartService }= require('./services/repository.js');
 
-const service_Product = new ProductService();
-const service_Chat = new ChatService();
-const service_Carts = new CartsService();
 
 function handleSocketConnection(socketServer) {
     socketServer.on('connection', socket => {
         console.log("Nuevo cliente conectado");
         socket.on('new', async product => {
             try {
-                const products = await service_Product.getProducts(null , product.page , null, null, null);
+                console.log("----------socket new---------------");
+                const products = await productService.getProductsQuery(null , product.page , null, null, null);
+                // console.log(products)
                 socketServer.emit('realTimeProducts', products);
             } catch (error) {
                 console.error('Error adding product:', error);
@@ -20,7 +19,7 @@ function handleSocketConnection(socketServer) {
 
         socket.on('agregarAlCarrito', async carts => {
             try {
-                const carrito = await service_Carts.updateProduct(carts.idcarrot, carts.productCode);
+                const carrito = await cartService.addProductToCart(carts.idcarrot, carts.productCode);
             } catch (error) {
                 console.error('Error adding carrito:', error);
             }
@@ -30,7 +29,7 @@ function handleSocketConnection(socketServer) {
         socket.on('viewcarrito', async carts => {
             try {
                 console.log("viewcarrito")
-                const carrito = await service_Carts.getCartsById(carts);
+                const carrito = await cartService.getCartById(carts);
                 socketServer.emit('realTimeCarts', carrito );
             } catch (error) {
                 console.error('Error adding carrito:', error);
@@ -40,8 +39,8 @@ function handleSocketConnection(socketServer) {
         socket.on('elimProduccarrito', async carts => {
             try {
                 console.log("elimProduccarrito",carts.idcarrot, carts.productCode)
-                const elimcarrito = await service_Carts.deleteProductFromCart(carts.idcarrot, carts.productCode);
-                const carrito = await service_Carts.getCartsById(carts.idcarrot);
+                const elimcarrito = await cartService.deleteProductFromCart(carts.idcarrot, carts.productCode);
+                const carrito = await cartService.getCartById(carts.idcarrot);
                 socketServer.emit('realTimeCarts', carrito );
             } catch (error) {
                 console.error('Error adding carrito:', error);
@@ -50,6 +49,7 @@ function handleSocketConnection(socketServer) {
 
         socket.on('productos', async product => {
             try {
+                console.log("----------socket productos---------------");
                 await writeProducts(product);
                 const products = await readProducts(); 
                 socketServer.emit('realTimeProducts', products);
@@ -60,12 +60,12 @@ function handleSocketConnection(socketServer) {
 
         
 
-        socket.on('eliminarProducto', async productId => {
+        socket.on('eliminarProducto', async Data => {
             try {
-                console.log(productId)
-                await deleteProducts(productId);
-                const newproducts = await readProducts(); 
-                socketServer.emit('realTimeProducts', newproducts);
+                console.log(Data.productCode)
+                await productService.deleteProduct(Data.productCode);
+                const products = await productService.getProductsQuery(null , Data.currentPage , null, null, null); 
+                socketServer.emit('realTimeProducts', products);
             } catch (error) {
                 console.error('Error deleting product:', error);
             }
@@ -73,15 +73,15 @@ function handleSocketConnection(socketServer) {
 
         socket.on('cargarmensajes', async data => {
             console.log(`cargo mensaje`)
-            chat = await service_Chat.readChat()
+            chat = await chatService.readChat()
             console.log(chat)
             socketServer.emit('mensaje1', chat)
         })
 
         socket.on('mensaje', async data => {
             console.log(`Correo electrónico: ${data.email}, Mensaje: ${data.message}`)
-            await service_Chat.addChat(data.email,data.message)
-            chat = await service_Chat.readChat()
+            await chatService.addChat(data.email,data.message)
+            chat = await chatService.readChat()
             socketServer.emit('mensaje1', chat)
         })
 
@@ -93,7 +93,7 @@ function handleSocketConnection(socketServer) {
 
 async function readProducts() {
     try {
-        const products = await service_Product.getProducts(null , 1 , null, null, null);
+        const products = await productService.getProductsQuery(null , 1 , null, null, null);
         return products;
     } catch (error) {
         throw error; 
@@ -102,7 +102,7 @@ async function readProducts() {
 
 async function writeProducts(products) {
     try {
-        const producto = await service_Product.addProduct(products.title, products.description, products.code, products.price, products.stock, products.category, products.thumbnails);
+        const producto = await productService.addProduct(products.title, products.description, products.code, products.price, products.stock, products.category, products.thumbnails);
         console.log(producto);
     } catch (error) {
         throw error; 
@@ -111,7 +111,7 @@ async function writeProducts(products) {
 async function deleteProducts(product_id) {
     try {
         const id = parseInt(product_id);
-        await service_Product.deleteProduct(product_id); 
+        await productService.deleteProduct(product_id); 
         console.log("Producto eliminado:", id);
     } catch (error) {
         console.error('Error deleting product:', error);

@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const ProductService = require("../services/ProductService.js");
-const { isAuthenticated, isNotAuthenticated } = require('../middleware/auth');
+const { productService } = require('../services/repository.js');
+const { isAuthenticated, isNotAuthenticated, ensureAdmin, ensureUser} = require('../middleware/auth');
 
-const service_Product = new ProductService();
 
 router.get("/", (req, res) => {
-  service_Product
+  productService
     .getProducts()
     .then((productos) => {
       res.render("index", { productos });
@@ -14,8 +13,12 @@ router.get("/", (req, res) => {
     .catch((error) => ({ message: error }));
 });
 
-router.get("/realtimeproducts", isAuthenticated, (req, res) => {
-  res.render("realTimeProducts", { user: req.session.user});
+router.get('/realtimeproductsUser',isAuthenticated, ensureUser, (req, res) => {
+  res.render('realtimeproductsUser', { user: req.session.user});
+});
+
+router.get('/realtimeproductsAdmin', isAuthenticated, ensureAdmin, (req, res) => {
+  res.render('realtimeproductsAdmin', { user: req.session.user});
 });
 
 router.get("/chat", (req, res) => {

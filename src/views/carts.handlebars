@@ -33,7 +33,7 @@
     socket.on('realTimeCarts', carts => {
         const productList = document.getElementById('productList');
         productList.innerHTML = '';
-        carts.products.forEach(producto => {
+        carts.forEach(producto => {
             const productDiv = document.createElement('div');
             productDiv.classList.add('product');
             productDiv.innerHTML = `

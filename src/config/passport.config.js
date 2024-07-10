@@ -2,9 +2,8 @@ const passport = require("passport");
 const GitHubStrategy = require("passport-github2");
 const User = require("../models/user.model");
 const dotenv = require("dotenv");
-const CartsService = require("../services/CartsService.js");
+const { cartService }= require('../services/repository.js');
 dotenv.config();
-const service_Carts = new CartsService();
 
 const initializePassport = () => {
   passport.use(
@@ -22,8 +21,8 @@ const initializePassport = () => {
           let user = await User.findOne({ email: profile._json.email });
           if (!user) {
             console.log("entre 1 -------------------------------------")
-            const carrito = await service_Carts.addCarts();
-            const idcarrito = await service_Carts.getCartsById(carrito); 
+            const carrito = await cartService.addCarts();
+            const idcarrito = await cartService.getCartsById(carrito); 
             const newUser = {
               first_name: profile._json.name,
               last_name: " ",

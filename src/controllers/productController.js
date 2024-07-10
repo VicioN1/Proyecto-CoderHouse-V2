@@ -1,12 +1,10 @@
-const ProductManager = require('../services/ProductService.js');
-
-const manager = new ProductManager();
+const { productService } = require('../services/repository.js');
 
 exports.getProducts = async (req, res) => {
   try {
     const { limit, page, sort, query, status } = req.query;
 
-    const producto = await manager.getProducts(limit, page, sort, query, status);
+    const producto = await productService.getProductsQuery(limit, page, sort, query, status);
 
     const miurl = `http://localhost:8080/api/products`;
 
@@ -28,7 +26,7 @@ exports.getProducts = async (req, res) => {
     });
   } catch (error) {
     console.error('Error al obtener los productos', error);
-    res.status(404).json({ message: error });
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -36,10 +34,11 @@ exports.getProductById = async (req, res) => {
   const product_id = parseInt(req.params.pid);
 
   try {
-    const message = await manager.getProductById(product_id);
-    res.json({ message });
+    const product = await productService.getProductById(product_id);
+    res.json({ product });
   } catch (error) {
-    res.status(404).json({ message: error });
+    console.error('Error al obtener el producto por ID', error);
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -51,9 +50,19 @@ exports.addProduct = async (req, res) => {
       return res.status(400).json({ message: 'Faltan campos obligatorios' });
     }
 
-    const producto = await manager.addProduct(title, description, code, price, stock, category, thumbnails);
+    const product = {
+      title,
+      description,
+      code,
+      price,
+      stock,
+      category,
+      thumbnails: thumbnails || []
+    };
 
-    res.json(producto);
+    const result = await productService.addProduct(product);
+
+    res.json({ message: result });
   } catch (error) {
     console.error('Error al agregar el producto:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
@@ -76,30 +85,23 @@ exports.updateProduct = async (req, res) => {
     } = req.body;
 
     const newProduct = {
-      title: title || null,
-      description: description || null,
-      code: code || null,
-      price: price || null,
-      status: status || null,
-      stock: stock || null,
-      category: category || null,
-      thumbnails: thumbnails || null,
+      title,
+      description,
+      code,
+      price,
+      status,
+      stock,
+      category,
+      thumbnails,
     };
 
-    let Promesa = Promise.resolve();
+    const updates = Object.entries(newProduct).filter(([key, value]) => value !== undefined && value !== null);
 
-    for (const key in newProduct) {
-      if (newProduct.hasOwnProperty(key)) {
-        const value = newProduct[key];
-        if (value != null) {
-          Promesa = Promesa.then(() => {
-            return manager.updateProduct(product_id, key, value);
-          });
-        }
-      }
+    for (const [field, newValue] of updates) {
+      await productService.updateProduct(product_id, { field, newValue });
     }
 
-    res.json({ message: 'Se actualizó correctamente' });
+    res.json({ message: 'Producto actualizado correctamente' });
   } catch (error) {
     console.error('Error al actualizar el producto:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
@@ -110,9 +112,10 @@ exports.deleteProduct = async (req, res) => {
   const product_id = parseInt(req.params.pid);
 
   try {
-    const message = await manager.deleteProduct(product_id);
+    const message = await productService.deleteProduct(product_id);
     res.json({ message });
   } catch (error) {
-    res.status(404).json({ message: error });
+    console.error('Error al eliminar el producto:', error);
+    res.status(404).json({ message: error.message });
   }
 };
