@@ -1,11 +1,16 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { userService } = require('../services/repository.js');
+const { cartService }= require('../services/repository.js');
 
 exports.register = async (req, res) => {
   const { first_name, last_name, email, age, password } = req.body;
   try {
-    await userService.addUser(first_name, last_name, email, age, password);
+    const carrito = await cartService.addCarts();
+    const idcarrito = await cartService.getCartId(carrito);
+    console.log("---------------register idcarrito---------------")
+    console.log(idcarrito)
+    await userService.addUser(first_name, last_name, email, age, password, idcarrito);
     res.redirect('/login');
   } catch (err) {
     console.log(err);

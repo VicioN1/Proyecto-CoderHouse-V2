@@ -1,8 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
 const bcrypt = require('bcrypt');
-const cartServices = require("./CartManagerFileSystem");
-const cartService = new cartServices();
 
 class UserServiceFS {
   constructor() {
@@ -36,11 +34,11 @@ class UserServiceFS {
     }
   }
 
-  async addUser(first_name, last_name, email, age, password) {
+  async addUser(first_name, last_name, email, age, password, idcarrito) {
     try {
       const users = await this.readUsers();
-      const carrito = await cartService.addCarts();
-      const idcarrito = await cartService.getCartsById(carrito);
+      console.log("-------------------------idcarrito------------------")
+      console.log(idcarrito)
 
       // Generar el hash de la contraseña
       const salt = await bcrypt.genSalt(10);

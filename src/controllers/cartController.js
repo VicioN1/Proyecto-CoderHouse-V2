@@ -67,3 +67,15 @@ exports.deleteAllProductsFromCart = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.purchase = async (req,res) => {
+  try {
+    
+    const result = await cartService.deleteAllProductsFromCart(req.user.id);
+
+		res.status(200).send({ status: 'success', result})
+	} catch (error) {
+		res.status(400).send({ error: error.message });
+	}
+	
+}

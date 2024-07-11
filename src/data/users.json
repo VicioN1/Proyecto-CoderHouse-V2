@@ -28,5 +28,20 @@
       }
     ],
     "role": "admin"
+  },
+  {
+    "id": "3",
+    "first_name": "fer3",
+    "last_name": "cba3",
+    "email": "fer3@fer.com",
+    "age": "123",
+    "password": "$2b$10$hIKqRs3r5fedKjVhSj3qcetYn3U3a.x6IhB50AOrPJafIZKx/4GrG",
+    "carts": [
+      {
+        "cart_id": "3",
+        "cart": "3"
+      }
+    ],
+    "role": "user"
   }
 ]

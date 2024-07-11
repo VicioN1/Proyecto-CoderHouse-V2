@@ -22,7 +22,7 @@ const initializePassport = () => {
           if (!user) {
             console.log("entre 1 -------------------------------------")
             const carrito = await cartService.addCarts();
-            const idcarrito = await cartService.getCartsById(carrito); 
+            const idcarrito = await cartService.getCartId(carrito); 
             const newUser = {
               first_name: profile._json.name,
               last_name: " ",

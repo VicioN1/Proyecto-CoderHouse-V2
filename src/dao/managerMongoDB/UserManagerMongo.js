@@ -1,17 +1,12 @@
 const UserModel = require('../../models/user.model.js');
-const cartServices  = require("./CartsManagerMongo");
-
-const cartService = new cartServices();
 
 class UserManagerMongo {
   constructor() {
     this.User = {};
   }
 
-  async addUser(first_name, last_name, email, age, password) {
+  async addUser(first_name, last_name, email, age, password, idcarrito) {
     try {
-      const carrito = await cartService.addCarts();
-      const idcarrito = await cartService.getCartById(carrito);
       const newUser = new UserModel({
         first_name,
         last_name,

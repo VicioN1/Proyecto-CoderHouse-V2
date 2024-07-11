@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const productManager = require("./ProductManagerFileSystem");
+const UserManagerMongo = require('./UserManagerFileSystem');
 
+const userService = new UserManagerMongo();
 const productoMag = new productManager();
 
 class CartManagerFileSystem {
@@ -83,6 +85,37 @@ class CartManagerFileSystem {
   
       console.log(cart);
       return cart.products;
+    } catch (error) {
+      console.error("Error al consultar Carrito", error);
+      throw new Error("Error al consultar Carrito: " + error.message);
+    }
+  }
+  async getCartId(cart_id) {
+    try {
+      let cartsId = cart_id.toString();
+      const carts = await this._readFile();
+      const cart = carts.find(cart => cart.id === cartsId);
+  
+      if (!cart) {
+        throw new Error("Carrito no encontrado");
+      }
+
+      const updatedProducts = await Promise.all(
+        cart.products.map(async (product) => {
+          console.log(product.product_id)
+          const productDetails = await productoMag.getProductById(product.product_id);
+          console.log(productDetails)
+          return {
+            ...product,
+            product: productDetails
+          };
+        })
+      );
+  
+      cart.products = updatedProducts;
+  
+      console.log(cart);
+      return cart;
     } catch (error) {
       console.error("Error al consultar Carrito", error);
       throw new Error("Error al consultar Carrito: " + error.message);
@@ -204,6 +237,56 @@ class CartManagerFileSystem {
     } catch (error) {
       console.error("Error al eliminar todos los productos del carrito", error);
       throw error;
+    }
+  }
+  async purchase(userid) {
+    let purchaseComplete = []; // Array para los productos procesados correctamente.
+    let purchaseError = []; // Array para los productos que no pudieron procesarse por falta de stock.
+    let precioTotal = 0;
+
+    const findUser = await userService.getUserById(userid);
+    const cartId = findUser.carts[0].cart_id; // cart[0] porque es el primer elemento dentro del array.
+    const cart = await this.getCartById(cartId);
+
+    try {
+      for (const product of cart) {
+        const idproduct = product.product_id;
+        const quantity = product.quantity;
+        const productInDB = product.product;
+
+        if (quantity > productInDB.stock) {
+          // Verificamos que la cantidad comprada no sea mayor a nuestro stock
+          purchaseError.push(product); // Agregamos el producto al array de productos que no pudieron procesarse para la compra.
+        } else {
+          let productUpdate = productInDB;
+          const quantityUpdate = productInDB.stock - quantity;
+          productUpdate.stock = quantityUpdate; // Actualizamos el stock del producto
+          await productoMag.updateProduct(idproduct, "stock", productUpdate); // Actualizamos el stock en nuestra base de datos luego de la compra
+          purchaseComplete.push(product); // Agregamos el producto al array para proceder con la compra.
+          const monto = productInDB.price * quantity;
+          precioTotal = precioTotal + monto;
+        }
+      }
+
+      // Solo creamos el ticket si hay productos en purchaseComplete
+      if (purchaseComplete.length > 0) {
+        // Definimos los datos que necesitamos para el ticket:
+        const ticketData = {
+          amount: precioTotal,
+          purchaser: userid,
+        };
+        console.log("-----------purchase complete-----------------");
+        console.log(purchaseComplete);
+        console.log("-----------purchase incomplete-----------------");
+        console.log(purchaseError);
+        // Creamos el ticket en la base de datos.
+        // const ticket = await ticketService.createTicket(ticketData);
+      } else {
+        console.log("No se generó ningún ticket ya que no hubo productos procesados.");
+      }
+    } catch (error) {
+      console.error("Error al procesar la compra", error);
+      throw new Error("Error al procesar la compra: " + error.message);
     }
   }
 }

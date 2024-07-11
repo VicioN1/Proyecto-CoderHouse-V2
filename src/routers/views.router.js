@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { productService } = require('../services/repository.js');
+const { cartService } = require('../services/repository.js');
 const { isAuthenticated, isNotAuthenticated, ensureAdmin, ensureUser} = require('../middleware/auth');
 
 
@@ -26,10 +27,23 @@ router.get("/chat", (req, res) => {
 });
 
 router.get('/carts/:userId', (req, res) => {
+  const cartId = req.query.email;
+  const emailId = cartId.replace(/^\$/, '');
   const userId = req.params.userId;
+  
+  res.render('carts', { userId, emailId});
+});
 
-  console.log(userId)
-  res.render('carts', { userId });
+router.get('/purchase/:userId', (req, res) => {
+  const cartId = req.query.email;
+  const emailId = cartId.replace(/^\$/, '');
+  const userId = req.params.userId;
+  console.log(emailId,userId)
+  const datapurchase = cartService.purchase(emailId)
+  console.log("---------------datapurchase viewrouter-----------------------")
+  console.log(datapurchase)
+
+  res.render('purchase', { userId });
 });
 
 router.get('/login', isNotAuthenticated, (req, res) => {

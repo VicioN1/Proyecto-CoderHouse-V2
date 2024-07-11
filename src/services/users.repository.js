@@ -12,8 +12,8 @@ class UsersRepository {
     return await this.dao.getUserById(email);
   }
 
-  async addUser(first_name, last_name, email, age, password) {
-    return await this.dao.addUser(first_name, last_name, email, age, password);
+  async addUser(first_name, last_name, email, age, password, idcarrito) {
+    return await this.dao.addUser(first_name, last_name, email, age, password, idcarrito);
   }
 }
 

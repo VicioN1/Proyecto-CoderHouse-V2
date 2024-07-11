@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Estado de Compra</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 20px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f1f1f1;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        li span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Estado de la Compra</h1>
+        <h2>Productos Comprados</h2>
+        <ul>
+            <% status.purchased.forEach(product => { %>
+                <li>
+                    <span>Producto:</span> <%= product.product.title %> - 
+                    <span>Cantidad:</span> <%= product.quantity %>
+                </li>
+            <% }); %>
+        </ul>
+        <h2>Productos sin Stock</h2>
+        <ul>
+            <% status.outOfStock.forEach(product => { %>
+                <li>
+                    <span>Producto:</span> <%= product.product.title %> - 
+                    <span>Cantidad:</span> <%= product.quantity %>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</body>
+</html>

@@ -10,7 +10,11 @@ const isNotAuthenticated = (req, res, next) => {
   if (!req.session.user) {
     return next();
   } else {
-    res.redirect("/realtimeproducts");
+    if (req.session.user.role === 'admin') {
+      return res.redirect('/realtimeproductsAdmin');
+    } else {
+      return res.redirect('/realtimeproductsUser');
+    }
   }
 };
 
