@@ -1,6 +1,7 @@
 const { productService } = require('./services/repository.js');
 const { chatService } = require("./services/chat.repository");
 const { cartService }= require('./services/repository.js');
+const { ticketService }= require('./services/repository.js');
 
 
 function handleSocketConnection(socketServer) {
@@ -28,11 +29,21 @@ function handleSocketConnection(socketServer) {
 
         socket.on('viewcarrito', async carts => {
             try {
-                console.log("viewcarrito")
+                // console.log("viewcarrito")
                 const carrito = await cartService.getCartById(carts);
                 socketServer.emit('realTimeCarts', carrito );
             } catch (error) {
                 console.error('Error adding carrito:', error);
+            }
+        });
+        socket.on('viewpurchase', async purchase => {
+            try {
+                console.log("viewpurchase")
+                const Purchase = await ticketService.getTicketById(purchase);
+                console.log(Purchase)
+                socketServer.emit('realTimePurchase', Purchase );
+            } catch (error) {
+                console.error('Error adding Purchase:', error);
             }
         });
 

@@ -4,25 +4,25 @@ const { v4: uuidv4 } = require("uuid");
 const ticketCollection = 'Tickets';
 
 const TicketSchema = new mongoose.Schema({
-  code: { 
-    type: String,
-    default: () => uuidv4(), 
-    required: true, 
-    unique: true 
-  },
-  purchase_datetime: { 
-    type: Date, 
-    default: Date.now 
-  },
-  amount: { 
-    type: Number, 
-    required: true 
-  },
-  purchaser: {
-    type: String, 
-    required: true 
-  }
-});
+  amount: Number,
+    purchaser: {
+        Estado: Number,
+        Complete: [{
+            product_id: Number,
+            quantity: Number,
+            product: { type: mongoose.Schema.Types.ObjectId, ref: 'Productos' }, 
+            _id: mongoose.Schema.Types.ObjectId
+        }],
+        Incomplete: [{
+            product_id: Number,
+            quantity: Number,
+            product: { type: mongoose.Schema.Types.ObjectId, ref: 'Productos' }, 
+            _id: mongoose.Schema.Types.ObjectId
+        }]
+    },
+    userid: String,
+    code: String
+}, { versionKey: false });
 
 const ticketModel = mongoose.model(ticketCollection, TicketSchema);
 

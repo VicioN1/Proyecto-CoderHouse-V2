@@ -1,8 +1,10 @@
 const cartsModel = require('../../models/carts.model.js');
 const ProductManagerMongo = require('./ProductManagerMongo.js');
 const UserManagerMongo = require('./UserManagerMongo.js');
+const TicketManagerMongo = require('./TicketManagerMongo.js');
 
 const productService = new ProductManagerMongo();
+const ticketService = new TicketManagerMongo();
 const userService = new UserManagerMongo();
 
 class CartsManagerMongo {
@@ -63,7 +65,7 @@ class CartsManagerMongo {
       if (!product) {
         throw new Error("El producto no existe");
       }
-      const cart = await cartsModel.findOne({ id: cartId });
+      const cart = await cartsModel.findOne({ idProduct: cartId });
       if (!cart) {
         throw new Error("ID de carrito no encontrado");
       }
@@ -168,24 +170,23 @@ class CartsManagerMongo {
   }
 
   async purchase(userid) {
-    let purchaseComplete = []; //array para los productos procesados correctamente.
-    let purchaseError = []; //array para los productos que no pudieron procesarse por falta de stock.
+    let purchaseComplete = []; // Array para los productos procesados correctamente.
+    let purchaseError = []; // Array para los productos que no pudieron procesarse por falta de stock.
     let precioTotal = 0;
-    // console.log("userid: ",userid)
+
     const findUser = await userService.getUserById(userid);
-    // console.log("finduser: ", findUser)
-    const cartId = findUser.carts[0].cart_id; //cart[0] porque es el primer elemento dentro del array.
+    const cartId = findUser.carts[0].cart_id; // cart[0] porque es el primer elemento dentro del array.
     const cart = await this.getCartById(cartId);
-    // console.log(cart)
 
     try {
       for (const product of cart) {
+        console.log("----------------------------------------------------------------------")
+        console.log(product)
+        console.log("----------------------------------------------------------------------")
         const idproduct = product.product_id;
         const quantity = product.quantity;
         const productInDB = product.product;
-        console.log(productInDB)
-        
-    
+
         if (quantity > productInDB.stock) {
           // Verificamos que la cantidad comprada no sea mayor a nuestro stock
           purchaseError.push(product); // Agregamos el producto al array de productos que no pudieron procesarse para la compra.
@@ -193,38 +194,45 @@ class CartsManagerMongo {
           let productUpdate = productInDB;
           const quantityUpdate = productInDB.stock - quantity;
           productUpdate.stock = quantityUpdate; // Actualizamos el stock del producto
-          await productService.updateProduct(idproduct, "stock", productUpdate); // Actualizamos el stock en nuestra base de datos luego de la compra
+          await productService.updateProduct(idproduct, "stock", productUpdate.stock); 
+          product.product.cantcompra = quantity;
           purchaseComplete.push(product); // Agregamos el producto al array para proceder con la compra.
           const monto = productInDB.price * quantity;
           precioTotal = precioTotal + monto;
         }
       }
 
-      // //Eliminamos los productos que se procesaron correctamente del carrito, e insertamos el array de productos no procesados:
-      // const notPurchasedcart =
-      //   await cartService.insertArrayOfProducts(cartId, purchaseError);
-
       // Solo creamos el ticket si hay productos en purchaseComplete
       if (purchaseComplete.length > 0) {
-        //definimos los datos que necesitamos para el ticket:
+        const Purchase = {
+          Estado: 1,
+          Complete: purchaseComplete,
+          Incomplete: purchaseError
+        };
         const ticketData = {
           amount: precioTotal,
-          purchaser: userid,
+          purchaser: Purchase,
+          userid :userid
         };
-        console.log("-----------purchase complete-----------------")
-        console.log(purchaseComplete)
-        console.log("-----------purchase incomplete-----------------")
-        console.log(purchaseError)
-        //creamos el ticket en la base de datos.
-        // const ticket = await ticketService.createTicket(ticketData);
+        const ticket = await ticketService.addTicket(ticketData);
+        this.deleteAllProductsFromCart(cartId)
+        console.log("-------------------purchase----------")
+        console.log(Purchase)
+        return ticket;
       } else {
-        console.log( "No se generó ningún ticket ya que no hubo productos procesados." );
+        console.log("No se generó ningún ticket ya que no hubo productos procesados.");
+        return {
+          Estado: 0,
+          Complete: [],
+          Incomplete: purchaseError
+        };
       }
     } catch (error) {
       console.error("Error al procesar la compra", error);
       throw new Error("Error al procesar la compra: " + error.message);
     }
   }
+
 }
 
 module.exports = CartsManagerMongo;

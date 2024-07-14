@@ -2,8 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const productManager = require("./ProductManagerFileSystem");
 const UserManagerMongo = require('./UserManagerFileSystem');
+const TicketManagerMongo = require('./TicketManagerFileSystem');
 
 const userService = new UserManagerMongo();
+const ticketService = new TicketManagerMongo();
 const productoMag = new productManager();
 
 class CartManagerFileSystem {
@@ -71,9 +73,7 @@ class CartManagerFileSystem {
 
       const updatedProducts = await Promise.all(
         cart.products.map(async (product) => {
-          console.log(product.product_id)
           const productDetails = await productoMag.getProductById(product.product_id);
-          console.log(productDetails)
           return {
             ...product,
             product: productDetails
@@ -82,8 +82,6 @@ class CartManagerFileSystem {
       );
   
       cart.products = updatedProducts;
-  
-      console.log(cart);
       return cart.products;
     } catch (error) {
       console.error("Error al consultar Carrito", error);
@@ -261,7 +259,9 @@ class CartManagerFileSystem {
           let productUpdate = productInDB;
           const quantityUpdate = productInDB.stock - quantity;
           productUpdate.stock = quantityUpdate; // Actualizamos el stock del producto
-          await productoMag.updateProduct(idproduct, "stock", productUpdate); // Actualizamos el stock en nuestra base de datos luego de la compra
+          await productoMag.updateProduct(idproduct, "stock", productUpdate.stock); 
+          product.product.cantcompra = quantity;
+          console.log(product);
           purchaseComplete.push(product); // Agregamos el producto al array para proceder con la compra.
           const monto = productInDB.price * quantity;
           precioTotal = precioTotal + monto;
@@ -271,24 +271,37 @@ class CartManagerFileSystem {
       // Solo creamos el ticket si hay productos en purchaseComplete
       if (purchaseComplete.length > 0) {
         // Definimos los datos que necesitamos para el ticket:
+        
+        const Purchase = {
+          Estado: 1,
+          Complete: purchaseComplete,
+          Incomplete: purchaseError
+        };
+
         const ticketData = {
           amount: precioTotal,
-          purchaser: userid,
+          purchaser: Purchase,
+          userid: userid
         };
-        console.log("-----------purchase complete-----------------");
-        console.log(purchaseComplete);
-        console.log("-----------purchase incomplete-----------------");
-        console.log(purchaseError);
-        // Creamos el ticket en la base de datos.
-        // const ticket = await ticketService.createTicket(ticketData);
+        const ticket = await ticketService.addTicket(ticketData);
+        this.deleteAllProductsFromCart(cartId);
+
+        return ticket;
       } else {
         console.log("No se generó ningún ticket ya que no hubo productos procesados.");
+        return {
+          Estado: 0,
+          Complete: [],
+          Incomplete: purchaseError
+        };
       }
     } catch (error) {
       console.error("Error al procesar la compra", error);
       throw new Error("Error al procesar la compra: " + error.message);
     }
   }
+
+
 }
 
 module.exports = CartManagerFileSystem;

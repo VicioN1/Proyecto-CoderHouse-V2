@@ -34,16 +34,26 @@ router.get('/carts/:userId', (req, res) => {
   res.render('carts', { userId, emailId});
 });
 
-router.get('/purchase/:userId', (req, res) => {
-  const cartId = req.query.email;
-  const emailId = cartId.replace(/^\$/, '');
-  const userId = req.params.userId;
-  console.log(emailId,userId)
-  const datapurchase = cartService.purchase(emailId)
-  console.log("---------------datapurchase viewrouter-----------------------")
-  console.log(datapurchase)
+router.get('/purchase/:userId', async (req, res) => {
+  try {
+    const cartId = req.query.email;
+    const emailId = cartId.replace(/^\$/, '');
+    const userId = req.params.userId;
+    const datapurchase = await cartService.purchase(emailId);
 
-  res.render('purchase', { userId });
+    
+
+    // Convertir los datos en un objeto JSON puro
+    const datapurchasePure = JSON.parse(JSON.stringify(datapurchase));
+    console.log("---------------datapurchase---------------");
+    console.log(datapurchasePure);
+    console.log(datapurchasePure.code);
+
+    res.render('purchase', { datapurchase: datapurchasePure });
+  } catch (error) {
+    console.error("Error al procesar la compra", error);
+    res.status(500).send("Error al procesar la compra");
+  }
 });
 
 router.get('/login', isNotAuthenticated, (req, res) => {

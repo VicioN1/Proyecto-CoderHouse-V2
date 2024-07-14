@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Estado de Compra</title>
-    <style>
+ <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
@@ -56,28 +51,53 @@
             font-weight: bold;
         }
     </style>
-</head>
-<body>
     <div class="container">
         <h1>Estado de la Compra</h1>
+        <h1>Precio Total: {{datapurchase.amount}}</h1>
         <h2>Productos Comprados</h2>
-        <ul>
-            <% status.purchased.forEach(product => { %>
-                <li>
-                    <span>Producto:</span> <%= product.product.title %> - 
-                    <span>Cantidad:</span> <%= product.quantity %>
-                </li>
-            <% }); %>
+        <ul id="complete-list">
         </ul>
         <h2>Productos sin Stock</h2>
-        <ul>
-            <% status.outOfStock.forEach(product => { %>
-                <li>
-                    <span>Producto:</span> <%= product.product.title %> - 
-                    <span>Cantidad:</span> <%= product.quantity %>
-                </li>
-            <% }); %>
+        <ul id="incomplete-list">
         </ul>
     </div>
-</body>
-</html>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    const socket = io();
+    let code = '{{datapurchase.code}}'
+    socket.emit('viewpurchase', code );
+
+    socket.on('realTimePurchase', Purchase => {
+        let purchasecomplete = Purchase.purchaser
+        const completeList = document.getElementById('complete-list');
+        completeList.innerHTML = '';
+       
+        purchasecomplete.Complete.forEach(producto => {
+             console.log(producto.quantity)
+            const productDiv = document.createElement('div');
+            productDiv.classList.add('product');
+            productDiv.innerHTML = `
+                <h2>${producto.product.title}</h2>
+                <p>${producto.product.description}</p>
+                <p>Código: ${producto.product.code}</p>
+                <p>Precio: $${producto.product.price}</p>
+                <p>cantidad: ${producto.product.cantcompra || producto.quantity }</p>
+            `;
+            completeList.appendChild(productDiv);
+        });
+        const incompleteList = document.getElementById('incomplete-list');
+        incompleteList.innerHTML = '';
+        purchasecomplete.Incomplete.forEach(producto => {
+            const productDiv = document.createElement('div');
+            productDiv.classList.add('product');
+            productDiv.innerHTML = `
+                <h2>${producto.product.title}</h2>
+                <p>${producto.product.description}</p>
+                <p>Código: ${producto.product.code}</p>
+                <p>Precio: $${producto.product.price}</p>
+            `;
+            incompleteList.appendChild(productDiv);
+        });
+    });
+
+    </script>

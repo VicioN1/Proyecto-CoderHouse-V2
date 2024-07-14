@@ -11,6 +11,7 @@ const CartsFS = require("./managersFileSystem/CartManagerFileSystem.js");
 const ProductsFS = require("./managersFileSystem/ProductManagerFileSystem.js");
 const UsersFS = require("./managersFileSystem/UserManagerFileSystem");
 const ChatFS = require("./managersFileSystem/ChatManagerFileSystem.js");
+const TicketFS = require("./managersFileSystem/TicketManagerFileSystem.js");
 
 let carts;
 let products;
@@ -36,6 +37,7 @@ switch (config.PERSISTENCE) {
       products = new ProductsFS();
       users = new UsersFS();
       chat = new ChatFS();
+      ticket = new TicketFS();
     break;
 }
 

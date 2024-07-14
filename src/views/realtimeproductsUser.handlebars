@@ -4,17 +4,20 @@
         padding: 10px;
         margin-bottom: 10px;
     }
-    button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+    .addToCartButton {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
     }
-    button:disabled {
-    background-color: #d3d3d3; 
-    color: #7a7a7a; 
-    cursor: not-allowed;
+    .addToCartButton.added {
+        background-color: #28a745;
+    }
+    .addToCartButton:disabled {
+        background-color: #d3d3d3; 
+        color: #7a7a7a; 
+        cursor: not-allowed;
     }
 </style>
 <div>
@@ -26,7 +29,7 @@
     <form action="/api/sessions/logout" method="POST">
         <button type="submit">Cerrar Sesión</button>
     </form>
-    <button id="viewCart" >Ver Carrito</button>
+    <button id="viewCart">Ver Carrito</button>
     <h1>Lista de Productos</h1>
     <div id="productList"></div>
     <button id="prevButton" disabled>Anterior</button>
@@ -37,7 +40,7 @@
     const socket = io();
     let currentPage = 1;
     let hasPrevPage, hasNextPage, prevPage, nextPage;
-    let idcarrot= {{user.cart}}
+    let idcarrot = {{user.cart}};
     let emailUser = "<%= user.email %>";
 
     const prevButton = document.getElementById('prevButton');
@@ -52,8 +55,6 @@
         window.location.href = `/carts/${idcarrot}?email=${{{user.email}}}`;
     });
 
-    
-
     prevButton.addEventListener('click', () => {
         if (hasPrevPage) {
             loadProducts(prevPage);
@@ -66,19 +67,18 @@
         }
     });
 
-
     socket.on('realTimeProducts', productos => {
         const productList = document.getElementById('productList');
         productList.innerHTML = '';
 
-
-        hasPrevPage = productos.hasPrevPage
-        hasNextPage = productos.hasNextPage
-        prevPage = productos.prevPage
-        nextPage = productos.nextPage
+        hasPrevPage = productos.hasPrevPage;
+        hasNextPage = productos.hasNextPage;
+        prevPage = productos.prevPage;
+        nextPage = productos.nextPage;
 
         prevButton.disabled = !hasPrevPage;
         nextButton.disabled = !hasNextPage;
+
         productos.docs.forEach(producto => {
             const productDiv = document.createElement('div');
             productDiv.classList.add('product');
@@ -98,12 +98,15 @@
         document.querySelectorAll('.addToCartButton').forEach(button => {
             button.addEventListener('click', function () {
                 const productCode = this.getAttribute('data-product-code');
-                {{!-- const quantity = document.getElementById(`quantity-${productCode}`).innerText; --}}
-                socket.emit('agregarAlCarrito', { idcarrot ,productCode: productCode});
+                socket.emit('agregarAlCarrito', { idcarrot, productCode: productCode });
+
+                // Cambiar el texto y deshabilitar el botón después de agregar al carrito
+                this.textContent = 'Agregado al Carrito';
+                this.classList.add('added');
+                this.disabled = true;
             });
         });
     });
 
     loadProducts(currentPage);
 </script>
-

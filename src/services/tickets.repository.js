@@ -4,30 +4,29 @@ class TicketsRepository {
         this.dao = ticket
     }
 
-    getTickets = async () => {
-        const tickets = await this.dao.getTickets();
-        return tickets
+    async getTickets() {
+        return await this.dao.getTickets();
     }
 
-    getTicketById = async (ticketId) => {
-        const ticket = await this.dao.getTicketById(ticketId);
-        return ticket
+    async getTicketById(ticketId) {
+        if (!ticketId) {
+            throw new Error('Ticket ID is required');
+        }
+        return await this.dao.getTicketById(ticketId);
     }
 
-    addTicket = async (ticket) => {
-        const result = await this.dao.addTicket(ticket);
-        return result
+    async createTicket(ticketData) {
+        return await this.dao.addTicket(ticketData);
     }
 
-    updateTicket = async (idTicket, ticket) => {
-        const ticketUpdated = await this.dao.updateTicket(idTicket, ticket)
-        return ticketUpdated
+    async updateTicket(ticketId, ticketData) {
+        return await this.dao.updateTicket(ticketId, ticketData);
     }
 
-    deleteTicket = async (idTicket) => {
-        const ticketToDeleted = await this.dao.deleteTicket(idTicket);
-        return ticketToDeleted;
+    async deleteTicket(ticketId) {
+        return await this.dao.deleteTicket(ticketId);
     }
+
 }
 
 module.exports = TicketsRepository;
