@@ -426,5 +426,35 @@
     },
     "userid": "fer@fer.com",
     "code": "988101de-b56c-447d-b634-55a6043e6dee"
+  },
+  {
+    "amount": 6.75,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 8,
+          "quantity": 3,
+          "product": {
+            "idProduct": 8,
+            "title": "Naranjas",
+            "description": "Fruta cítrica y refrescante",
+            "code": "ORN111",
+            "price": 2.25,
+            "status": true,
+            "stock": 24,
+            "category": "Frutas",
+            "thumbnails": [
+              "https://example.com/orange1.jpg",
+              "https://example.com/orange2.jpg"
+            ],
+            "cantcompra": 3
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fer@fer.com",
+    "code": "8d796571-20e3-418e-bb8d-bc808465739c"
   }
 ]

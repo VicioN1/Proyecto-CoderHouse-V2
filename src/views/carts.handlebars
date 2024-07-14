@@ -5,16 +5,16 @@
         margin-bottom: 10px;
     }
     button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
     }
     button:disabled {
-    background-color: #d3d3d3; 
-    color: #7a7a7a; 
-    cursor: not-allowed;
+        background-color: #d3d3d3; 
+        color: #7a7a7a; 
+        cursor: not-allowed;
     }
 </style>
 <div>
@@ -23,19 +23,18 @@
     <div id="productList"></div>
     <button id="finalizePurchaseButton">Finalizar compra</button>
 </div>
-</div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const socket = io();
 
     const idcarrot = "{{userId}}";
 
-
     socket.emit('viewcarrito', idcarrot);
 
     socket.on('realTimeCarts', carts => {
         const productList = document.getElementById('productList');
         productList.innerHTML = '';
+
         carts.forEach(producto => {
             const productDiv = document.createElement('div');
             productDiv.classList.add('product');
@@ -53,7 +52,7 @@
                     <span id="quantity-${producto.product.idProduct}">${producto.quantity}</span>
                     <button class="increaseQuantity" data-product-code="${producto.product.idProduct}">+</button>
                 </div>
-                <button class="addToCartButton" data-product-code="${producto.product.idProduct}">Actualizar</button>
+                <button class="updateQuantityButton" data-product-code="${producto.product.idProduct}">Actualizar</button>
             `;
             productList.appendChild(productDiv);
         });
@@ -61,11 +60,11 @@
         document.querySelectorAll('.deleteButton').forEach(button => {
             button.addEventListener('click', function () {
                 const productCode = this.getAttribute('data-product-code');
-                socket.emit('elimProduccarrito', {idcarrot, productCode});
+                socket.emit('elimProduccarrito', { idcarrot, productCode });
             });
         });
 
-        {{!-- document.querySelectorAll('.increaseQuantity').forEach(button => {
+        document.querySelectorAll('.increaseQuantity').forEach(button => {
             button.addEventListener('click', function () {
                 const productCode = this.getAttribute('data-product-code');
                 const quantitySpan = document.getElementById(`quantity-${productCode}`);
@@ -85,13 +84,13 @@
                     quantitySpan.innerText = quantity;
                 }
             });
-        }); --}}
+        });
 
-        document.querySelectorAll('.addToCartButton').forEach(button => {
+        document.querySelectorAll('.updateQuantityButton').forEach(button => {
             button.addEventListener('click', function () {
                 const productCode = this.getAttribute('data-product-code');
-                {{!-- const quantity = document.getElementById(`quantity-${productCode}`).innerText; --}}
-                socket.emit('agregarAlCarrito', { idcarrot ,productCode: productCode});
+                const quantity = parseInt(document.getElementById(`quantity-${productCode}`).innerText);
+                socket.emit('updateQuantity', { idcarrot, productCode, quantity });
             });
         });
     });
@@ -100,6 +99,4 @@
         socket.emit('finalizePurchase', idcarrot);
         window.location.href = `/purchase/${idcarrot}?email=${{{emailId}}}`;
     });
- 
 </script>
-

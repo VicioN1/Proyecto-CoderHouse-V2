@@ -57,13 +57,23 @@ function handleSocketConnection(socketServer) {
                 console.error('Error adding carrito:', error);
             }
         });
-
+        
         socket.on('productos', async product => {
             try {
                 console.log("----------socket productos---------------");
                 await writeProducts(product);
                 const products = await readProducts(); 
                 socketServer.emit('realTimeProducts', products);
+            } catch (error) {
+                console.error('Error adding product:', error);
+            }
+        });
+        
+        socket.on('updateQuantity', async product => {
+            try {
+                console.log("----------socket productos---------------");
+                console.log(product.idcarrot, product.productCode, product.quantity);
+                const carrito = await cartService.updateProductQuantity(product.idcarrot, product.productCode, product.quantity );
             } catch (error) {
                 console.error('Error adding product:', error);
             }

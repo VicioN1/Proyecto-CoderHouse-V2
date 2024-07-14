@@ -140,10 +140,12 @@ class CartsManagerMongo {
       if (product) {
         product.quantity = parseInt(quantity);
         await cart.save();
+        console.log("complete updateProductQuantity")
         return cart;
       } else {
         throw new Error("Producto no encontrado en el carrito");
       }
+      
     } catch (error) {
       console.error("Error al actualizar la cantidad del producto", error);
       throw new Error(

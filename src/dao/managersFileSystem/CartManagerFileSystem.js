@@ -203,11 +203,14 @@ class CartManagerFileSystem {
     try {
       const carts = await this._readFile();
       const cart = carts.find(cart => cart.id === cartId);
+      console.log(cart)
       if (!cart) {
         throw new Error("ID de carrito no encontrado");
       }
 
-      const product = cart.products.find(item => item.product_id === productId);
+      let num = parseInt(productId, 10);
+
+      const product = cart.products.find(item => item.product_id === num);
       if (product) {
         product.quantity = parseInt(quantity);
         await this._writeFile(carts);
