@@ -3,6 +3,7 @@ const router = express.Router();
 const { productService } = require('../services/repository.js');
 const { cartService } = require('../services/repository.js');
 const { isAuthenticated, isNotAuthenticated, ensureAdmin, ensureUser} = require('../middleware/auth');
+const { mailingController } = require('../utils/nodemailer.js');
 
 
 router.get("/", (req, res) => {
@@ -42,7 +43,7 @@ router.get('/purchase/:userId', async (req, res) => {
     const datapurchase = await cartService.purchase(emailId);
 
     
-
+    await mailingController( emailId,datapurchase);
     // Convertir los datos en un objeto JSON puro
     const datapurchasePure = JSON.parse(JSON.stringify(datapurchase));
     console.log("---------------datapurchase---------------");

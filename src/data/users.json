@@ -58,5 +58,35 @@
       }
     ],
     "role": "user"
+  },
+  {
+    "id": "5",
+    "first_name": "Melina",
+    "last_name": "Tapia",
+    "email": "meli_tapia98@hotmail.es",
+    "age": "25",
+    "password": "$2b$10$FrdkTtlF4pwH5vMTkYnS5.Mx/IQMSqdgtnQIMsRYVXY6NZ78oto5a",
+    "carts": [
+      {
+        "cart_id": "5",
+        "cart": "5"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "id": "6",
+    "first_name": "Pablo",
+    "last_name": "Cordoba",
+    "email": "pablocba7i3@gmail.com",
+    "age": "24",
+    "password": "$2b$10$BNTNH2u5MqKjDhwjHSW5Oup9Ccv2iwB4uZIrK22m46CtPUOvGjlNK",
+    "carts": [
+      {
+        "cart_id": "6",
+        "cart": "6"
+      }
+    ],
+    "role": "user"
   }
 ]

@@ -291,12 +291,20 @@ class CartManagerFileSystem {
 
         return ticket;
       } else {
-        console.log("No se generó ningún ticket ya que no hubo productos procesados.");
-        return {
-          Estado: 0,
+        const Purchase = {
+          Estado: 1,
           Complete: [],
           Incomplete: purchaseError
         };
+
+        const ticketData = {
+          amount: 0,
+          purchaser: Purchase,
+          userid: userid
+        };
+        const ticket = await ticketService.addTicket(ticketData);
+        this.deleteAllProductsFromCart(cartId);
+        return ticket;
       }
     } catch (error) {
       console.error("Error al procesar la compra", error);

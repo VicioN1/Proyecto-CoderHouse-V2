@@ -25,6 +25,8 @@ module.exports = {
   MONGO_URL: process.env.MONGO_URL,
   clientID: process.env.clientID,
   clientSecret: process.env.clientSecret,
+  EMAIL_USER: process.env.EMAIL_USER,
+  EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
   NODE_ENV: environment.toUpperCase(),  
   PERSISTENCE: persistence.toUpperCase() 
 };

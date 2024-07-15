@@ -456,5 +456,407 @@
     },
     "userid": "fer@fer.com",
     "code": "8d796571-20e3-418e-bb8d-bc808465739c"
+  },
+  {
+    "amount": 8.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 7,
+          "quantity": 3,
+          "product": {
+            "idProduct": 7,
+            "title": "Espinacas",
+            "description": "Verdura rica en nutrientes",
+            "code": "SPN890",
+            "price": 2.75,
+            "status": true,
+            "stock": 17,
+            "category": "Vegetales",
+            "thumbnails": [
+              "https://example.com/spinach1.jpg",
+              "https://example.com/spinach2.jpg"
+            ],
+            "cantcompra": 3
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "meli_tapia98@hotmail.es",
+    "code": "0fff45be-c32f-41bd-a352-969c782d973b"
+  },
+  {
+    "amount": 0,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [],
+      "Incomplete": [
+        {
+          "product_id": 4,
+          "quantity": 1,
+          "product": {
+            "idProduct": 4,
+            "title": "Yogur",
+            "description": "Fuente de proteínas y calcio",
+            "code": "YOG101",
+            "price": 1.75,
+            "status": true,
+            "stock": 0,
+            "category": "Lácteos",
+            "thumbnails": [
+              "https://example.com/yogurt1.jpg",
+              "https://example.com/yogurt2.jpg"
+            ]
+          }
+        }
+      ]
+    },
+    "userid": "fer@fer.com",
+    "code": "e9ad1c61-80ed-4f59-970b-34a44541fc40"
+  },
+  {
+    "amount": 0,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [],
+      "Incomplete": [
+        {
+          "product_id": 4,
+          "quantity": 1,
+          "product": {
+            "idProduct": 4,
+            "title": "Yogur",
+            "description": "Fuente de proteínas y calcio",
+            "code": "YOG101",
+            "price": 1.75,
+            "status": true,
+            "stock": 0,
+            "category": "Lácteos",
+            "thumbnails": [
+              "https://example.com/yogurt1.jpg",
+              "https://example.com/yogurt2.jpg"
+            ]
+          }
+        }
+      ]
+    },
+    "userid": "fer@fer.com",
+    "code": "e8f3068e-b59e-4542-a146-253b97280857"
+  },
+  {
+    "amount": 0,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [],
+      "Incomplete": [
+        {
+          "product_id": 4,
+          "quantity": 1,
+          "product": {
+            "idProduct": 4,
+            "title": "Yogur",
+            "description": "Fuente de proteínas y calcio",
+            "code": "YOG101",
+            "price": 1.75,
+            "status": true,
+            "stock": 0,
+            "category": "Lácteos",
+            "thumbnails": [
+              "https://example.com/yogurt1.jpg",
+              "https://example.com/yogurt2.jpg"
+            ]
+          }
+        }
+      ]
+    },
+    "userid": "fer@fer.com",
+    "code": "82d12c0b-9e41-418b-a993-bb1549dc7110"
+  },
+  {
+    "amount": 6.75,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 8,
+          "quantity": 1,
+          "product": {
+            "idProduct": 8,
+            "title": "Naranjas",
+            "description": "Fruta cítrica y refrescante",
+            "code": "ORN111",
+            "price": 2.25,
+            "status": true,
+            "stock": 23,
+            "category": "Frutas",
+            "thumbnails": [
+              "https://example.com/orange1.jpg",
+              "https://example.com/orange2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        },
+        {
+          "product_id": 9,
+          "quantity": 1,
+          "product": {
+            "idProduct": 9,
+            "title": "Queso",
+            "description": "Producto lácteo versátil",
+            "code": "CHS222",
+            "price": 4.5,
+            "status": true,
+            "stock": 34,
+            "category": "Lácteos",
+            "thumbnails": [
+              "https://example.com/cheese1.jpg",
+              "https://example.com/cheese2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": [
+        {
+          "product_id": 6,
+          "quantity": 1,
+          "product": {
+            "idProduct": 6,
+            "title": "Arroz",
+            "description": "Ingrediente básico para muchas comidas",
+            "code": "RIC567",
+            "price": 3.25,
+            "status": true,
+            "stock": 0,
+            "category": "Granos",
+            "thumbnails": [
+              "https://example.com/rice1.jpg",
+              "https://example.com/rice2.jpg"
+            ]
+          }
+        },
+        {
+          "product_id": 5,
+          "quantity": 1,
+          "product": {
+            "idProduct": 5,
+            "title": "Pollo",
+            "description": "Carne magra y saludable",
+            "code": "CHI234",
+            "price": 5.5,
+            "status": true,
+            "stock": 0,
+            "category": "Carnes",
+            "thumbnails": [
+              "https://example.com/chicken1.jpg",
+              "https://example.com/chicken2.jpg"
+            ]
+          }
+        }
+      ]
+    },
+    "userid": "pablocba7i3@gmail.com",
+    "code": "c7d747b4-cebe-4732-9716-9f97fe5e9c4b"
+  },
+  {
+    "amount": 2.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 8,
+          "quantity": 1,
+          "product": {
+            "idProduct": 8,
+            "title": "Naranjas",
+            "description": "Fruta cítrica y refrescante",
+            "code": "ORN111",
+            "price": 2.25,
+            "status": true,
+            "stock": 22,
+            "category": "Frutas",
+            "thumbnails": [
+              "https://example.com/orange1.jpg",
+              "https://example.com/orange2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fer@fer.com",
+    "code": "dae8568f-cf5d-4803-bfac-00d8c47ed5c3"
+  },
+  {
+    "amount": 2.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 8,
+          "quantity": 1,
+          "product": {
+            "idProduct": 8,
+            "title": "Naranjas",
+            "description": "Fruta cítrica y refrescante",
+            "code": "ORN111",
+            "price": 2.25,
+            "status": true,
+            "stock": 21,
+            "category": "Frutas",
+            "thumbnails": [
+              "https://example.com/orange1.jpg",
+              "https://example.com/orange2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fer@fer.com",
+    "code": "a940f909-16a1-406a-89d3-22f0903841cd"
+  },
+  {
+    "amount": 2.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 8,
+          "quantity": 1,
+          "product": {
+            "idProduct": 8,
+            "title": "Naranjas",
+            "description": "Fruta cítrica y refrescante",
+            "code": "ORN111",
+            "price": 2.25,
+            "status": true,
+            "stock": 20,
+            "category": "Frutas",
+            "thumbnails": [
+              "https://example.com/orange1.jpg",
+              "https://example.com/orange2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fer@fer.com",
+    "code": "45158d98-c373-4a7a-b30c-536ecb6c6eb9"
+  },
+  {
+    "amount": 2.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 8,
+          "quantity": 1,
+          "product": {
+            "idProduct": 8,
+            "title": "Naranjas",
+            "description": "Fruta cítrica y refrescante",
+            "code": "ORN111",
+            "price": 2.25,
+            "status": true,
+            "stock": 19,
+            "category": "Frutas",
+            "thumbnails": [
+              "https://example.com/orange1.jpg",
+              "https://example.com/orange2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fer@fer.com",
+    "code": "aac580a4-2205-4f25-bf4c-cacbb08ca160"
+  },
+  {
+    "amount": 2.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 8,
+          "quantity": 1,
+          "product": {
+            "idProduct": 8,
+            "title": "Naranjas",
+            "description": "Fruta cítrica y refrescante",
+            "code": "ORN111",
+            "price": 2.25,
+            "status": true,
+            "stock": 18,
+            "category": "Frutas",
+            "thumbnails": [
+              "https://example.com/orange1.jpg",
+              "https://example.com/orange2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fer@fer.com",
+    "code": "4fe2075b-9e07-4b8f-bd5a-9a7c11482859"
+  },
+  {
+    "amount": 2.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 8,
+          "quantity": 1,
+          "product": {
+            "idProduct": 8,
+            "title": "Naranjas",
+            "description": "Fruta cítrica y refrescante",
+            "code": "ORN111",
+            "price": 2.25,
+            "status": true,
+            "stock": 17,
+            "category": "Frutas",
+            "thumbnails": [
+              "https://example.com/orange1.jpg",
+              "https://example.com/orange2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": [
+        {
+          "product_id": 4,
+          "quantity": 1,
+          "product": {
+            "idProduct": 4,
+            "title": "Yogur",
+            "description": "Fuente de proteínas y calcio",
+            "code": "YOG101",
+            "price": 1.75,
+            "status": true,
+            "stock": 0,
+            "category": "Lácteos",
+            "thumbnails": [
+              "https://example.com/yogurt1.jpg",
+              "https://example.com/yogurt2.jpg"
+            ]
+          }
+        }
+      ]
+    },
+    "userid": "fer@fer.com",
+    "code": "2a780bb8-dd10-45a1-92aa-a30d9a8a1b23"
   }
 ]

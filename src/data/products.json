@@ -6,7 +6,7 @@
     "code": "YOG101",
     "price": 1.75,
     "status": true,
-    "stock": 0,
+    "stock": 2,
     "category": "Lácteos",
     "thumbnails": [
       "https://example.com/yogurt1.jpg",
@@ -20,7 +20,7 @@
     "code": "CHI234",
     "price": 5.5,
     "status": true,
-    "stock": 0,
+    "stock": 3,
     "category": "Carnes",
     "thumbnails": [
       "https://example.com/chicken1.jpg",
@@ -34,7 +34,7 @@
     "code": "RIC567",
     "price": 3.25,
     "status": true,
-    "stock": 0,
+    "stock": 4,
     "category": "Granos",
     "thumbnails": [
       "https://example.com/rice1.jpg",
@@ -48,7 +48,7 @@
     "code": "SPN890",
     "price": 2.75,
     "status": true,
-    "stock": 20,
+    "stock": 17,
     "category": "Vegetales",
     "thumbnails": [
       "https://example.com/spinach1.jpg",
@@ -62,7 +62,7 @@
     "code": "ORN111",
     "price": 2.25,
     "status": true,
-    "stock": 24,
+    "stock": 17,
     "category": "Frutas",
     "thumbnails": [
       "https://example.com/orange1.jpg",
@@ -76,7 +76,7 @@
     "code": "CHS222",
     "price": 4.5,
     "status": true,
-    "stock": 35,
+    "stock": 34,
     "category": "Lácteos",
     "thumbnails": [
       "https://example.com/cheese1.jpg",
