@@ -1,10 +1,14 @@
+const { chat} = require('../dao/factory.js');
 class ChatRepository {
+    constructor() {
+      this.dao = chat;
+    }
     async addChat(user, message) {
-      return await chatService.addChat(user, message);
+      return await this.dao.addChat(user, message);
     }
   
     async readChat() {
-      return await chatService.readChat();
+      return await this.dao.readChat();
     }
   }
   

@@ -66,7 +66,12 @@ router.get('/register', isNotAuthenticated, (req, res) => {
 });
 
 router.get('/profile', isAuthenticated, (req, res) => {
-  res.render('profile', { user: req.session.user });
+  if (req.isAuthenticated()) {
+    res.render('profile', { user: req.session.user });
+} else {
+    res.status(401).json({ message: 'Unauthorized' });
+}
+  
 });
 
 module.exports = router;

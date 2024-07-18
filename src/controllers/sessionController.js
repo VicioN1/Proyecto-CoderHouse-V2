@@ -8,6 +8,7 @@ exports.register = async (req, res) => {
   try {
     const carrito = await cartService.addCarts();
     const idcarrito = await cartService.getCartId(carrito);
+    console.log(carrito)
     console.log("---------------register idcarrito---------------")
     console.log(idcarrito)
     await userService.addUser(first_name, last_name, email, age, password, idcarrito);
@@ -75,7 +76,7 @@ exports.githubCallback = (req, res, next) => {
       const carts = await userService.getCartsById(user._id);
 
       req.session.user = {
-        id: user._id,
+        id:  user._id || user.id,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,

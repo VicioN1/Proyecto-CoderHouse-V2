@@ -17,10 +17,11 @@ const initializePassport = () => {
       async (accessToken, refreshToken, profile, done) => {
         try {
           
-          console.log(profile);
+          // console.log(profile);
           let user = await User.findOne({ email: profile._json.email });
+          console.log(profile._json.email )
+          console.log(user)
           if (!user) {
-            console.log("entre 1 -------------------------------------")
             const carrito = await cartService.addCarts();
             const idcarrito = await cartService.getCartId(carrito); 
             const newUser = {
@@ -38,7 +39,6 @@ const initializePassport = () => {
             const result = await User.create(newUser);
             done(null, result);
           } else {
-            console.log("entre 2 --------------------------------------")
             done(null, user);
           }
         } catch (error) {

@@ -20,7 +20,11 @@ function handleSocketConnection(socketServer) {
 
         socket.on('agregarAlCarrito', async carts => {
             try {
+                console.log("agregarAlCarrito")
+                console.log(carts)
                 const carrito = await cartService.addProductToCart(carts.idcarrot, carts.productCode);
+                console.log(carrito)
+                return carrito
             } catch (error) {
                 console.error('Error adding carrito:', error);
             }
@@ -29,7 +33,7 @@ function handleSocketConnection(socketServer) {
 
         socket.on('viewcarrito', async carts => {
             try {
-                // console.log("viewcarrito")
+                console.log("viewcarrito")
                 const carrito = await cartService.getCartById(carts);
                 socketServer.emit('realTimeCarts', carrito );
             } catch (error) {

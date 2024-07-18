@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     age: { type: Number, required: true },
     password: { type: String, required: true },
     carts: [{
-        cart_id: Number,
+        cart_id: String,
         cart: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Carts' 

@@ -4,87 +4,12 @@
     "first_name": "fer",
     "last_name": "cba",
     "email": "fer@fer.com",
-    "age": "23",
-    "password": "$2b$10$W1Ppq1ucIWjtSh6VtMqUleNJBbMdeU46peMMCRjNCABKvkzyhT0cC",
+    "age": "12",
+    "password": "$2b$10$IbC4c03WXPQCtbcwrM7Lo.QB9w16FspwlaZh0PxMVuBd4B5rMuu9W",
     "carts": [
       {
         "cart_id": "1",
         "cart": "1"
-      }
-    ],
-    "role": "user"
-  },
-  {
-    "id": "2",
-    "first_name": "fer2",
-    "last_name": "cba2",
-    "email": "fer2@fer.com",
-    "age": "12",
-    "password": "$2b$10$VjAEG8xD.CTCS5cVHCDIaO.A3LAXUIDDLwv6.lHkm7NjhH6o6/7uG",
-    "carts": [
-      {
-        "cart_id": "2",
-        "cart": "2"
-      }
-    ],
-    "role": "admin"
-  },
-  {
-    "id": "3",
-    "first_name": "fer3",
-    "last_name": "cba3",
-    "email": "fer3@fer.com",
-    "age": "123",
-    "password": "$2b$10$hIKqRs3r5fedKjVhSj3qcetYn3U3a.x6IhB50AOrPJafIZKx/4GrG",
-    "carts": [
-      {
-        "cart_id": "3",
-        "cart": "3"
-      }
-    ],
-    "role": "user"
-  },
-  {
-    "id": "4",
-    "first_name": "fer",
-    "last_name": "cba",
-    "email": "fer@fer.com",
-    "age": "34",
-    "password": "$2b$10$NJp5i9sPGyRVYtfBWDfByOxb2NRinUu4ptnlgLnCU8uQankKjp8mq",
-    "carts": [
-      {
-        "cart_id": "4",
-        "cart": "4"
-      }
-    ],
-    "role": "user"
-  },
-  {
-    "id": "5",
-    "first_name": "Melina",
-    "last_name": "Tapia",
-    "email": "meli_tapia98@hotmail.es",
-    "age": "25",
-    "password": "$2b$10$FrdkTtlF4pwH5vMTkYnS5.Mx/IQMSqdgtnQIMsRYVXY6NZ78oto5a",
-    "carts": [
-      {
-        "cart_id": "5",
-        "cart": "5"
-      }
-    ],
-    "role": "user"
-  },
-  {
-    "id": "6",
-    "first_name": "Pablo",
-    "last_name": "Cordoba",
-    "email": "pablocba7i3@gmail.com",
-    "age": "24",
-    "password": "$2b$10$BNTNH2u5MqKjDhwjHSW5Oup9Ccv2iwB4uZIrK22m46CtPUOvGjlNK",
-    "carts": [
-      {
-        "cart_id": "6",
-        "cart": "6"
       }
     ],
     "role": "user"

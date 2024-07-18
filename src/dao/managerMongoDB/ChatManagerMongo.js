@@ -9,7 +9,8 @@ class ChatManagerMongo {
     try {
       const newChat = await chatModel.create({
         user,
-        message
+        message,
+        timestamp: new Date().toISOString()
       });
       console.log("mensaje guardado")
       return ("mensaje guardado")

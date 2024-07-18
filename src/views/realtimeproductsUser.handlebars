@@ -51,7 +51,6 @@
     }
 
     document.getElementById('viewCart').addEventListener('click', function () {
-        const userId = this.getAttribute('data-user-id'); 
         window.location.href = `/carts/${idcarrot}?email=${{{user.email}}}`;
     });
 

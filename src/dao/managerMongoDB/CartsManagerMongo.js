@@ -43,7 +43,7 @@ class CartsManagerMongo {
       const cart = await cartsModel
         .findOne({ id: cart_id })
         .populate('products.product');
-      return cart.products;
+      return cart;
     } catch (error) {
       console.error("Error al consultar Carrito", error);
       throw new Error("Error al consultar Carrito: " + error.message);
@@ -65,7 +65,7 @@ class CartsManagerMongo {
       if (!product) {
         throw new Error("El producto no existe");
       }
-      const cart = await cartsModel.findOne({ idProduct: cartId });
+      const cart = await cartsModel.findOne({ id: cartId });
       if (!cart) {
         throw new Error("ID de carrito no encontrado");
       }
