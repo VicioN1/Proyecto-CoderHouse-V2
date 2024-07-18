@@ -83,29 +83,24 @@ class ProductManagerFileSystem {
       limit = parseInt(limit) || 5;
   
       let products = await this._readFile();
-      // console.log("Productos iniciales:", products);
   
       if (query) {
         products = products.filter(product => product.category.toLowerCase().includes(query.toLowerCase()));
-        // console.log("Productos después del filtro de query:", products);
+
       }
   
       if (status === 'true') {
         products = products.filter(product => product.status);
-        // console.log("Productos después del filtro de status 'true':", products);
       } else if (status === 'false') {
         products = products.filter(product => !product.status);
-        // console.log("Productos después del filtro de status 'false':", products);
       }
   
       if (sort) {
         products.sort((a, b) => (sort === 'asc' ? a.price - b.price : b.price - a.price));
-        // console.log("Productos después de ordenar:", products);
       }
   
       const offset = (page - 1) * limit;
       const paginatedProducts = products.slice(offset, offset + limit);
-      // console.log("Productos paginados:", paginatedProducts);
   
       const params = new URLSearchParams({ sort, query, status }).toString();
   

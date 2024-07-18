@@ -87,35 +87,14 @@ exports.purchase = async (req, res) => {
     const datapurchase = await cartService.purchase(emailId);
 
     await mailingController(emailId, datapurchase);
-    // Convertir los datos en un objeto JSON puro
     const datapurchasePure = JSON.parse(JSON.stringify(datapurchase));
     console.log("---------------datapurchase---------------");
     console.log(datapurchasePure);
     console.log(datapurchasePure.code);
 
-    // Redirigir a la vista 'purchase' pasando los datos como query params
     res.redirect(`/purchase/${userId}?datapurchase=${encodeURIComponent(JSON.stringify(datapurchasePure))}`);
   } catch (error) {
     res.status(400).send({ error: error.message });
   }
 };
 
-// exports.purchase = async (req, res) => {
-//   try {
-//     const cartId = req.query.email;
-//     const emailId = cartId.replace(/^\$/, "");
-//     const userId = req.params.userId;
-//     const datapurchase = await cartService.purchase(emailId);
-
-//     await mailingController(emailId, datapurchase);
-//     // Convertir los datos en un objeto JSON puro
-//     const datapurchasePure = JSON.parse(JSON.stringify(datapurchase));
-//     console.log("---------------datapurchase---------------");
-//     console.log(datapurchasePure);
-//     console.log(datapurchasePure.code);
-
-//     res.status(200).send({ status: "success", datapurchasePure });
-//   } catch (error) {
-//     res.status(400).send({ error: error.message });
-//   }
-// };

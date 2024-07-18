@@ -169,71 +169,14 @@ class CartsManagerMongo {
       );
     }
   }
-  // async purchase(userid) {
-  //   let purchaseComplete = []; // Array para los productos procesados correctamente.
-  //   let purchaseError = []; // Array para los productos que no pudieron procesarse por falta de stock.
-  //   let precioTotal = 0;
-  
-  //   const findUser = await userService.getUserById(userid);
-  //   const cartId = findUser.carts[0].cart_id; // cart[0] porque es el primer elemento dentro del array.
-  //   const cart = await this.getCartById(cartId);
-  
-  //   try {
-  //     for (const product of cart) {
-  //       const idproduct = product.product_id;
-  //       const quantity = product.quantity;
-  //       const productInDB = product.product;
-  
-  //       if (quantity > productInDB.stock) {
-  //         // Verificamos que la cantidad comprada no sea mayor a nuestro stock
-  //         purchaseError.push(product); // Agregamos el producto al array de productos que no pudieron procesarse para la compra.
-  //       } else {
-  //         const quantityUpdate = productInDB.stock - quantity;
-  //         await productService.updateProduct(idproduct, "stock", quantityUpdate); 
-  //         product.product.cantcompra = quantity;
-  //         purchaseComplete.push(product); // Agregamos el producto al array para proceder con la compra.
-  //         const monto = productInDB.price * quantity;
-  //         precioTotal = precioTotal + monto;
-  
-  //         // Actualiza la cantidad en el carrito
-  //         await this.updateProductQuantity(cartId, idproduct, 0); // 0 porque queremos eliminarlo del carrito
-  //       }
-  //     }
-  
-  //     // Solo creamos el ticket si hay productos en purchaseComplete
-  //     if (purchaseComplete.length > 0) {
-  //       const Purchase = {
-  //         Estado: 1,
-  //         Complete: purchaseComplete,
-  //         Incomplete: purchaseError
-  //       };
-  //       const ticketData = {
-  //         amount: precioTotal,
-  //         purchaser: Purchase,
-  //         userid : userid
-  //       };
-  //       const ticket = await ticketService.addTicket(ticketData);
-  //       return ticket;
-  //     } else {
-  //       console.log("No se generó ningún ticket ya que no hubo productos procesados.");
-  //       return {
-  //         Estado: 0,
-  //         Complete: [],
-  //         Incomplete: purchaseError
-  //       };
-  //     }
-  //   } catch (error) {
-  //     console.error("Error al procesar la compra", error);
-  //     throw new Error("Error al procesar la compra: " + error.message);
-  //   }
-  // }
+
   async purchase(userid) {
-    let purchaseComplete = []; // Array para los productos procesados correctamente.
-    let purchaseError = []; // Array para los productos que no pudieron procesarse por falta de stock.
+    let purchaseComplete = []; 
+    let purchaseError = []; 
     let precioTotal = 0;
 
     const findUser = await userService.getUserById(userid);
-    const cartId = findUser.carts[0].cart_id; // cart[0] porque es el primer elemento dentro del array.
+    const cartId = findUser.carts[0].cart_id; 
     const cart = await this.getCartById(cartId);
 
     try {
@@ -247,17 +190,16 @@ class CartsManagerMongo {
         } else {
           let productUpdate = productInDB;
           const quantityUpdate = productInDB.stock - quantity;
-          productUpdate.stock = quantityUpdate; // Actualizamos el stock del producto
+          productUpdate.stock = quantityUpdate;
           await productService.updateProduct(idproduct, "stock", productUpdate.stock); 
           product.product.cantcompra = quantity;
-          purchaseComplete.push(product); // Agregamos el producto al array para proceder con la compra.
+          purchaseComplete.push(product); 
           const monto = productInDB.price * quantity;
           precioTotal = precioTotal + monto;
           this.deleteProductFromCart(cartId,idproduct)
         }
       }
 
-      // Solo creamos el ticket si hay productos en purchaseComplete
       if (purchaseComplete.length > 0) {
         const Purchase = {
           Estado: 1,

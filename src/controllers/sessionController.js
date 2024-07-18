@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { userService } = require('../services/repository.js');
 const { cartService }= require('../services/repository.js');
+const UserDTO = require('../dao/DTOs/userDTO.js');
 
 exports.register = async (req, res) => {
   const { first_name, last_name, email, age, password } = req.body;
@@ -92,4 +93,10 @@ exports.githubCallback = (req, res, next) => {
       }
     });
   })(req, res, next);
+};
+
+exports.getCurrentUser = (req, res) => {
+  const userDTO = new UserDTO(req.session.user);
+  console.log(userDTO)
+  res.json(userDTO);
 };

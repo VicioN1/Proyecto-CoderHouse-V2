@@ -40,7 +40,6 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Middleware para jwt, manejo de token en cookies:
 
 app.use(cookieParser());
 
@@ -49,13 +48,6 @@ const httpServer = app.listen(
   () => console.log(`Server running on port ${config.PORT || 8080}`)
 );
 
-if (config.PERSISTENCE === 'MONGO') {
-  console.log('Using MongoDB for persistence');
-  // Inicia tu conexión a MongoDB y utiliza MongoDB como persistencia
-} else {
-  console.log('Using File System for persistence');
-  // Utiliza el sistema de archivos como persistencia
-}
 
 const socketServer = new Server(httpServer);
 handleSocketConnection(socketServer);

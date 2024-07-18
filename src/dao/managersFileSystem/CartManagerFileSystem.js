@@ -18,7 +18,7 @@ class CartManagerFileSystem {
       await fs.promises.access(this.filePath);
     } catch (error) {
       if (error.code === 'ENOENT') {
-        await this._writeFile([]); // Crea el archivo si no existe
+        await this._writeFile([]); 
       } else {
         throw error;
       }
@@ -43,7 +43,6 @@ class CartManagerFileSystem {
 
   async addCarts() {
     try {
-      console.log("-------soy carrito")
       const carts = await this._readFile();
       const lastCart = carts[carts.length - 1];
       const nextId = (lastCart && parseInt(lastCart.id) + 1) || 1;
@@ -241,12 +240,12 @@ class CartManagerFileSystem {
     }
   }
   async purchase(userid) {
-    let purchaseComplete = []; // Array para los productos procesados correctamente.
-    let purchaseError = []; // Array para los productos que no pudieron procesarse por falta de stock.
+    let purchaseComplete = []; 
+    let purchaseError = []; 
     let precioTotal = 0;
 
     const findUser = await userService.getUserById(userid);
-    const cartId = findUser.carts[0].cart_id; // cart[0] porque es el primer elemento dentro del array.
+    const cartId = findUser.carts[0].cart_id; 
     const cart = await this.getCartById(cartId);
 
     try {
@@ -256,24 +255,22 @@ class CartManagerFileSystem {
         const productInDB = product.product;
 
         if (quantity > productInDB.stock) {
-          // Verificamos que la cantidad comprada no sea mayor a nuestro stock
-          purchaseError.push(product); // Agregamos el producto al array de productos que no pudieron procesarse para la compra.
+          purchaseError.push(product);
         } else {
           let productUpdate = productInDB;
           const quantityUpdate = productInDB.stock - quantity;
-          productUpdate.stock = quantityUpdate; // Actualizamos el stock del producto
+          productUpdate.stock = quantityUpdate; 
           await productoMag.updateProduct(idproduct, "stock", productUpdate.stock); 
           product.product.cantcompra = quantity;
           console.log(product);
-          purchaseComplete.push(product); // Agregamos el producto al array para proceder con la compra.
+          purchaseComplete.push(product); 
           const monto = productInDB.price * quantity;
           precioTotal = precioTotal + monto;
+          this.deleteProductFromCart(cartId,idproduct)
         }
       }
 
-      // Solo creamos el ticket si hay productos en purchaseComplete
       if (purchaseComplete.length > 0) {
-        // Definimos los datos que necesitamos para el ticket:
         
         const Purchase = {
           Estado: 1,
@@ -287,7 +284,6 @@ class CartManagerFileSystem {
           userid: userid
         };
         const ticket = await ticketService.addTicket(ticketData);
-        this.deleteAllProductsFromCart(cartId);
 
         return ticket;
       } else {

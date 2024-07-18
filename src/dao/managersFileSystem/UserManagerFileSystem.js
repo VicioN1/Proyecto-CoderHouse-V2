@@ -12,7 +12,7 @@ class UserServiceFS {
       await fs.access(this.filePath);
     } catch (error) {
       if (error.code === 'ENOENT') {
-        await this.writeUsers([]); // Crea el archivo si no existe
+        await this.writeUsers([]); 
       } else {
         throw new Error('Error al acceder al archivo de usuarios: ' + error.message);
       }
@@ -40,7 +40,6 @@ class UserServiceFS {
       console.log("-------------------------idcarrito------------------")
       console.log(idcarrito)
 
-      // Generar el hash de la contraseña
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -50,7 +49,7 @@ class UserServiceFS {
         last_name,
         email,
         age,
-        password: hashedPassword, // Guardar la contraseña hasheada
+        password: hashedPassword,
         carts: [{
           cart_id: idcarrito.id,
           cart: idcarrito.id

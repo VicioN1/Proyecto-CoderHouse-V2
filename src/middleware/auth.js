@@ -25,6 +25,13 @@ const ensureAdmin = (req, res, next) => {
     return res.redirect("/realtimeproductsUser");
   }
 };
+const isAdmin = (req, res, next) => {
+  if (req.session.user && req.session.user.role === "admin") {
+    return next();
+  } else {
+    return res.status(403).json({ message: 'Forbidden' });
+  }
+};
 
 const ensureUser = (req, res, next) => {
   if (req.session.user && req.session.user.role !== "admin") {
@@ -39,4 +46,5 @@ module.exports = {
   ensureUser,
   isAuthenticated,
   isNotAuthenticated,
+  isAdmin
 };

@@ -99,7 +99,6 @@
                 const productCode = this.getAttribute('data-product-code');
                 socket.emit('agregarAlCarrito', { idcarrot, productCode: productCode });
 
-                // Cambiar el texto y deshabilitar el botón después de agregar al carrito
                 this.textContent = 'Agregado al Carrito';
                 this.classList.add('added');
                 this.disabled = true;

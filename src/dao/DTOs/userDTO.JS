@@ -1,9 +1,9 @@
 class UserDTO {
     constructor(user) {
-        this.id = user._id;
-        this.name = user.name;
+        this.first_name = user.first_name;
+        this.last_name = user.last_name;
+        this.role = user.role;
         this.email = user.email;
-        // Agrega otros campos que sean necesarios
     }
 }
 

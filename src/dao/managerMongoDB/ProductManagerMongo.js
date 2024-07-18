@@ -94,8 +94,6 @@ class ProductManagerMongo {
 
   async updateProduct(productId, field, newValue) {
     try {
-      // console.log("---------------------updateProduct----------------------")
-      // console.log(productId, field, newValue)
       const product = await productsModel.findOne({ idProduct: productId });
       if (!product) {
         return "Producto no encontrado";

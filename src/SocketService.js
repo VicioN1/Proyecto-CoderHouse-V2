@@ -11,7 +11,6 @@ function handleSocketConnection(socketServer) {
             try {
                 console.log("----------socket new---------------");
                 const products = await productService.getProductsQuery(null , product.page , null, null, null);
-                // console.log(products)
                 socketServer.emit('realTimeProducts', products);
             } catch (error) {
                 console.error('Error adding product:', error);

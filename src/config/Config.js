@@ -3,12 +3,12 @@ const minimist = require('minimist');
 
 const options = {
   alias: { 
-    e: 'environment',  // Alias para 'environment'
-    p: 'persistence'   // Alias para 'persistence'
+    e: 'environment',  
+    p: 'persistence'  
   },
   default: { 
     environment: process.env.NODE_ENV === 'production' ? 'production' : 'development',  
-    persistence: 'file_system'  // Valor por defecto
+    persistence: 'file_system' 
   }
 };
 

@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const sessionController = require('../controllers/sessionController.js');
+const viewController = require('../controllers/viewController.js');
 const { productService } = require('../services/repository.js');
-const { cartService } = require('../services/repository.js');
 const { isAuthenticated, isNotAuthenticated, ensureAdmin, ensureUser} = require('../middleware/auth');
 
 
@@ -52,8 +53,8 @@ router.get('/register', isNotAuthenticated, (req, res) => {
   res.render('register');
 });
 
-router.get('/profile', isAuthenticated, (req, res) => {
-  res.render('profile', { user: req.session.user });
+router.get('/profile', isAuthenticated, viewController.getCurrentUser, (req, res) => {
+  res.render('profile', { user: req.userDTO });
 });
 
 module.exports = router;

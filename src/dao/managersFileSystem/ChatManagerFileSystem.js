@@ -12,7 +12,7 @@ class ChatManagerFileSystem {
       await fs.access(this.filePath);
     } catch (error) {
       if (error.code === 'ENOENT') {
-        await this.writeChatsToFile([]); // Crea el archivo si no existe
+        await this.writeChatsToFile([]); 
       } else {
         throw new Error('Error al verificar el archivo de chats: ' + error.message);
       }
