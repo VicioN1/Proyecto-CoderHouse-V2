@@ -140,12 +140,11 @@ class CartsManagerMongo {
       if (product) {
         product.quantity = parseInt(quantity);
         await cart.save();
-        console.log("complete updateProductQuantity")
+        console.log("complete updateProductQuantity");
         return cart;
       } else {
         throw new Error("Producto no encontrado en el carrito");
       }
-      
     } catch (error) {
       console.error("Error al actualizar la cantidad del producto", error);
       throw new Error(
@@ -170,7 +169,64 @@ class CartsManagerMongo {
       );
     }
   }
-
+  // async purchase(userid) {
+  //   let purchaseComplete = []; // Array para los productos procesados correctamente.
+  //   let purchaseError = []; // Array para los productos que no pudieron procesarse por falta de stock.
+  //   let precioTotal = 0;
+  
+  //   const findUser = await userService.getUserById(userid);
+  //   const cartId = findUser.carts[0].cart_id; // cart[0] porque es el primer elemento dentro del array.
+  //   const cart = await this.getCartById(cartId);
+  
+  //   try {
+  //     for (const product of cart) {
+  //       const idproduct = product.product_id;
+  //       const quantity = product.quantity;
+  //       const productInDB = product.product;
+  
+  //       if (quantity > productInDB.stock) {
+  //         // Verificamos que la cantidad comprada no sea mayor a nuestro stock
+  //         purchaseError.push(product); // Agregamos el producto al array de productos que no pudieron procesarse para la compra.
+  //       } else {
+  //         const quantityUpdate = productInDB.stock - quantity;
+  //         await productService.updateProduct(idproduct, "stock", quantityUpdate); 
+  //         product.product.cantcompra = quantity;
+  //         purchaseComplete.push(product); // Agregamos el producto al array para proceder con la compra.
+  //         const monto = productInDB.price * quantity;
+  //         precioTotal = precioTotal + monto;
+  
+  //         // Actualiza la cantidad en el carrito
+  //         await this.updateProductQuantity(cartId, idproduct, 0); // 0 porque queremos eliminarlo del carrito
+  //       }
+  //     }
+  
+  //     // Solo creamos el ticket si hay productos en purchaseComplete
+  //     if (purchaseComplete.length > 0) {
+  //       const Purchase = {
+  //         Estado: 1,
+  //         Complete: purchaseComplete,
+  //         Incomplete: purchaseError
+  //       };
+  //       const ticketData = {
+  //         amount: precioTotal,
+  //         purchaser: Purchase,
+  //         userid : userid
+  //       };
+  //       const ticket = await ticketService.addTicket(ticketData);
+  //       return ticket;
+  //     } else {
+  //       console.log("No se generó ningún ticket ya que no hubo productos procesados.");
+  //       return {
+  //         Estado: 0,
+  //         Complete: [],
+  //         Incomplete: purchaseError
+  //       };
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al procesar la compra", error);
+  //     throw new Error("Error al procesar la compra: " + error.message);
+  //   }
+  // }
   async purchase(userid) {
     let purchaseComplete = []; // Array para los productos procesados correctamente.
     let purchaseError = []; // Array para los productos que no pudieron procesarse por falta de stock.
@@ -182,16 +238,12 @@ class CartsManagerMongo {
 
     try {
       for (const product of cart) {
-        console.log("----------------------------------------------------------------------")
-        console.log(product)
-        console.log("----------------------------------------------------------------------")
         const idproduct = product.product_id;
         const quantity = product.quantity;
         const productInDB = product.product;
 
         if (quantity > productInDB.stock) {
-          // Verificamos que la cantidad comprada no sea mayor a nuestro stock
-          purchaseError.push(product); // Agregamos el producto al array de productos que no pudieron procesarse para la compra.
+          purchaseError.push(product); 
         } else {
           let productUpdate = productInDB;
           const quantityUpdate = productInDB.stock - quantity;
@@ -201,6 +253,7 @@ class CartsManagerMongo {
           purchaseComplete.push(product); // Agregamos el producto al array para proceder con la compra.
           const monto = productInDB.price * quantity;
           precioTotal = precioTotal + monto;
+          this.deleteProductFromCart(cartId,idproduct)
         }
       }
 
@@ -217,9 +270,6 @@ class CartsManagerMongo {
           userid :userid
         };
         const ticket = await ticketService.addTicket(ticketData);
-        this.deleteAllProductsFromCart(cartId)
-        console.log("-------------------purchase----------")
-        console.log(Purchase)
         return ticket;
       } else {
         console.log("No se generó ningún ticket ya que no hubo productos procesados.");

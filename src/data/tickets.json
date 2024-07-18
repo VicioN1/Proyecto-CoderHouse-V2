@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "amount": 3.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 6,
+          "quantity": 1,
+          "product": {
+            "idProduct": 6,
+            "title": "Arroz",
+            "description": "Ingrediente básico para muchas comidas",
+            "code": "RIC567",
+            "price": 3.25,
+            "status": true,
+            "stock": 3,
+            "category": "Granos",
+            "thumbnails": [
+              "https://example.com/rice1.jpg",
+              "https://example.com/rice2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fer@fer.com",
+    "code": "f7c2bf65-a969-4696-885d-863c7673c65f"
+  },
+  {
+    "amount": 3.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 6,
+          "quantity": 1,
+          "product": {
+            "idProduct": 6,
+            "title": "Arroz",
+            "description": "Ingrediente básico para muchas comidas",
+            "code": "RIC567",
+            "price": 3.25,
+            "status": true,
+            "stock": 2,
+            "category": "Granos",
+            "thumbnails": [
+              "https://example.com/rice1.jpg",
+              "https://example.com/rice2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fercba5678@gmail.com",
+    "code": "53d143a4-b2ba-4772-a709-d913218e9b98"
+  }
+]

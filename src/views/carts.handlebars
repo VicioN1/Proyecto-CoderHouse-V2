@@ -97,6 +97,6 @@
 
     document.getElementById('finalizePurchaseButton').addEventListener('click', function() {
         socket.emit('finalizePurchase', idcarrot);
-        window.location.href = `/purchase/${idcarrot}?email=${{{emailId}}}`;
+        window.location.href = `/api/carts/${idcarrot}/purchase?email=${{{emailId}}}`;
     });
 </script>

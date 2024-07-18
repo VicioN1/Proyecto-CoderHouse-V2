@@ -1,4 +1,5 @@
-const { cartService }= require('../services/repository.js');
+const { cartService } = require("../services/repository.js");
+const { mailingController } = require('../utils/nodemailer.js');
 
 exports.addCart = async (req, res) => {
   try {
@@ -34,7 +35,10 @@ exports.addProductToCart = async (req, res) => {
 
 exports.deleteProductFromCart = async (req, res) => {
   try {
-    const result = await cartService.deleteProductFromCart(req.params.cid, req.params.pid);
+    const result = await cartService.deleteProductFromCart(
+      req.params.cid,
+      req.params.pid
+    );
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -43,7 +47,10 @@ exports.deleteProductFromCart = async (req, res) => {
 
 exports.updateCart = async (req, res) => {
   try {
-    const result = await cartService.updateCart(req.params.cid, req.body.products);
+    const result = await cartService.updateCart(
+      req.params.cid,
+      req.body.products
+    );
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -52,7 +59,11 @@ exports.updateCart = async (req, res) => {
 
 exports.updateProductQuantity = async (req, res) => {
   try {
-    const result = await cartService.updateProductQuantity(req.params.cid, req.params.pid, req.body.quantity);
+    const result = await cartService.updateProductQuantity(
+      req.params.cid,
+      req.params.pid,
+      req.body.quantity
+    );
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -68,14 +79,43 @@ exports.deleteAllProductsFromCart = async (req, res) => {
   }
 };
 
-exports.purchase = async (req,res) => {
+exports.purchase = async (req, res) => {
   try {
-    
-    const result = await cartService.deleteAllProductsFromCart(req.user.id);
+    const cartId = req.query.email;
+    const emailId = cartId.replace(/^\$/, "");
+    const userId = req.params.userId;
+    const datapurchase = await cartService.purchase(emailId);
 
-		res.status(200).send({ status: 'success', result})
-	} catch (error) {
-		res.status(400).send({ error: error.message });
-	}
-	
-}
+    await mailingController(emailId, datapurchase);
+    // Convertir los datos en un objeto JSON puro
+    const datapurchasePure = JSON.parse(JSON.stringify(datapurchase));
+    console.log("---------------datapurchase---------------");
+    console.log(datapurchasePure);
+    console.log(datapurchasePure.code);
+
+    // Redirigir a la vista 'purchase' pasando los datos como query params
+    res.redirect(`/purchase/${userId}?datapurchase=${encodeURIComponent(JSON.stringify(datapurchasePure))}`);
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+};
+
+// exports.purchase = async (req, res) => {
+//   try {
+//     const cartId = req.query.email;
+//     const emailId = cartId.replace(/^\$/, "");
+//     const userId = req.params.userId;
+//     const datapurchase = await cartService.purchase(emailId);
+
+//     await mailingController(emailId, datapurchase);
+//     // Convertir los datos en un objeto JSON puro
+//     const datapurchasePure = JSON.parse(JSON.stringify(datapurchase));
+//     console.log("---------------datapurchase---------------");
+//     console.log(datapurchasePure);
+//     console.log(datapurchasePure.code);
+
+//     res.status(200).send({ status: "success", datapurchasePure });
+//   } catch (error) {
+//     res.status(400).send({ error: error.message });
+//   }
+// };

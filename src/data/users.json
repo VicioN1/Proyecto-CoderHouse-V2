@@ -13,5 +13,20 @@
       }
     ],
     "role": "user"
+  },
+  {
+    "id": "2",
+    "first_name": "ferrr",
+    "last_name": "cba",
+    "email": "fercba5678@gmail.com",
+    "age": "12",
+    "password": "$2b$10$78mGZa1vttQT9FBJ8s1OG.93/zWiQfrqK2ps.z8m.5Dw4cdWy792.",
+    "carts": [
+      {
+        "cart_id": "2",
+        "cart": "2"
+      }
+    ],
+    "role": "user"
   }
 ]

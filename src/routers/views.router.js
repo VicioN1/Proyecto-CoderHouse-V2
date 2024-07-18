@@ -3,7 +3,7 @@ const router = express.Router();
 const { productService } = require('../services/repository.js');
 const { cartService } = require('../services/repository.js');
 const { isAuthenticated, isNotAuthenticated, ensureAdmin, ensureUser} = require('../middleware/auth');
-const { mailingController } = require('../utils/nodemailer.js');
+
 
 
 router.get("/", (req, res) => {
@@ -37,23 +37,10 @@ router.get('/carts/:userId', (req, res) => {
 
 router.get('/purchase/:userId', async (req, res) => {
   try {
-    const cartId = req.query.email;
-    const emailId = cartId.replace(/^\$/, '');
-    const userId = req.params.userId;
-    const datapurchase = await cartService.purchase(emailId);
-
-    
-    await mailingController( emailId,datapurchase);
-    // Convertir los datos en un objeto JSON puro
-    const datapurchasePure = JSON.parse(JSON.stringify(datapurchase));
-    console.log("---------------datapurchase---------------");
-    console.log(datapurchasePure);
-    console.log(datapurchasePure.code);
-
-    res.render('purchase', { datapurchase: datapurchasePure });
+    const datapurchase = req.query.datapurchase ? JSON.parse(decodeURIComponent(req.query.datapurchase)) : null;
+    res.render('purchase', { datapurchase });
   } catch (error) {
-    console.error("Error al procesar la compra", error);
-    res.status(500).send("Error al procesar la compra");
+    res.status(400).send({ error: 'Error al procesar los datos de la compra' });
   }
 });
 
@@ -66,12 +53,7 @@ router.get('/register', isNotAuthenticated, (req, res) => {
 });
 
 router.get('/profile', isAuthenticated, (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render('profile', { user: req.session.user });
-} else {
-    res.status(401).json({ message: 'Unauthorized' });
-}
-  
+  res.render('profile', { user: req.session.user });
 });
 
 module.exports = router;
