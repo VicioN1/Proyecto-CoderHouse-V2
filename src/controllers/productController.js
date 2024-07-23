@@ -1,4 +1,7 @@
 const { productService } = require('../services/repository.js');
+const CustomError = require('../services/errors/CustomError.js');
+const EErrors = require('../services/errors/enums.js');
+const { generarErrorProducto } = require('../services/errors/info.js');
 
 exports.getProducts = async (req, res) => {
   try {
@@ -47,7 +50,12 @@ exports.addProduct = async (req, res) => {
     const { title, description, code, price, stock, category, thumbnails } = req.body;
 
     if (!title || !description || !code || !price || !stock || !category) {
-      return res.status(400).json({ message: 'Faltan campos obligatorios' });
+      throw CustomError.createError({
+        name:"Error al crear Producto",
+        cause: generarErrorProducto({title, description, code, price, stock, category}),
+        message: "Faltan campos obligatorios",
+        code: EErrors.INVALID_TYPES_ERROR
+    })
     }
 
     const product = {

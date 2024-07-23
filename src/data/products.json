@@ -93,5 +93,27 @@
     "status": true,
     "category": "fer",
     "thumbnails": []
+  },
+  {
+    "idProduct": 11,
+    "title": "fff",
+    "description": "fff",
+    "code": "fff",
+    "price": "12",
+    "stock": "212",
+    "status": true,
+    "category": "fer",
+    "thumbnails": []
+  },
+  {
+    "idProduct": 12,
+    "title": "",
+    "description": "ref",
+    "code": "ref",
+    "price": "4",
+    "stock": "4",
+    "status": true,
+    "category": "ref",
+    "thumbnails": []
   }
 ]

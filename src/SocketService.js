@@ -2,7 +2,9 @@ const { productService } = require('./services/repository.js');
 const { chatService } = require("./services/chat.repository");
 const { cartService }= require('./services/repository.js');
 const { ticketService }= require('./services/repository.js');
-
+const CustomError = require('./services/errors/CustomError.js');
+const EErrors = require('./services/errors/enums.js');
+const { generarErrorProducto } = require('./services/errors/info.js');
 
 function handleSocketConnection(socketServer) {
     socketServer.on('connection', socket => {
@@ -126,6 +128,14 @@ async function readProducts() {
 
 async function writeProducts(products) {
     try {
+        if (!products.title || !products.description || !products.code || !products.price || !products.stock || !products.category) {
+            throw CustomError.createError({
+              name:"Error al crear Producto",
+              cause: generarErrorProducto(products),
+              message: "Faltan campos obligatorios",
+              code: EErrors.INVALID_TYPES_ERROR
+          })
+          }
         const producto = await productService.addProduct(products.title, products.description, products.code, products.price, products.stock, products.category, products.thumbnails);
         console.log(producto);
     } catch (error) {

@@ -9,6 +9,7 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
 
+const mockingRouter = require("./routers/mocking.router.js");
 const viewsRouter = require("./routers/views.router.js");
 const productsRoutes = require("./routers/productRouter.js");
 const cartsRoutes = require("./routers/cartRouter.js");
@@ -57,6 +58,7 @@ app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "handlebars");
 app.use(express.static(path.join(__dirname, "/public")));
 
+app.use('/mocking' , mockingRouter);
 app.use("/api/products/", productsRoutes);
 app.use("/api/carts/", cartsRoutes);
 app.use("/api/sessions", sessionsRoutes);
