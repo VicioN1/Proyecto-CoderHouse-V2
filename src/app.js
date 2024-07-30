@@ -60,7 +60,7 @@ app.set("view engine", "handlebars");
 app.use(express.static(path.join(__dirname, "/public")));
 
 app.use("/mocking" , mockingRouter);
-app.use('/loggerTest', loggerRouter );
+app.use('/Testlogger', loggerRouter );
 app.use("/api/products/", productsRoutes);
 app.use("/api/carts/", cartsRoutes);
 app.use("/api/sessions", sessionsRoutes);
