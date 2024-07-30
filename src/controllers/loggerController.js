@@ -1,5 +1,9 @@
 exports.loggerController  = async  (req,res) => {
-    req.logger.warning('Alerta!')
-    req.logger.error('error')
-    res.send({status: 'success', message: 'Probando Logger!'});
+    req.logger.fatal('TEST fatal!')
+    req.logger.error('TEST error')
+    req.logger.warning('TEST warning')
+    req.logger.info('TEST info')
+    req.logger.http('TEST http')
+    req.logger.debug('TEST debug')
+    res.send({status: 'TEST success', message: 'Probando Logger!'});
 }
