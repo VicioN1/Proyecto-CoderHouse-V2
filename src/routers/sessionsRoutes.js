@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const sessionController = require('../controllers/sessionController.js');
 const { isAuthenticated, isAdmin} = require('../middleware/auth');
+const { Logger} = require('../utils/logger.js');
 
-
+router.use(Logger);
 router.post('/register', sessionController.register);
 router.post('/login', sessionController.login);
 router.post('/logout', sessionController.logout);

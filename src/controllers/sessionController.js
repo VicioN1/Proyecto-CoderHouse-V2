@@ -42,13 +42,18 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await userService.getUserById(email);
-    if (!user) return res.status(404).send("Usuario no encontrado");
+    if (!user) {
+      req.logger.info(`Usuario no encontrado con email: ${email}`);
+      return res.status(404).send("Usuario no encontrado");
+    } 
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).send("Contraseña incorrecta");
-
+    if (!isMatch) {
+      req.logger.info(`Contraseña incorrecta Usuario email: ${email} `);
+      return res.status(401).send("Contraseña incorrecta");
+    }
     const carts = await userService.getCartsById(user._id || user.id);
-    console.log(carts);
+    req.logger.debug(`Carrito id: ${carts} `);
 
     req.session.user = {
       id: user._id || user.id,
@@ -66,13 +71,17 @@ exports.login = async (req, res) => {
       res.redirect("/realtimeproductsUser");
     }
   } catch (err) {
+    req.logger.error(`Error al inciar sesión: ${err}`);
     res.status(500).send("Error al iniciar sesión");
   }
 };
 
 exports.logout = (req, res) => {
   req.session.destroy((err) => {
-    if (err) return res.status(500).send("Error al cerrar sesión");
+    if (err) {
+      req.logger.error(`Error al cerrar sesión: ${err}`);
+      return res.status(500).send("Error al cerrar sesión");
+    }
     res.redirect("/login");
   });
 };
@@ -86,6 +95,7 @@ exports.githubCallback = (req, res, next) => {
     { failureRedirect: "/login" },
     async (err, user, info) => {
       if (err) {
+        req.logger.error(`githubCallback - ${err}`);
         return next(err);
       }
       if (!user) {

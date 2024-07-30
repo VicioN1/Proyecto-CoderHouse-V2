@@ -1,4 +1,4 @@
-const config = require("../config/Config.js");
+const config = require("../config/config.js");
 const mongoose = require("mongoose");
 
 const CartsMongo = require("./managerMongoDB/CartsManagerMongo.js");

@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const cartController = require("../controllers/cartController");
 const { isAuthenticated, isNotAuthenticated, ensureAdmin, ensureUser} = require('../middleware/auth');
+const { Logger} = require('../utils/logger.js');
+
+router.use(Logger);
 
 router.post("/", isAuthenticated, cartController.addCart);
 router.get("/:cid",isAuthenticated, cartController.getCartById);

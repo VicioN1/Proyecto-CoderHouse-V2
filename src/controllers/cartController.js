@@ -3,9 +3,10 @@ const { mailingController } = require('../utils/nodemailer.js');
 
 exports.addCart = async (req, res) => {
   try {
-    const message = await cartService.addCart();
+    const message = await cartService.addCarts();
     res.json({ message });
   } catch (error) {
+    req.logger.error(`Error al agregar producto al carrito: ${error.message}`);
     res.status(404).json({ message: error.message });
   }
 };
@@ -15,8 +16,10 @@ exports.getCartById = async (req, res) => {
   try {
     const cart = await cartService.getCartById(cart_id);
     const products = cart ? cart.products : "Not found";
+    req.logger.info(`Productos obtenidos del carrito ${cart_id}`);
     res.json({ products });
   } catch (error) {
+    req.logger.error(`Error al obtener carrito por ID: ${error.message}`);
     res.status(404).json({ message: error.message });
   }
 };
@@ -26,6 +29,7 @@ exports.addProductToCart = async (req, res) => {
     const cart_id = req.params.cid;
     const product_id = req.params.pid;
     const updatedCart = await cartService.addProductToCart(cart_id, product_id);
+    req.logger.info(`Producto ${product_id} agregado al carrito ${cart_id}`);
     res.json({ message: updatedCart });
   } catch (error) {
     console.error("Error al agregar el producto:", error);
