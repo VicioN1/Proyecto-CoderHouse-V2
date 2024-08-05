@@ -112,7 +112,7 @@ const mailingController = async (email, purchaseData) => {
 const mailing_Reset_Pass = async (email, code) => {
   try {
     await transport.sendMail({
-      from: `Coder App - recuperación de contraseña <tu-correo@example.com>`, // Cambia 'tu-correo@example.com' por el correo adecuado
+      from: `Coder App - recuperación de contraseña <${email}>`, 
       to: email,
       subject: "Código de recuperación de tu contraseña",
       html: `

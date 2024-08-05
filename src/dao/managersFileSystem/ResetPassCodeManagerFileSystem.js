@@ -8,7 +8,7 @@ class ResetPasswordCodeHandler {
             await fs.promises.access(filePath);
         } catch (error) {
             if (error.code === 'ENOENT') {
-                await this._writeFile([]); // Crea el archivo si no existe
+                await this._writeFile([]);
             } else {
                 throw error;
             }

@@ -25,9 +25,8 @@ class ResetPasswordCodeHandler {
 
     async saveCode(email, code) {
         try {
-            // Asegúrate de que el código es una cadena
             if (typeof code !== 'string') {
-                code = await code; // Resolver la promesa si es una
+                code = await code;
             }
 
             const newCode = await resetPasswordCodeModel.create({ email, code });

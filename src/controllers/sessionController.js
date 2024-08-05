@@ -194,42 +194,6 @@ exports.resetPassword = async (req, res) => {
 };
 
 exports.newPassword = async function (req, res) {
-  // req.logger.info("Reiniciando la contraseña");
-  // try {
-  //   const { code, password } = req.body;
-  //   const resetCode = await ResetPassCodeService.getCode(code);
-
-  //   if (!resetCode) {
-  //     req.logger.warn("Código de recuperación inválido");
-  //     return res
-  //       .status(400)
-  //       .json({ status: "error", message: "Código de recuperación inválido" });
-  //   }
-
-  //   const passwordHash = createHash(password);
-  //   const updates = { password: passwordHash };
-  //   const updatedUser = await userService.updateUserByEmail(
-  //     resetCode.email,
-  //     updates
-  //   );
-
-  //   if (!updatedUser) {
-  //     req.logger.error("Error al actualizar la contraseña del usuario");
-  //     return res.status(500).json({
-  //       status: "error",
-  //       message: "Error al actualizar la contraseña del usuario",
-  //     });
-  //   }
-
-  //   req.logger.info("Contraseña actualizada con éxito");
-  //   res.json({
-  //     status: "success",
-  //     message: "Contraseña actualizada con éxito",
-  //   });
-  // } catch (error) {
-  //   req.logger.error(`Error al reiniciar la contraseña: ${error}`);
-  //   res.status(500).json({ status: "error", message: "Error del servidor" });
-  // }
   req.logger.info("Reiniciando la contraseña");
   try {
     const { code, password } = req.body;

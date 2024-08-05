@@ -102,7 +102,6 @@ class UserServiceFS {
         throw new Error('Usuario no encontrado');
       }
 
-      // Actualiza solo el campo de la contraseña si se proporciona
       if (updates) {
         const salt = await bcrypt.genSalt(10);
         Hashpass = await bcrypt.hash(String(updates), salt);
