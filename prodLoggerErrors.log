@@ -1,0 +1,11 @@
+info: Restableciendo contraseña para el usuario: fercba5678@gmail.com
+error: crypto.randomBytes is not a function
+info: Restableciendo contraseña para el usuario: fercba5678@gmail.com
+info: Código generado: [object Promise]
+error: The "path" argument must be of type string or an instance of Buffer or URL. Received undefined
+info: Restableciendo contraseña para el usuario: fercba5678@gmail.com
+info: Código generado: [object Promise]
+error: The "path" argument must be of type string or an instance of Buffer or URL. Received undefined
+info: Restableciendo contraseña para el usuario: fercba5678@gmail.com
+info: Código generado: [object Promise]
+info: Código guardado: [object Object]

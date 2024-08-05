@@ -14,4 +14,10 @@ router.get('/githubcallback', sessionController.githubCallback);
 
 router.get('/current', isAuthenticated, sessionController.getCurrentUser);
 
+
+router.post('/resetpassword', sessionController.resetPassword);
+
+router.put('/newpassword', sessionController.newPassword);
+
+
 module.exports = router;

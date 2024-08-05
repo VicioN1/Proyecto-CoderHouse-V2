@@ -91,6 +91,35 @@ class UserServiceFS {
       return null;
     }
   }
+
+  async updateUserByEmail(email, updates) {
+    try {
+      let Hashpass
+      const users = await this.readUsers();
+      const userIndex = users.find(user => user.email === email);
+
+      if (!userIndex ) {
+        throw new Error('Usuario no encontrado');
+      }
+
+      // Actualiza solo el campo de la contraseña si se proporciona
+      if (updates) {
+        const salt = await bcrypt.genSalt(10);
+        Hashpass = await bcrypt.hash(String(updates), salt);
+      }
+
+      if (userIndex) {
+        userIndex.password = Hashpass;
+      } 
+
+      await this.writeUsers(users);
+      return userIndex;
+    } catch (error) {
+      console.error("Error al actualizar Usuario:", error);
+      return null;
+    }
+  }
+  
 }
 
 module.exports = UserServiceFS;

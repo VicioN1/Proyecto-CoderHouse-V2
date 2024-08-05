@@ -1,0 +1,51 @@
+[
+  {
+    "_id": 1,
+    "email": "fercba5678@gmail.com",
+    "code": {},
+    "createdAt": "2024-08-05T14:26:37.939Z",
+    "expiresAt": "2024-08-05T15:26:37.939Z"
+  },
+  {
+    "_id": 2,
+    "email": "fercba5678@gmail.com",
+    "code": {},
+    "createdAt": "2024-08-05T18:06:04.823Z",
+    "expiresAt": "2024-08-05T19:06:04.823Z"
+  },
+  {
+    "_id": 3,
+    "email": "fer@fer.com",
+    "code": {},
+    "createdAt": "2024-08-05T18:07:29.794Z",
+    "expiresAt": "2024-08-05T19:07:29.794Z"
+  },
+  {
+    "_id": 4,
+    "email": "fer@fer.com",
+    "code": {},
+    "createdAt": "2024-08-05T18:09:50.518Z",
+    "expiresAt": "2024-08-05T19:09:50.518Z"
+  },
+  {
+    "_id": 5,
+    "email": "fer@fer.com",
+    "code": {},
+    "createdAt": "2024-08-05T18:12:14.512Z",
+    "expiresAt": "2024-08-05T19:12:14.512Z"
+  },
+  {
+    "_id": 6,
+    "email": "fer@fer.com",
+    "code": {},
+    "createdAt": "2024-08-05T18:13:20.423Z",
+    "expiresAt": "2024-08-05T19:13:20.423Z"
+  },
+  {
+    "_id": 7,
+    "email": "fer@fer.com",
+    "code": "55ef3f01",
+    "createdAt": "2024-08-05T18:14:54.774Z",
+    "expiresAt": "2024-08-05T19:14:54.774Z"
+  }
+]

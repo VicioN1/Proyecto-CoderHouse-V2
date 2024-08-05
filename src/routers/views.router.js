@@ -45,11 +45,11 @@ router.get('/purchase/:userId', async (req, res) => {
   }
 });
 
-router.get('/login', isNotAuthenticated, (req, res) => {
+router.get('/login', (req, res) => {
   res.render('login');
 });
 
-router.get('/register', isNotAuthenticated, (req, res) => {
+router.get('/register', (req, res) => {
   res.render('register');
 });
 
@@ -57,4 +57,12 @@ router.get('/profile', isAuthenticated, viewController.getCurrentUser, (req, res
   res.render('profile', { user: req.userDTO });
 });
 
+router.get('/resetpassword', (req, res) => {
+  res.render('resetPassword');
+});
+
+router.get('/newpassword/:code', (req, res) => {
+  const { code } = req.params;
+  res.render('newpassword', { code });
+});
 module.exports = router;

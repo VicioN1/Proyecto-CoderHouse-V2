@@ -1,4 +1,5 @@
 const UserModel = require('../../models/user.model.js');
+const bcrypt = require('bcrypt');
 
 class UserManagerMongo {
   constructor() {
@@ -50,6 +51,23 @@ class UserManagerMongo {
       return null;
     }
   }
+
+  async updateUserByEmail(email, updates) {
+    try {
+      let password
+      if (updates) {
+        const salt = await bcrypt.genSalt(10);
+        password = await bcrypt.hash(updates, salt);
+      }
+
+      const updatedUser = await UserModel.findOneAndUpdate({ email: email }, {password}, { new: true });
+      return updatedUser;
+    } catch (error) {
+      console.error("Error al actualizar Usuario:", error);
+      return null;
+    }
+  }
+
 }
 
 module.exports = UserManagerMongo;

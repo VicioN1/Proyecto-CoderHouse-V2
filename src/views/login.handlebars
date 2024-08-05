@@ -1,12 +1,46 @@
-<h2>Iniciar Sesión</h2>
-<form action="/api/sessions/login" method="POST">
-    <label for="email">Email:</label>
-    <input type="email" name="email" required>
-    <label for="password">Contraseña:</label>
-    <input type="password" name="password" required>
-    <button type="submit">Ingresar</button>
-</form>
-<div>
-    <a href="/api/sessions/github"><button>Entrar con Github</button></a>
-</div>
-<a href="/register">Registrarse</a>
+<style>
+    .container {
+        max-width: 400px;
+        margin-top: 50px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 10px;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">Iniciar Sesión</h2>
+        <form action="/api/sessions/login" method="POST">
+            <div class="form-group">
+                <label for="email"><i class="bi bi-envelope-fill" aria-hidden="true"></i> Email:</label>
+                <input type="email" name="email" id="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password"><i class="bi bi-lock-fill" aria-hidden="true"></i> Contraseña:</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mb-3">Ingresar</button>
+            <a href="/resetpassword" class="d-block text-center mb-3">Olvidé mi contraseña</a>
+        </form>
+        <div class="text-center mb-3">
+            <a href="/api/sessions/github" class="btn btn-dark w-100"><i class="bi bi-github" aria-hidden="true"></i> Entrar con Github</a>
+        </div>
+        <p class="text-center">¿No tienes cuenta? <a href="/register">Registrarse</a></p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
