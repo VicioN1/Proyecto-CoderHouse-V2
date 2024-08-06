@@ -68,10 +68,13 @@ exports.login = async (req, res) => {
       role: user.role,
     };
 
-    if (user.role === "admin") {
-      res.redirect("/realtimeproductsAdmin");
-    } else {
-      res.redirect("/realtimeproductsUser");
+    switch (user.role) {
+      case "user":
+        return res.redirect("/realtimeproductsUser");
+      case "admin":
+        return res.redirect("/realtimeproductsAdmin");
+      case "premium":
+        return res.redirect("/realtimeproductsPremium");
     }
   } catch (err) {
     req.logger.error(`Error al inciar sesión: ${err}`);
@@ -120,10 +123,13 @@ exports.githubCallback = (req, res, next) => {
           role: user.role,
         };
 
-        if (user.role === "admin") {
-          res.redirect("/realtimeproductsAdmin");
-        } else {
-          res.redirect("/realtimeproductsUser");
+        switch (user.role) {
+          case "user":
+            return res.redirect("/realtimeproductsUser");
+          case "admin":
+            return res.redirect("/realtimeproductsAdmin");
+          case "premium":
+            return res.redirect("/realtimeproductsPremium");
         }
       });
     }

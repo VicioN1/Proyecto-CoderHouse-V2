@@ -10,10 +10,13 @@ const isNotAuthenticated = (req, res, next) => {
   if (!req.session.user) {
     return next();
   } else {
-    if (req.session.user.role === 'admin') {
-      return res.redirect('/realtimeproductsAdmin');
-    } else {
-      return res.redirect('/realtimeproductsUser');
+    switch (req.session.user.role) {
+      case "user":
+        return res.redirect('/realtimeproductsUser')
+      case "admin":
+        return res.redirect('/realtimeproductsAdmin')
+      case "premium":
+        return res.redirect('/realtimeproductsPremium')
     }
   }
 };
@@ -37,13 +40,22 @@ const ensureUser = (req, res, next) => {
   if (req.session.user && req.session.user.role !== "admin") {
     return next();
   } else {
-    return res.redirect("/realtimeproductsAdmin");
+    return res.redirect("/realtimeproductsUser");
+  }
+};
+
+const ensurePremium = (req, res, next) => {
+  if (req.session.user && req.session.user.role !== "admin") {
+    return next();
+  } else {
+    return res.redirect("/realtimeproductsPremium");
   }
 };
 
 module.exports = {
   ensureAdmin,
   ensureUser,
+  ensurePremium,
   isAuthenticated,
   isNotAuthenticated,
   isAdmin

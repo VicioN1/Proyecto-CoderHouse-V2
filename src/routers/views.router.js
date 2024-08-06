@@ -3,7 +3,7 @@ const router = express.Router();
 const sessionController = require('../controllers/sessionController.js');
 const viewController = require('../controllers/viewController.js');
 const { productService } = require('../services/repository.js');
-const { isAuthenticated, isNotAuthenticated, ensureAdmin, ensureUser} = require('../middleware/auth');
+const { isAuthenticated, isNotAuthenticated, ensureAdmin, ensureUser, ensurePremium} = require('../middleware/auth');
 
 
 
@@ -22,6 +22,10 @@ router.get('/realtimeproductsUser',isAuthenticated, ensureUser, (req, res) => {
 
 router.get('/realtimeproductsAdmin', isAuthenticated, ensureAdmin, (req, res) => {
   res.render('realtimeproductsAdmin', { user: req.session.user});
+});
+
+router.get('/realtimeproductsPremium', isAuthenticated, ensurePremium, (req, res) => {
+  res.render('realtimeproductsPremium', { user: req.session.user});
 });
 
 router.get("/chat", (req, res) => {

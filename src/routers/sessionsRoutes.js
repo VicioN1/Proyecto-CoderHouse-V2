@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sessionController = require('../controllers/sessionController.js');
-const { isAuthenticated, isAdmin} = require('../middleware/auth');
+const { isAuthenticated } = require('../middleware/auth');
 const { Logger} = require('../utils/logger.js');
 
 router.use(Logger);

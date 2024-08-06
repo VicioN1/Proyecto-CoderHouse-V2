@@ -118,6 +118,25 @@ class UserServiceFS {
       return null;
     }
   }
+  async updateUserById(userID, newRol) {
+    try {
+      const users = await this.readUsers();
+      const userIndex = users.find(user => user.id === userID);
+
+      if (!userIndex ) {
+        throw new Error('Usuario no encontrado');
+      }
+      if (userIndex) {
+        userIndex.role = newRol;
+      } 
+
+      await this.writeUsers(users);
+      return userIndex;
+    } catch (error) {
+      console.error("Error al actualizar Usuario:", error);
+      return null;
+    }
+  }
   
 }
 

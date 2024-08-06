@@ -1,4 +1,4 @@
-const { carts, products, users, chat} = require('../dao/factory.js');
+const {users} = require('../dao/factory.js');
 class UsersRepository {
   constructor() {
     this.dao = users;
@@ -11,8 +11,13 @@ class UsersRepository {
   async getUserById(email) {
     return await this.dao.getUserById(email);
   }
+
   async updateUserByEmail(email, updates) {
     return await this.dao.updateUserByEmail(email, updates);
+  }
+
+  async updateUserById(userID, newRol) {
+    return await this.dao.updateUserById(userID, newRol);
   }
 
   async addUser(first_name, last_name, email, age, password, idcarrito) {

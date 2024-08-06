@@ -5,11 +5,6 @@
   },
   {
     "id": "2",
-    "products": [
-      {
-        "product_id": 4,
-        "quantity": 2
-      }
-    ]
+    "products": []
   }
 ]
