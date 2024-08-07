@@ -67,10 +67,20 @@ class UserServiceFS {
     }
   }
 
-  async getUserById(email) {
+  async getUserByEmail(email) {
     try {
       const users = await this.readUsers();
       return users.find(user => user.email === email);
+    } catch (error) {
+      console.error("Error al consultar Usuario", error);
+      return null;
+    }
+  }
+
+  async getUserById(id) {
+    try {
+      const users = await this.readUsers();
+      return users.find(user => user.id === id);
     } catch (error) {
       console.error("Error al consultar Usuario", error);
       return null;
@@ -118,6 +128,8 @@ class UserServiceFS {
       return null;
     }
   }
+
+  
   async updateUserById(userID, newRol) {
     try {
       const users = await this.readUsers();

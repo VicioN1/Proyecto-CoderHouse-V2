@@ -44,7 +44,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await userService.getUserById(email);
+    const user = await userService.getUserByEmail(email);
     if (!user) {
       req.logger.info(`Usuario no encontrado con email: ${email}`);
       return res.status(404).send("Usuario no encontrado");
@@ -147,7 +147,7 @@ exports.resetPassword = async (req, res) => {
   req.logger.info(`Restableciendo contraseña para el usuario: ${email}`);
 
   try {
-    const user = await userService.getUserById(email);
+    const user = await userService.getUserByEmail(email);
     if (!user) {
       req.logger.warning("El correo electrónico no está registrado");
       return res

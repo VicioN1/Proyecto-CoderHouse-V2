@@ -8,8 +8,12 @@ class UsersRepository {
     return await this.dao.getCartsById(userId);
   }
 
-  async getUserById(email) {
-    return await this.dao.getUserById(email);
+  async getUserByEmail(email) {
+    return await this.dao.getUserByEmail(email);
+  }
+
+  async getUserById(id) {
+    return await this.dao.getUserById(id);
   }
 
   async updateUserByEmail(email, updates) {

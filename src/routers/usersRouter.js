@@ -7,6 +7,6 @@ const router = Router();
 
 router.use(Logger);
 
-router.get('/premium/:uid', isAuthenticated, premiumController);
+router.put('/premium/:uid', isAuthenticated, premiumController);
 
 module.exports = router;

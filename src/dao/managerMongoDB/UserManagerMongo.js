@@ -28,9 +28,19 @@ class UserManagerMongo {
     }
   }
 
-  async getUserById(email) {
+  async getUserByEmail(email) {
     try {
       const user = await UserModel.findOne({ email });
+      return user;
+    } catch (error) {
+      console.error("Error al consultar Usuario", error);
+      return null;
+    }
+  }
+
+  async getUserById(id) {
+    try {
+      const user = await UserModel.findOne({ id });
       return user;
     } catch (error) {
       console.error("Error al consultar Usuario", error);
