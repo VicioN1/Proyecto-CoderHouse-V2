@@ -21,6 +21,9 @@ const { handleSocketConnection } = require("./SocketService.js");
 const connectDB = require('./config/dbConfig.js');
 const initializePassport = require('./config/passport.config.js');
 
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUiExpress = require('swagger-ui-express');
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -50,6 +53,20 @@ const httpServer = app.listen(
   config.PORT || 8080,
   () => console.log(`Server running on port ${config.PORT || 8080}`)
 );
+
+const swaggerOptions = {
+  definition: {
+      openapi: '3.0.1',
+      info: {
+          title: 'Documentacion',
+          description: 'API pensada para Ecommers'
+      }
+  },
+  apis: [path.join(__dirname, 'docs/**/*.yaml')],
+}
+
+const specs = swaggerJsdoc(swaggerOptions);
+app.use('/api/docs',swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 
 const socketServer = new Server(httpServer);

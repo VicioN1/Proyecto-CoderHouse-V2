@@ -1,0 +1,317 @@
+paths:
+  /api/carts:
+    post:
+      summary: Crear un nuevo carrito
+      description: Crea un nuevo carrito de compras.
+      tags:
+        - Carritos
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Carrito creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Carrito creado exitosamente"
+        '404':
+          description: Error al crear el carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error al agregar producto al carrito"
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtener un carrito por ID
+      description: Devuelve los productos dentro del carrito especificado.
+      tags:
+        - Carritos
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      responses:
+        '200':
+          description: Productos obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      type: object
+                    example: []
+        '404':
+          description: Carrito no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Carrito no encontrado"
+
+    put:
+      summary: Actualizar un carrito
+      description: Actualiza los productos dentro del carrito especificado.
+      tags:
+        - Carritos
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        '200':
+          description: Carrito actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Carrito actualizado"
+        '500':
+          description: Error al actualizar el carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error al actualizar el carrito"
+
+    delete:
+      summary: Eliminar todos los productos de un carrito
+      description: Elimina todos los productos dentro del carrito especificado.
+      tags:
+        - Carritos
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Todos los productos eliminados exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Todos los productos eliminados"
+        '500':
+          description: Error al eliminar productos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error al eliminar productos"
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agregar un producto al carrito
+      description: Añade un producto específico al carrito.
+      tags:
+        - Carritos
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      responses:
+        '200':
+          description: Producto agregado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Producto agregado al carrito"
+        '500':
+          description: Error al agregar el producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error al agregar el producto"
+
+    delete:
+      summary: Eliminar un producto del carrito
+      description: Elimina un producto específico del carrito.
+      tags:
+        - Carritos
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      responses:
+        '200':
+          description: Producto eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Producto eliminado del carrito"
+        '500':
+          description: Error al eliminar el producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error al eliminar el producto"
+
+    put:
+      summary: Actualizar la cantidad de un producto en el carrito
+      description: Actualiza la cantidad de un producto específico dentro del carrito.
+      tags:
+        - Carritos
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: Cantidad actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cantidad actualizada"
+        '500':
+          description: Error al actualizar la cantidad
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error al actualizar la cantidad"
+
+  /api/carts/{cid}/purchase:
+    get:
+      summary: Realizar una compra
+      description: Procesa la compra de todos los productos en el carrito especificado.
+      tags:
+        - Carritos
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      responses:
+        '200':
+          description: Compra realizada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Compra realizada exitosamente"
+        '400':
+          description: Error al procesar la compra
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error al procesar la compra"

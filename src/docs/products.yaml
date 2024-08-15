@@ -1,0 +1,202 @@
+paths:
+  /api/products/:
+    get:
+      tags:
+        - Products
+      summary: Obtener lista de productos
+      description: Retorna una lista de productos, con opciones de paginación, filtrado y ordenamiento.
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Número de productos a retornar por página.
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Página a retornar.
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: Ordenar los resultados por un campo específico.
+        - in: query
+          name: query
+          schema:
+            type: string
+          description: Filtrar productos por un criterio específico.
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: Filtrar productos por estado (disponible/no disponible).
+      responses:
+        200:
+          description: Lista de productos obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      type: object
+                  totalPages:
+                    type: integer
+                  prevPage:
+                    type: integer
+                    nullable: true
+                  nextPage:
+                    type: integer
+                    nullable: true
+                  page:
+                    type: integer
+                  hasPrevPage:
+                    type: boolean
+                  hasNextPage:
+                    type: boolean
+                  prevLink:
+                    type: string
+                    nullable: true
+                  nextLink:
+                    type: string
+                    nullable: true
+        404:
+          description: No se encontraron productos.
+    post:
+      tags:
+        - Products
+      summary: Agregar un nuevo producto
+      description: Añade un nuevo producto al sistema. Requiere autenticación como administrador.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Objeto que contiene los datos del producto a crear.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                code:
+                  type: string
+                price:
+                  type: number
+                stock:
+                  type: integer
+                category:
+                  type: string
+                thumbnails:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - title
+                - description
+                - code
+                - price
+                - stock
+                - category
+      responses:
+        200:
+          description: Producto creado exitosamente.
+        500:
+          description: Error interno del servidor.
+
+  /api/products/{pid}:
+    get:
+      tags:
+        - Products
+      summary: Obtener un producto por ID
+      description: Retorna un producto específico basado en su ID.
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: integer
+          required: true
+          description: ID del producto.
+      responses:
+        200:
+          description: Producto obtenido exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product:
+                    type: object
+        404:
+          description: Producto no encontrado.
+    put:
+      tags:
+        - Products
+      summary: Actualizar un producto
+      description: Actualiza un producto existente. Requiere autenticación como administrador.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: integer
+          required: true
+          description: ID del producto.
+      requestBody:
+        description: Objeto con los nuevos datos del producto.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                code:
+                  type: string
+                price:
+                  type: number
+                status:
+                  type: string
+                stock:
+                  type: integer
+                category:
+                  type: string
+                thumbnails:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        200:
+          description: Producto actualizado exitosamente.
+        500:
+          description: Error interno del servidor.
+    delete:
+      tags:
+        - Products
+      summary: Eliminar un producto
+      description: Elimina un producto existente del sistema. Requiere autenticación como administrador.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: integer
+          required: true
+          description: ID del producto.
+      responses:
+        200:
+          description: Producto eliminado exitosamente.
+        404:
+          description: Producto no encontrado.
