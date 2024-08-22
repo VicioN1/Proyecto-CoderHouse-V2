@@ -9,3 +9,6 @@ error: The "path" argument must be of type string or an instance of Buffer or UR
 info: Restableciendo contraseña para el usuario: fercba5678@gmail.com
 info: Código generado: [object Promise]
 info: Código guardado: [object Object]
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Usuario no encontrado con email: test@example.com

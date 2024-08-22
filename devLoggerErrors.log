@@ -302,3 +302,141 @@ info: Manejando lógica de usuarios premium para el usuario con ID: 2
 info: Usuario actualizado a rol: premium
 info: Manejando lógica de usuarios premium para el usuario con ID: 2
 info: Usuario actualizado a rol: user
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+error: Error al obtener carrito por ID: Error al consultar Carrito: Carrito no encontrado
+error: Error al obtener carrito por ID: Error al consultar Carrito: Carrito no encontrado
+error: Error al obtener carrito por ID: Error al consultar Carrito: Carrito no encontrado
+error: Error al obtener carrito por ID: Error al consultar Carrito: Carrito no encontrado
+info: Productos obtenidos del carrito 1
+error: Error al obtener carrito por ID: Error al consultar Carrito: Carrito no encontrado
+info: Productos obtenidos del carrito 1
+error: Error al obtener carrito por ID: Error al consultar Carrito: Carrito no encontrado
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+error: Error al agregar el producto al carrito: ID de carrito no encontrado
+info: Producto 9 eliminado del carrito 1
+error: Error al eliminar el producto del carrito: ID de carrito no encontrado
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto no encontrado con ID: 99999
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto no encontrado con ID: 99999
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto no encontrado con ID: 99999
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto no encontrado con ID: 99999
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto no encontrado con ID: 99999
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 
+info: Productos obtenidos del carrito 1
+info: Carrito con ID carrito_inexistente no encontrado
+info: Producto 9 agregado al carrito 1
+info: No se pudo agregar el producto product_id_inexistente al carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto 9 eliminado del carrito 1
+info: No se pudo eliminar el producto product_id_inexistente del carrito carrito_inexistente. Carrito o producto no encontrado.
+info: Producto no encontrado con ID: 99999
+info: Usuario no encontrado con email: noexiste@example.com
+info: Contraseña incorrecta Usuario email: fer@fer.com 

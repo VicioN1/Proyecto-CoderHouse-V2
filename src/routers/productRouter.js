@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController.js');
 const {  isAdmin} = require('../middleware/auth');
+const { Logger} = require('../utils/logger.js');
+
+router.use(Logger);
 
 router.get('/', productController.getProducts);
 router.get('/:pid', productController.getProductById);

@@ -67,7 +67,7 @@ class CartManagerFileSystem {
       const cart = carts.find(cart => cart.id === cartsId);
   
       if (!cart) {
-        throw new Error("Carrito no encontrado");
+        return null
       }
 
       const updatedProducts = await Promise.all(
@@ -94,7 +94,7 @@ class CartManagerFileSystem {
       const cart = carts.find(cart => cart.id === cartsId);
   
       if (!cart) {
-        throw new Error("Carrito no encontrado");
+        return null
       }
 
       const updatedProducts = await Promise.all(
@@ -136,7 +136,7 @@ class CartManagerFileSystem {
       const cart = carts.find(cart => cart.id === cartsId);
       
       if (!cart) {
-        throw new Error("ID de carrito no encontrado");
+        return null
       }
   
       const productInCart = cart.products.find(item => item.product_id === productsID);
@@ -167,7 +167,7 @@ class CartManagerFileSystem {
       const cart = carts.find(cart => cart.id === cartsId);
   
       if (!cart) {
-        throw new Error("ID de carrito no encontrado");
+        return null
       }
   
       cart.products = cart.products.filter(item => item.product_id !== productsID);

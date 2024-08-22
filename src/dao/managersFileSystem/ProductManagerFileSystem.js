@@ -68,7 +68,7 @@ class ProductManagerFileSystem {
       const products = await this._readFile();
       const product = products.find(product => product.idProduct === productId);
       if (!product) {
-        return "Not found";
+        return null;
       }
       return product;
     } catch (error) {

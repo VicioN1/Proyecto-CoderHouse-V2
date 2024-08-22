@@ -3,8 +3,8 @@ const { mailingController } = require('../utils/nodemailer.js');
 
 exports.addCart = async (req, res) => {
   try {
-    const message = await cartService.addCarts();
-    res.json({ message });
+    const cart = await cartService.addCarts();
+    res.status(200).json({ payload: cart });
   } catch (error) {
     req.logger.error(`Error al agregar producto al carrito: ${error.message}`);
     res.status(404).json({ message: error.message });
@@ -15,37 +15,52 @@ exports.getCartById = async (req, res) => {
   const cart_id = req.params.cid;
   try {
     const cart = await cartService.getCartById(cart_id);
-    const products = cart ? cart.products : "Not found";
+    
+    if (!cart) {
+      req.logger.info(`Carrito con ID ${cart_id} no encontrado`);
+      return res.status(404).json({ message: "Carrito no encontrado" });
+    }
+
+    const products = cart.products || [];
     req.logger.info(`Productos obtenidos del carrito ${cart_id}`);
     res.json({ products });
   } catch (error) {
     req.logger.error(`Error al obtener carrito por ID: ${error.message}`);
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: "Error al obtener el carrito" });
   }
 };
 
 exports.addProductToCart = async (req, res) => {
+  const cart_id = req.params.cid;
+  const product_id = req.params.pid;
   try {
-    const cart_id = req.params.cid;
-    const product_id = req.params.pid;
     const updatedCart = await cartService.addProductToCart(cart_id, product_id);
+    if (!updatedCart) {
+      req.logger.info(`No se pudo agregar el producto ${product_id} al carrito ${cart_id}. Carrito o producto no encontrado.`);
+      return res.status(404).json({ message: "Carrito o producto no encontrado" });
+    }
     req.logger.info(`Producto ${product_id} agregado al carrito ${cart_id}`);
     res.json({ message: updatedCart });
   } catch (error) {
-    console.error("Error al agregar el producto:", error);
+    req.logger.error(`Error al agregar el producto al carrito: ${error.message}`);
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
 exports.deleteProductFromCart = async (req, res) => {
+  const cart_id = req.params.cid;
+  const product_id = req.params.pid;
   try {
-    const result = await cartService.deleteProductFromCart(
-      req.params.cid,
-      req.params.pid
-    );
+    const result = await cartService.deleteProductFromCart(cart_id, product_id);
+    if (!result) {
+      req.logger.info(`No se pudo eliminar el producto ${product_id} del carrito ${cart_id}. Carrito o producto no encontrado.`);
+      return res.status(404).json({ message: "Carrito o producto no encontrado" });
+    }
+    req.logger.info(`Producto ${product_id} eliminado del carrito ${cart_id}`);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    req.logger.error(`Error al eliminar el producto del carrito: ${error.message}`);
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 

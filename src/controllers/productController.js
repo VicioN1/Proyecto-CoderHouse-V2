@@ -7,6 +7,11 @@ exports.getProducts = async (req, res) => {
   try {
     const { limit, page, sort, query, status } = req.query;
 
+    const validSortOptions = ['asc', 'desc'];
+    if (!validSortOptions.includes(sort)) {
+      return res.status(400).json({ message: "Parámetro 'sort' inválido. Debe ser 'asc' o 'desc'." });
+    }
+
     const producto = await productService.getProductsQuery(limit, page, sort, query, status);
 
     const miurl = `http://localhost:8080/api/products`;
@@ -29,7 +34,7 @@ exports.getProducts = async (req, res) => {
     });
   } catch (error) {
     console.error('Error al obtener los productos', error);
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: 'Error al obtener los productos' });
   }
 };
 
@@ -38,10 +43,14 @@ exports.getProductById = async (req, res) => {
 
   try {
     const product = await productService.getProductById(product_id);
+    if (!product) {
+      req.logger.info(`Producto no encontrado con ID: ${product_id}`);
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
     res.json({ product });
   } catch (error) {
-    console.error('Error al obtener el producto por ID', error);
-    res.status(404).json({ message: error.message });
+    req.logger.error('Error al obtener el producto por ID:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
 
