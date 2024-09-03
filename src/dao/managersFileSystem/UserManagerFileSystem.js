@@ -130,7 +130,7 @@ class UserServiceFS {
   }
 
   
-  async updateUserById(userID, newRol) {
+  async updateRolUserById(userID, newRol) {
     try {
       const users = await this.readUsers();
       const userIndex = users.find(user => user.id === userID);

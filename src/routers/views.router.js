@@ -65,6 +65,11 @@ router.get('/resetpassword', (req, res) => {
   res.render('resetPassword');
 });
 
+router.get('/documentacion/:userId', (req, res) => {
+  const userId = req.params.userId;
+  res.render('documents',  { userId });
+});
+
 router.get('/newpassword/:code', (req, res) => {
   const { code } = req.params;
   res.render('newpassword', { code });

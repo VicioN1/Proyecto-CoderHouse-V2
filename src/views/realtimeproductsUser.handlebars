@@ -128,13 +128,20 @@
           method: 'PUT'
         });
 
+        const result = await response.json();
+
         if (response.ok) {
+          if (result.needsDocumentation) {
+            window.location.href = `/documentacion?uid=${userId}`;
+            return;
+          }
+
           modal.style.display = "block";
           setTimeout(() => {
             document.querySelector('form[action="/api/sessions/logout"]').submit();
-          }, 3000); 
+          }, 3000);
         } else {
-          messageElement.innerText = 'Error al cambiar a UserPremium.';
+          messageElement.innerText = result.message || 'Error al cambiar a UserPremium.';
         }
       } catch (error) {
         messageElement.innerText = 'Error al cambiar a UserPremium.';

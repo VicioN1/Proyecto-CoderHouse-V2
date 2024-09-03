@@ -20,8 +20,8 @@ class UsersRepository {
     return await this.dao.updateUserByEmail(email, updates);
   }
 
-  async updateUserById(userID, newRol) {
-    return await this.dao.updateUserById(userID, newRol);
+  async updateRolUserById(userID, newRol) {
+    return await this.dao.updateRolUserById(userID, newRol);
   }
 
   async addUser(first_name, last_name, email, age, password, idcarrito) {

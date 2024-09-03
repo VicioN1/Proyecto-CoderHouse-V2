@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar Documentación</title>
+    <link rel="stylesheet" href="/css/styles.css"> 
+</head>
+<body>
+    <h1>Cargar Documentación Requerida</h1>
+
+    <form id="uploadForm" action="/api/users/{{uid}}/documents" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="identificacion">Identificación:</label>
+            <input type="file" name="documents" id="identificacion" required>
+        </div>
+        <div>
+            <label for="comprobanteDomicilio">Comprobante de Domicilio:</label>
+            <input type="file" name="documents" id="comprobanteDomicilio" required>
+        </div>
+        <div>
+            <label for="comprobanteCuenta">Comprobante de Estado de Cuenta:</label>
+            <input type="file" name="documents" id="comprobanteCuenta" required>
+        </div>
+        <button type="submit">Subir Documentos</button>
+    </form>
+
+    <div id="message" class="hidden"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('message').textContent = 'Documentación subida exitosamente.';
+                    document.getElementById('message').classList.remove('hidden');
+                    document.getElementById('message').classList.add('success');
+                } else {
+                    document.getElementById('message').textContent = `Error: ${result.message || 'Hubo un problema al subir la documentación.'}`;
+                    document.getElementById('message').classList.remove('hidden');
+                    document.getElementById('message').classList.add('error');
+                }
+            } catch (error) {
+                document.getElementById('message').textContent = 'Error: No se pudo conectar con el servidor.';
+                document.getElementById('message').classList.remove('hidden');
+                document.getElementById('message').classList.add('error');
+            }
+        });
+    </script>
+</body>
+</html>

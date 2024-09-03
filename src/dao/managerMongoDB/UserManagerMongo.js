@@ -78,6 +78,24 @@ class UserManagerMongo {
     }
   }
 
+  async updateRolUserById(userID, newRol) {
+    try {
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        userID,
+        { role: newRol },
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedUser) {
+        throw new Error("Usuario no encontrado");
+      }
+  
+      return updatedUser;
+    } catch (error) {
+      console.error("Error al actualizar Usuario:", error);
+      return null;
+    }
+  }
 }
 
 module.exports = UserManagerMongo;

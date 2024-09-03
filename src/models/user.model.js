@@ -9,6 +9,17 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     age: { type: Number, required: true },
     password: { type: String, required: true },
+    documents: [
+        {
+          name: String,
+          reference: String,
+        },
+      ],
+    hasUploadedDocuments: { type: Boolean, default: false },
+    last_connection: {
+        type: Date,
+        default: Date.now
+    },
     carts: [{
         cart_id: String,
         cart: {
