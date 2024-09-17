@@ -46,26 +46,31 @@ exports.uploadDocuments = async (req, res) => {
   try {
     const user = await userService.getUserById(req.params.uid);
     if (!user) {
-      return res.status(404).send('User not found');
+      return res.status(404).send('Usuario no encontrado');
     }
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).send({ status: 'error', error: 'No se puede guardar el archivo' });
     }
+    
 
-    req.files.forEach(doc => {
-      user.documents.push({
-        name: doc.originalname,
-        reference: doc.path
-      });
-    });
+    const documents = req.files.map(doc =>console.log(doc) ({
+      name: doc.originalname,
+      reference: doc.path
+    }));
 
-    user.hasUploadedDocuments = true; 
-    await userService.updateUserById(req.params.uid, user);
+    const updates = {
+      documents: [...user.documents, ...documents],
+      hasUploadedDocuments: true
+    };
 
-    res.status(200).send({ status: 'success', message: 'Documentos subidos y usuario actualizado', user });
+    const updatedUser = await userService.updateUserById(req.params.uid, updates);
+
+    res.status(200).send({ status: 'success', message: 'Documentos subidos y usuario actualizado', user: updatedUser });
   } catch (error) {
     console.error('Error al subir documentos:', error);
     res.status(500).send('Error al subir documentos');
   }
 };
+
+

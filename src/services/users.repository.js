@@ -16,6 +16,10 @@ class UsersRepository {
     return await this.dao.getUserById(id);
   }
 
+  async updateUserById(userId, updates) {
+    return await this.dao.updateUserById(userId, updates);
+  }
+
   async updateUserByEmail(email, updates) {
     return await this.dao.updateUserByEmail(email, updates);
   }

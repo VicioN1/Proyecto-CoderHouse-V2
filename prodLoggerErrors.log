@@ -12,3 +12,41 @@ info: Código guardado: [object Object]
 info: Contraseña incorrecta Usuario email: fer@fer.com 
 info: Contraseña incorrecta Usuario email: fer@fer.com 
 info: Usuario no encontrado con email: test@example.com
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com 
+info: Manejando lógica de usuarios premium para el usuario con ID: 2
+error: Error al intentar cambiar rol usuario Cannot read properties of undefined (reading 'map') {"stack":"TypeError: Cannot read properties of undefined (reading 'map')\n    at exports.premiumController (C:\\Users\\Fernando\\Desktop\\Clases Codehouse\\Ecommerse con Capas\\src\\controllers\\usersController.js:15:42)"}
+info: Manejando lógica de usuarios premium para el usuario con ID: 2
+error: Error al intentar cambiar rol usuario Cannot read properties of undefined (reading 'map') {"stack":"TypeError: Cannot read properties of undefined (reading 'map')\n    at exports.premiumController (C:\\Users\\Fernando\\Desktop\\Clases Codehouse\\Ecommerse con Capas\\src\\controllers\\usersController.js:15:42)"}
+info: Manejando lógica de usuarios premium para el usuario con ID: 2
+error: Error al intentar cambiar rol usuario Cannot read properties of undefined (reading 'map') {"stack":"TypeError: Cannot read properties of undefined (reading 'map')\n    at exports.premiumController (C:\\Users\\Fernando\\Desktop\\Clases Codehouse\\Ecommerse con Capas\\src\\controllers\\usersController.js:15:42)"}
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3
+info: Manejando lógica de usuarios premium para el usuario con ID: 3

@@ -80,6 +80,7 @@
     <p>Edad: {{user.age}}</p>
     <p>Rol: {{user.role}}</p>
     <p>Cart: {{user.cart}}</p>
+    <div id="message"></div>
     <form action="/api/sessions/logout" method="POST">
         <button type="submit">Cerrar Sesión</button>
     </form>
@@ -129,17 +130,14 @@
         });
 
         const result = await response.json();
-
-        if (response.ok) {
+        console.log("entre 0")
+        if (response.json) {
+          console.log("entre 1")
           if (result.needsDocumentation) {
-            window.location.href = `/documentacion?uid=${userId}`;
+            console.log("entre 2")
+            window.location.href = `/documentacion/${userId}`;
             return;
           }
-
-          modal.style.display = "block";
-          setTimeout(() => {
-            document.querySelector('form[action="/api/sessions/logout"]').submit();
-          }, 3000);
         } else {
           messageElement.innerText = result.message || 'Error al cambiar a UserPremium.';
         }

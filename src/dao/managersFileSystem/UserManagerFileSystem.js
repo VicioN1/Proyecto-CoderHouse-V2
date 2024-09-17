@@ -54,7 +54,9 @@ class UserServiceFS {
           cart_id: idcarrito.id,
           cart: idcarrito.id
         }],
-        role: 'user'
+        role: 'user',
+        documents: [], 
+        hasUploadedDocuments: false 
       };
 
       users.push(newUser);
@@ -147,6 +149,25 @@ class UserServiceFS {
     } catch (error) {
       console.error("Error al actualizar Usuario:", error);
       return null;
+    }
+  }
+
+  async updateUserById(userId, updates) {
+    try {
+      const users = await this.readUsers(); 
+      const userIndex = users.findIndex(user => user.id === userId); 
+
+      if (userIndex === -1) {
+        throw new Error('Usuario no encontrado'); 
+      }
+
+      users[userIndex] = { ...users[userIndex], ...updates };
+
+      await this.writeUsers(users); 
+      return users[userIndex]; 
+    } catch (error) {
+      console.error("Error al actualizar Usuario:", error);
+      throw error;
     }
   }
   

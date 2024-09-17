@@ -28,5 +28,41 @@
       }
     ],
     "role": "user"
+  },
+  {
+    "id": "3",
+    "first_name": "fer3",
+    "last_name": "fer3",
+    "email": "fer3@fer.com",
+    "age": "12",
+    "password": "$2b$10$TM2VfJcVvW2lmjim4aa5ROzG0jhIv1LQo8hQeNA4gOuA1oQ0lT79m",
+    "carts": [
+      {
+        "cart_id": "3",
+        "cart": "3"
+      }
+    ],
+    "role": "user",
+    "documents": [
+      {
+        "reference": "uploads\\documents\\1725567092216.zip"
+      },
+      {
+        "reference": "uploads\\documents\\1725567092217.zip"
+      },
+      {
+        "reference": "uploads\\documents\\1725567092217.zip"
+      },
+      {
+        "reference": "uploads\\documents\\1725567234565.zip"
+      },
+      {
+        "reference": "uploads\\documents\\1725567234566.zip"
+      },
+      {
+        "reference": "uploads\\documents\\1725567234566.zip"
+      }
+    ],
+    "hasUploadedDocuments": true
   }
 ]

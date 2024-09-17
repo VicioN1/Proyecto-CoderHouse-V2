@@ -96,6 +96,27 @@ class UserManagerMongo {
       return null;
     }
   }
+
+  async updateUserById(id, updates) {
+    try {
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        id,
+        updates,
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedUser) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      return updatedUser;
+    } catch (error) {
+      console.error("Error al actualizar Usuario:", error);
+      return null;
+    }
+  }
+
+  
 }
 
 module.exports = UserManagerMongo;

@@ -1,61 +1,71 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cargar Documentación</title>
-    <link rel="stylesheet" href="/css/styles.css"> 
-</head>
-<body>
-    <h1>Cargar Documentación Requerida</h1>
+<h1>Cargar Documentación Requerida</h1>
 
-    <form id="uploadForm" action="/api/users/{{uid}}/documents" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="identificacion">Identificación:</label>
-            <input type="file" name="documents" id="identificacion" required>
-        </div>
-        <div>
-            <label for="comprobanteDomicilio">Comprobante de Domicilio:</label>
-            <input type="file" name="documents" id="comprobanteDomicilio" required>
-        </div>
-        <div>
-            <label for="comprobanteCuenta">Comprobante de Estado de Cuenta:</label>
-            <input type="file" name="documents" id="comprobanteCuenta" required>
-        </div>
-        <button type="submit">Subir Documentos</button>
-    </form>
+<form id="uploadForm" enctype="multipart/form-data">
+    <div>
+        <label for="identificacion">Identificación:</label>
+        <input type="file" name="documents" id="identificacion" required>
+    </div>
+    <div>
+        <label for="comprobanteDomicilio">Comprobante de Domicilio:</label>
+        <input type="file" name="documents" id="comprobanteDomicilio" required>
+    </div>
+    <div>
+        <label for="comprobanteCuenta">Comprobante de Estado de Cuenta:</label>
+        <input type="file" name="documents" id="comprobanteCuenta" required>
+    </div>
+    <button type="submit">Subir Documentos</button>
+</form>
 
-    <div id="message" class="hidden"></div>
+<div id="message" class="hidden"></div>
 
-    <script>
-        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
+<script>
+    let userId = "{{userId}}";
+    document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    console.log(formData)
 
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData
+    try {
+        const response = await fetch(`/api/user/${userId}/documents`, {
+            method: 'POST',
+            body: formData
+        });
+
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            const result = await response.json();
+
+            if (response.ok) {
+                document.getElementById('message').textContent = 'Documentación subida exitosamente.';
+                document.getElementById('message').classList.remove('hidden');
+                document.getElementById('message').classList.add('success');
+
+                const response = await fetch(`/api/user/premium/${userId}`, {
+                    method: 'PUT'
                 });
-
-                const result = await response.json();
-                
-                if (response.ok) {
-                    document.getElementById('message').textContent = 'Documentación subida exitosamente.';
-                    document.getElementById('message').classList.remove('hidden');
-                    document.getElementById('message').classList.add('success');
-                } else {
-                    document.getElementById('message').textContent = `Error: ${result.message || 'Hubo un problema al subir la documentación.'}`;
-                    document.getElementById('message').classList.remove('hidden');
-                    document.getElementById('message').classList.add('error');
-                }
-            } catch (error) {
-                document.getElementById('message').textContent = 'Error: No se pudo conectar con el servidor.';
+                modal.style.display = "block";
+                setTimeout(() => {
+                    document.querySelector('action="/api/sessions/logout"').submit();
+                }, 3000);
+            } else {
+                document.getElementById('message').textContent = `Error: ${result.message || 'Hubo un problema al subir la documentación.'}`;
                 document.getElementById('message').classList.remove('hidden');
                 document.getElementById('message').classList.add('error');
             }
-        });
-    </script>
-</body>
-</html>
+        } else {
+            // Muestra el error si la respuesta no es JSON
+            const errorMessage = await response.text();
+            document.getElementById('message').textContent = `Error: ${errorMessage}`;
+            document.getElementById('message').classList.remove('hidden');
+            document.getElementById('message').classList.add('error');
+        }
+    } catch (error) {
+        document.getElementById('message').textContent = `Error: ${error.message}`;
+        document.getElementById('message').classList.remove('hidden');
+        document.getElementById('message').classList.add('error');
+    }
+});
+
+</script>
+
