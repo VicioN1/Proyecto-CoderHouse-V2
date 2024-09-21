@@ -1,4 +1,4 @@
- <style>
+ {{!-- <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
@@ -100,4 +100,179 @@
         });
     });
 
-    </script>
+    </script> --}}
+    <!--=============== HEADER ===============-->
+    <header class="header">
+
+  <nav class="nav container">
+    <a href="#" id="realtimeproductsUser" class="nav__logo">
+      <img
+        class="nav__logo-img"
+        src="assets/img/logo.svg"
+        alt="logo del sitio web"
+      />
+    </a>
+    <div class="nav__menu" id="nav-menu">
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a href="#" id="realtimeproductsUser" class="nav__link">Inicio</a>
+        </li>
+        <li class="nav__item">
+          <a href="shop.html" class="nav__link">Tienda</a>
+        </li>
+        <li class="nav__item">
+          <a href="accounts.html" class="nav__link">Mi Cuenta</a>
+        </li>
+      </ul>
+      <div class="header__search">
+        <input
+          type="text"
+          placeholder="Buscar productos..."
+          class="form__input"
+        />
+        <button class="search__btn">
+          <img src="assets/img/search.png" alt="icono de búsqueda" />
+        </button>
+      </div>
+    </div>
+    <div class="header__user-actions">
+      <a href="wishlist.html" class="header__action-btn" title="Lista de deseos">
+        <img src="assets/img/icon-heart.svg" alt="lista de deseos" />
+        <span class="count"></span>
+      </a>
+      <a href="cart.html" class="header__action-btn" title="Carrito">
+        <img src="assets/img/icon-cart.svg" alt="carrito" />
+        <span class="count"></span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!--=============== MAIN ===============-->
+<main class="main">
+  <!--=============== BREADCRUMB ===============-->
+  <section class="breadcrumb">
+    <ul class="breadcrumb__list flex container">
+      <li><a href="index.html" class="breadcrumb__link">Inicio</a></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Tienda</span></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Pagar</span></li>
+    </ul>
+  </section>
+
+  <!--=============== CHECKOUT ===============-->
+  <section class="checkout section--lg">
+    <div class="checkout__container container grid">
+      <div class="checkout__group">
+        <h3 class="section__title">Ticket del Carrito</h3>
+        <table class="order__table">
+          <thead>
+            <tr>
+              <th colspan="2">Productos Comprados</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="complete-list">
+          </tbody>
+          <tbody>
+            <tr>
+              <td><span class="order__subtitle">Subtotal</span></td>
+              <td colspan="2"><span class="table__price_Subtotal"></span></td>
+            </tr>
+            <tr>
+              <td><span class="order__subtitle">Envío</span></td>
+              <td colspan="2">
+                <span class="table__price_Shipping">Envío Gratis</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="order__subtitle">Total</span></td>
+              <td colspan="2">
+                <span class="order__grand-total"></span>
+              </td>
+            </tr>
+          </tbody>
+          <thead>
+            <tr>
+              <th colspan="2">Productos sin Stock</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="incomplete-list">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+    <script>
+    const socket = io();
+    let code = '{{datapurchase.code}}'
+    let shippingCost = 10;
+    let subtotal = '{{datapurchase.amount}}';
+    let total = parseFloat(shippingCost) + parseFloat(subtotal)
+    const shippingCostElement = document.querySelector('.table__price_Shipping');
+    shippingCostElement.innerText = `$${shippingCost}`;
+    const subtotalElement = document.querySelector('.table__price_Subtotal');
+    subtotalElement.innerText = `$${subtotal}`;
+    const totalElement = document.querySelector('.order__grand-total');
+    totalElement.innerText = `$${total}`;
+
+    document.getElementById('realtimeproductsUser').addEventListener('click', function () {
+        window.location.href = `/realtimeproductsUser`;
+    });
+
+
+    socket.emit('viewpurchase', code );
+
+    socket.on('realTimePurchase', Purchase => {
+        let purchasecomplete = Purchase.purchaser
+        const completeList = document.getElementById('complete-list');
+        completeList.innerHTML = '';
+       
+        purchasecomplete.Complete.forEach(producto => {
+             console.log(producto.quantity)
+            const productDiv = document.createElement('tr');
+            productDiv.classList.add('product');
+            productDiv.innerHTML = `
+                  <td>
+                    <img
+                      src="./assets/img/product-1-2.jpg"
+                      alt=""
+                      class="order__img"
+                    />
+                  </td>
+                  <td>
+                    <h3 class="table__title">${producto.product.title}</h3>
+                    <p class="table__quantity">Cantidad: ${producto.product.cantcompra || producto.quantity }</p>
+                  </td>
+                  <td><span class="table__price">$${(producto.product.price * producto.quantity).toFixed(2)}</span></td>
+            `;
+            completeList.appendChild(productDiv);
+        });
+        const incompleteList = document.getElementById('incomplete-list');
+        incompleteList.innerHTML = '';
+        purchasecomplete.Incomplete.forEach(producto => {
+            const productDiv = document.createElement('tr');
+            productDiv.classList.add('product');
+            productDiv.innerHTML = `
+                  <td>
+                    <img
+                      src="./assets/img/product-1-2.jpg"
+                      alt=""
+                      class="order__img"
+                    />
+                  </td>
+                  <td>
+                    <h3 class="table__title">${producto.product.title}</h3>
+                  </td>
+                  <td></td>
+            `;
+            incompleteList.appendChild(productDiv);
+        });
+    });
+
+    </script> 

@@ -50,6 +50,7 @@ class CartManagerFileSystem {
       const newCart = {
         id: String(nextId),
         products: [],
+        Cart_Subtotal: 0,
       };
 
       carts.push(newCart);
@@ -222,19 +223,21 @@ class CartManagerFileSystem {
       throw error;
     }
   }
-
+  
   async deleteAllProductsFromCart(cartId) {
     try {
       const carts = await this._readFile();
       const cart = carts.find(cart => cart.id === cartId);
       if (!cart) {
+        console.log("ID de carrito no encontrado")
         throw new Error("ID de carrito no encontrado");
       }
-
+      
       cart.products = [];
       await this._writeFile(carts);
       return cart;
     } catch (error) {
+      console.log("Error al eliminar todos los productos del carrito")
       console.error("Error al eliminar todos los productos del carrito", error);
       throw error;
     }
@@ -243,17 +246,17 @@ class CartManagerFileSystem {
     let purchaseComplete = []; 
     let purchaseError = []; 
     let precioTotal = 0;
-
-    const findUser = await userService.getUserById(userid);
+    
+    const findUser = await userService.getUserByEmail(userid);
     const cartId = findUser.carts[0].cart_id; 
     const cart = await this.getCartById(cartId);
-
+    
     try {
       for (const product of cart) {
         const idproduct = product.product_id;
         const quantity = product.quantity;
         const productInDB = product.product;
-
+        
         if (quantity > productInDB.stock) {
           purchaseError.push(product);
         } else {
@@ -269,7 +272,7 @@ class CartManagerFileSystem {
           this.deleteProductFromCart(cartId,idproduct)
         }
       }
-
+      
       if (purchaseComplete.length > 0) {
         
         const Purchase = {
@@ -277,7 +280,7 @@ class CartManagerFileSystem {
           Complete: purchaseComplete,
           Incomplete: purchaseError
         };
-
+        
         const ticketData = {
           amount: precioTotal,
           purchaser: Purchase,

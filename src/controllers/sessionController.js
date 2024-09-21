@@ -47,16 +47,19 @@ exports.login = async (req, res) => {
     const user = await userService.getUserByEmail(email);
     if (!user) {
       req.logger.info(`Usuario no encontrado con email: ${email}`);
-      return res.status(404).send("Usuario no encontrado");
+      res.locals.message = "Usuario no encontrado";
+      return res.status(404).render("login"); // Renderiza la vista con el mensaje
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      req.logger.info(`Contraseña incorrecta Usuario email: ${email} `);
-      return res.status(401).send("Contraseña incorrecta");
+      req.logger.info(`Contraseña incorrecta Usuario email: ${email}`);
+      res.locals.message = "Contraseña incorrecta";
+      return res.status(401).render("login"); // Renderiza la vista con el mensaje
     }
+
     const carts = await userService.getCartsById(user._id || user.id);
-    req.logger.debug(`Carrito id: ${carts} `);
+    req.logger.debug(`Carrito id: ${carts}`);
 
     req.session.user = {
       id: user._id || user.id,
@@ -68,6 +71,7 @@ exports.login = async (req, res) => {
       role: user.role,
     };
 
+    // Redirigir según el rol del usuario
     switch (user.role) {
       case "user":
         return res.redirect("/realtimeproductsUser");
@@ -78,9 +82,11 @@ exports.login = async (req, res) => {
     }
   } catch (err) {
     req.logger.error(`Error al inciar sesión: ${err}`);
-    res.status(500).send("Error al iniciar sesión");
+    res.locals.message = "Error al iniciar sesión, intenta nuevamente";
+    return res.status(500).render("login"); // Renderiza la vista con el mensaje
   }
 };
+
 
 exports.logout = (req, res) => {
   req.session.destroy((err) => {

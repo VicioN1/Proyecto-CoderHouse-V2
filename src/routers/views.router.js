@@ -21,7 +21,7 @@ router.get('/realtimeproductsUser',isAuthenticated, ensureUser, (req, res) => {
 });
 
 router.get('/realtimeproductsAdmin', isAuthenticated, ensureAdmin, (req, res) => {
-  res.render('realtimeproductsAdmin', { user: req.session.user});
+  res.render('realtimeproductsAdmin', { user: req.session.user, title: 'Inicio'});
 });
 
 router.get('/realtimeproductsPremium', isAuthenticated, ensurePremium, (req, res) => {
@@ -50,7 +50,7 @@ router.get('/purchase/:userId', async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', { title: 'Iniciar Sesión' });
 });
 
 router.get('/register', (req, res) => {

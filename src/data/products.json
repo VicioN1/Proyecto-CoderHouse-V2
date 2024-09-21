@@ -6,7 +6,7 @@
     "code": "YOG101",
     "price": 1.75,
     "status": true,
-    "stock": 2,
+    "stock": 1,
     "category": "Lácteos",
     "thumbnails": [
       "https://example.com/yogurt1.jpg",
@@ -34,7 +34,7 @@
     "code": "RIC567",
     "price": 3.25,
     "status": true,
-    "stock": 2,
+    "stock": 1,
     "category": "Granos",
     "thumbnails": [
       "https://example.com/rice1.jpg",
@@ -62,7 +62,7 @@
     "code": "ORN111",
     "price": 2.25,
     "status": true,
-    "stock": 17,
+    "stock": 16,
     "category": "Frutas",
     "thumbnails": [
       "https://example.com/orange1.jpg",

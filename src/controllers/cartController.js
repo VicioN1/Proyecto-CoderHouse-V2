@@ -15,20 +15,34 @@ exports.getCartById = async (req, res) => {
   const cart_id = req.params.cid;
   try {
     const cart = await cartService.getCartById(cart_id);
-    
+
     if (!cart) {
       req.logger.info(`Carrito con ID ${cart_id} no encontrado`);
       return res.status(404).json({ message: "Carrito no encontrado" });
     }
 
-    const products = cart.products || [];
+    const products = cart || [];
+    let totalPrice = 0;
+
+    // Recorre los productos para calcular el precio total según la cantidad
+    const updatedProducts = products.map(product => {
+      const productTotalPrice = product.product.price * product.quantity; // Calcula el precio total del producto
+      totalPrice += productTotalPrice; // Suma al precio total del carrito
+
+      return {
+        ...product,
+        productTotalPrice // Incluye el precio total por producto
+      };
+    });
+
     req.logger.info(`Productos obtenidos del carrito ${cart_id}`);
-    res.json({ products });
+    res.json({ products: updatedProducts, totalPrice }); // Devuelve los productos y el precio total
   } catch (error) {
     req.logger.error(`Error al obtener carrito por ID: ${error.message}`);
     res.status(500).json({ message: "Error al obtener el carrito" });
   }
 };
+
 
 exports.addProductToCart = async (req, res) => {
   const cart_id = req.params.cid;
@@ -100,6 +114,7 @@ exports.deleteAllProductsFromCart = async (req, res) => {
 
 exports.purchase = async (req, res) => {
   try {
+    console.log("---------------purchase---------------");
     const cartId = req.query.email;
     const emailId = cartId.replace(/^\$/, "");
     const userId = req.params.userId;

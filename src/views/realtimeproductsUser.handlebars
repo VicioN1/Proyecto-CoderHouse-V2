@@ -1,4 +1,4 @@
-<style>
+{{!-- <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
@@ -209,4 +209,293 @@
     });
 
     loadProducts(currentPage);
-  </script>
+  </script> --}}
+
+    
+  <!--=============== HEADER ===============-->
+<header class="header">
+  <nav class="nav container">
+    <a href="#" class="nav__logo">
+      <img
+        class="nav__logo-img"
+        src="assets/img/logo.svg"
+        alt="logo del sitio web"
+      />
+    </a>
+    <div class="nav__menu" id="nav-menu">
+      <div class="nav__menu-top">
+        <a href="#" class="nav__menu-logo">
+          <img src="./assets/img/logo.svg" alt="">
+        </a>
+        <div class="nav__close" id="nav-close">
+          <i class="fi fi-rs-cross-small"></i>
+        </div>
+      </div>
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a href="#" class="nav__link active-link">Inicio</a>
+        </li>
+        <li class="nav__item">
+          <a href="shop.html" class="nav__link">Tienda</a>
+        </li>
+        <li class="nav__item">
+          <a href="accounts.html" class="nav__link">Mi Cuenta</a>
+        </li>
+      </ul>
+      <div class="header__search">
+        <input
+          type="text"
+          placeholder="Buscar productos..."
+          class="form__input"
+        />
+        <button class="search__btn">
+          <img src="assets/img/search.png" alt="icono de búsqueda" />
+        </button>
+      </div>
+    </div>
+    <div class="header__user-actions">
+      <a href="wishlist.html" class="header__action-btn" title="Lista de deseos">
+        <img src="assets/img/icon-heart.svg" alt="" />
+        <span class="count">3</span>
+      </a>
+      <a href="#" id="viewCart" class="header__action-btn" title="Carrito">
+        <img src="assets/img/icon-cart.svg" alt="" />
+        <span class="count">3</span>
+      </a>
+      <div class="header__action-btn nav__toggle" id="nav-toggle">
+        <img src="./assets//img/menu-burger.svg" alt="">
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!--=============== MAIN ===============-->
+<main class="main">
+  <!--=============== HOME ===============-->
+  <section class="home section--lg">
+    <div class="home__container container grid">
+      <div class="home__content">
+        <span class="home__subtitle">Promociones Especiales</span>
+        <h1 class="home__title">
+          Tendencias de Moda <span>Gran Colección</span>
+        </h1>
+        <p class="home__description">
+          Ahorra más con cupones y hasta un 20% de descuento
+        </p>
+        <a href="shop.html" class="btn">Comprar Ahora</a>
+      </div>
+      <img src="assets/img/home-img.png" class="home__img" alt="sombreros" />
+    </div>
+  </section>
+
+  <!--=============== CATEGORÍAS ===============-->
+  <section class="categories container section">
+    <h3 class="section__title"><span>Categorías</span></h3>
+    <div class="tab__btns"></div>
+      <span class="tab__btn active-tab" data-target="#featured"
+        >Destacados</span
+      >
+      <span class="tab__btn" data-target="#popular">Populares</span>
+      <span class="tab__btn" data-target="#new-added">Nuevos</span>
+    </div>
+  </section>
+
+  <!--=============== PRODUCTOS ===============-->
+  <section class="products container section">
+    <div class="tab__items">
+      <div class="tab__item active-tab" content id="featured">
+        <div class="products__container grid" id="productList">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--=============== VITRINA ===============-->
+  <section class="showcase section">
+    <div class="showcase__container container grid">
+      <div class="showcase__wrapper">
+        <h3 class="section__title">Novedades</h3>
+        <div class="showcase__item">
+          <a href="details.html" class="showcase__img-box">
+            <img
+              src="./assets/img/showcase-img-1.jpg"
+              alt=""
+              class="showcase__img"
+            />
+          </a>
+          <div class="showcase__content">
+            <a href="details.html">
+              <h4 class="showcase__title">
+                Vestido Casual de Algodón con Estampado Floral
+              </h4>
+            </a>
+            <div class="showcase__price flex">
+              <span class="new__price">$238.85</span>
+              <span class="old__price">$245.8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="showcase__wrapper">
+        <h3 class="section__title">Ofertas & Outlet</h3>
+        <div class="showcase__item">
+          <a href="details.html" class="showcase__img-box">
+            <img
+              src="./assets/img/showcase-img-4.jpg"
+              alt=""
+              class="showcase__img"
+            />
+          </a>
+          <div class="showcase__content">
+            <a href="details.html">
+              <h4 class="showcase__title">Camiseta con Estampado de Peces</h4>
+            </a>
+            <div class="showcase__price flex">
+              <span class="new__price">$238.85</span>
+              <span class="old__price">$245.8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="showcase__wrapper">
+        <h3 class="section__title">Más Vendidos</h3>
+        <div class="showcase__item">
+          <a href="details.html" class="showcase__img-box">
+            <img
+              src="./assets/img/showcase-img-7.jpg"
+              alt=""
+              class="showcase__img"
+            />
+          </a>
+          <div class="showcase__content">
+            <a href="details.html">
+              <h4 class="showcase__title">
+                Blusa de Manga Larga con Estampado Geométrico
+              </h4>
+            </a>
+            <div class="showcase__price flex">
+              <span class="new__price">$238.85</span>
+              <span class="old__price">$245.8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="showcase__wrapper">
+        <h3 class="section__title">Tendencias</h3>
+        <div class="showcase__item">
+          <a href="details.html" class="showcase__img-box">
+            <img
+              src="./assets/img/showcase-img-7.jpg"
+              alt=""
+              class="showcase__img"
+            />
+          </a>
+          <div class="showcase__content">
+            <a href="details.html">
+              <h4 class="showcase__title">Vestido Casual de Algodón con Estampado Floral</h4>
+            </a>
+            <div class="showcase__price flex">
+              <span class="new__price">$238.85</span>
+              <span class="old__price">$245.8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let currentPage = 1;
+    let hasPrevPage, hasNextPage, prevPage, nextPage;
+    let idcarrot = {{user.cart}};
+    let emailUser = "{{user.email}}";
+    let userId = "{{user.id}}";
+
+
+    function loadProducts(page) {
+      socket.emit('new', { page: page });
+    }
+
+    document.getElementById('viewCart').addEventListener('click', function () {
+      window.location.href = `/carts/${idcarrot}?email=${emailUser}`;
+    });
+
+    
+
+    socket.on('realTimeProducts', productos => {
+      const productList = document.getElementById('productList');
+      productList.innerHTML = '';
+
+      hasPrevPage = productos.hasPrevPage;
+      hasNextPage = productos.hasNextPage;
+      prevPage = productos.prevPage;
+      nextPage = productos.nextPage;
+
+
+      productos.docs.forEach(producto => {
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product__item');
+        productDiv.innerHTML = `
+                <div class="product__banner">
+                  <a href="details.html" class="product__images">
+                    <img
+                      src="assets/img/product-1-1.jpg"
+                      class="product__img default"/>
+                    <img
+                      src="assets/img/product-1-2.jpg"
+                      class="product__img hover"/>
+                  </a>
+                  <div class="product__actions">
+                    <a
+                      href="#"
+                      class="action__btn"
+                      aria-label="Add to Wishlist">
+                      <i class="fi fi-rs-heart"></i>
+                    </a>
+                  </div>
+                  <div class="product__badge light-pink">Hot</div>
+                </div>
+                <div class="product__content">
+                  <span class="product__category">${producto.category}</span>
+                  <a href="details.html">
+                    <h3 class="product__title">${producto.title}</h3>
+                  </a>
+                  <a href="details.html">
+                    <h5 class="product__title">${producto.description}</h5>
+                  </a>
+                  <div class="product__price flex">
+                    <span class="new__price">$${producto.price}</span>
+                    <span class="old__price">$245.8</span>
+                  </div>
+                   <button class="addToCartButton" data-product-code="${producto.idProduct}">
+                    <a
+                      class="action__btn cart__btn"
+                      aria-label="Add To Cart">
+                      <i class="fi fi-rs-shopping-bag-add"></i>
+                    </a>
+                  </button>
+                  
+                </div>
+        `;
+        productList.appendChild(productDiv);
+      });
+      document.querySelectorAll('.addToCartButton').forEach(button => {
+        button.addEventListener('click', function () {
+          const productCode = this.getAttribute('data-product-code');
+          socket.emit('agregarAlCarrito', { idcarrot, productCode: productCode });
+
+          this.textContent = 'Agregado al Carrito';
+          this.classList.add('added');
+          this.disabled = true;
+        });
+      });
+
+    });
+  loadProducts(currentPage);
+  </script> 
+
+

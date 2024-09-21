@@ -1,4 +1,4 @@
-<style>
+{{!-- <style>
     .product {
         border: 1px solid #ccc;
         padding: 10px;
@@ -31,6 +31,7 @@
 
     socket.emit('viewcarrito', idcarrot);
 
+    
     socket.on('realTimeCarts', carts => {
         const productList = document.getElementById('productList');
         productList.innerHTML = '';
@@ -99,4 +100,391 @@
         socket.emit('finalizePurchase', idcarrot);
         window.location.href = `/api/carts/${idcarrot}/purchase?email=${{{emailId}}}`;
     });
+</script> --}}
+    <!--=============== HEADER ===============-->
+    <header class="header">
+
+  <nav class="nav container">
+    <a href="index.html" class="nav__logo">
+      <img
+        class="nav__logo-img"
+        src="assets/img/logo.svg"
+        alt="logo del sitio web"
+      />
+    </a>
+    <div class="nav__menu" id="nav-menu">
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a href="#" id="realtimeproductsUser" class="nav__link">Inicio</a>
+        </li>
+        <li class="nav__item">
+          <a href="shop.html" class="nav__link">Tienda</a>
+        </li>
+        <li class="nav__item">
+          <a href="accounts.html" class="nav__link">Mi Cuenta</a>
+        </li>
+      </ul>
+      <div class="header__search">
+        <input
+          type="text"
+          placeholder="Buscar productos..."
+          class="form__input"
+        />
+        <button class="search__btn">
+          <img src="assets/img/search.png" alt="icono de búsqueda" />
+        </button>
+      </div>
+    </div>
+    <div class="header__user-actions">
+      <a href="wishlist.html" class="header__action-btn" title="Lista de Deseos">
+        <img src="assets/img/icon-heart.svg" alt="lista de deseos" />
+        <span class="count">3</span>
+      </a>
+      <a href="cart.html" class="header__action-btn" title="Carrito">
+        <img src="assets/img/icon-cart.svg" alt="carrito" />
+        <span class="count">3</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!--=============== MAIN ===============-->
+<main class="main">
+  <!--=============== BREADCRUMB ===============-->
+  <section class="breadcrumb">
+    <ul class="breadcrumb__list flex container">
+      <li><a id="realtimeproductsUser" class="breadcrumb__link">Inicio</a></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Tienda</span></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Carrito</span></li>
+    </ul>
+  </section>
+
+  <!--=============== CART ===============-->
+  <section class="cart section--lg container">
+    <div class="table__container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody id="productList">
+          <!-- Los productos se insertarán aquí dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cart__actions">
+      <a href="#" class="btn flex btn__md">
+        <i class="fi-rs-shuffle"></i> Actualizar Carrito
+      </a>
+      <a href="#" class="btn flex btn__md">
+        <i class="fi-rs-shopping-bag"></i> Continuar Comprando
+      </a>
+    </div>
+
+    <div class="divider">
+      <i class="fi fi-rs-fingerprint"></i>
+    </div>
+
+    <div class="cart__group grid">
+      <div class="checkout__group">
+        <h3 class="section__title">Detalles de Facturación</h3>
+        <form class="form grid">
+          <input type="text" placeholder="Nombre" class="form__input" />
+          <input type="text" placeholder="Dirección" class="form__input" />
+          <input type="text" placeholder="Ciudad" class="form__input" />
+          <input type="text" placeholder="País" class="form__input" />
+          <input type="text" placeholder="Código Postal" class="form__input" />
+          <input type="text" placeholder="Teléfono" class="form__input" />
+          <input type="email" placeholder="Correo Electrónico" class="form__input" />
+          <h3 class="checkout__title">Información Adicional</h3>
+          <textarea
+            name=""
+            placeholder="Nota del pedido"
+            class="form__input textarea"
+          ></textarea>
+        </form>
+      </div>
+
+      <div class="cart__total">
+        <h3 class="section__title">Totales del Carrito</h3>
+        <table class="cart__total-table">
+          <tr>
+            <td><span class="cart__total-title">Subtotal del Carrito</span></td>
+            <td><span class="cart__total-Subtotal">$0.00</span></td>
+          </tr>
+          <tr>
+            <td><span class="cart__total-title">Envío</span></td>
+            <td><span class="cart__total-Shipping">Envío Gratis</span></td>
+          </tr>
+          <tr>
+            <td><span class="cart__total-title">Total</span></td>
+            <td><span class="cart__total-price">$0.00</span></td>
+          </tr>
+        </table>
+        <div class="payment__methods">
+          <h3 class="checkout__title payment__title">Pago</h3>
+          <div class="payment__option flex">
+            <input
+              type="radio"
+              name="radio"
+              id="l1"
+              checked
+              class="payment__input"
+            />
+            <label for="l1" class="payment__label">Transferencia Bancaria Directa</label>
+          </div>
+          <div class="payment__option flex">
+            <input
+              type="radio"
+              name="radio"
+              id="l2"
+              class="payment__input"
+            />
+            <label for="l2" class="payment__label">Pago con Cheque</label>
+          </div>
+          <div class="payment__option flex">
+            <input
+              type="radio"
+              name="radio"
+              id="l3"
+              class="payment__input"
+            />
+            <label for="l3" class="payment__label">Paypal</label>
+          </div>
+        </div>
+        <button id="finalizePurchaseButton" class="btn btn--md">Realizar Pedido</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!--=============== FOOTER ===============-->
+<footer class="footer container">
+  <div class="footer__container grid">
+    <div class="footer__content">
+      <a href="index.html" class="footer__logo">
+        <img src="./assets/img/logo.svg" alt="logo del sitio web" class="footer__logo-img" />
+      </a>
+      <h4 class="footer__subtitle">Contacto</h4>
+      <p class="footer__description">
+        <span>Dirección:</span> 13 Tlemcen Road, Calle 32, Beb-Wahren
+      </p>
+      <p class="footer__description">
+        <span>Teléfono:</span> +01 2222 365 /(+91) 01 2345 6789
+      </p>
+      <p class="footer__description">
+        <span>Horario:</span> 10:00 - 18:00, Lun - Sáb
+      </p>
+      <div class="footer__social">
+        <h4 class="footer__subtitle">Sígueme</h4>
+        <div class="footer__links flex">
+          <a href="#">
+            <img
+              src="./assets/img/icon-facebook.svg"
+              alt="Facebook"
+              class="footer__social-icon"
+            />
+          </a>
+          <a href="#">
+            <img
+              src="./assets/img/icon-twitter.svg"
+              alt="Twitter"
+              class="footer__social-icon"
+            />
+          </a>
+          <a href="#">
+            <img
+              src="./assets/img/icon-instagram.svg"
+              alt="Instagram"
+              class="footer__social-icon"
+            />
+          </a>
+          <a href="#">
+            <img
+              src="./assets/img/icon-pinterest.svg"
+              alt="Pinterest"
+              class="footer__social-icon"
+            />
+          </a>
+          <a href="#">
+            <img
+              src="./assets/img/icon-youtube.svg"
+              alt="YouTube"
+              class="footer__social-icon"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__content">
+      <h3 class="footer__title">Dirección</h3>
+      <ul class="footer__links">
+        <li><a href="#" class="footer__link">Sobre Nosotros</a></li>
+        <li><a href="#" class="footer__link">Información de Entrega</a></li>
+        <li><a href="#" class="footer__link">Política de Privacidad</a></li>
+        <li><a href="#" class="footer__link">Términos y Condiciones</a></li>
+        <li><a href="#" class="footer__link">Contáctanos</a></li>
+        <li><a href="#" class="footer__link">Centro de Soporte</a></li>
+      </ul>
+    </div>
+    <div class="footer__content">
+      <h3 class="footer__title">Mi Cuenta</h3>
+      <ul class="footer__links">
+        <li><a href="#" class="footer__link">Iniciar Sesión</a></li>
+        <li><a href="#" class="footer__link">Ver Carrito</a></li>
+        <li><a href="#" class="footer__link">Mi Lista de Deseos</a></li>
+        <li><a href="#" class="footer__link">Rastrear Mi Pedido</a></li>
+        <li><a href="#" class="footer__link">Ayuda</a></li>
+        <li><a href="#" class="footer__link">Ordenar</a></li>
+      </ul>
+    </div>
+    <div class="footer__content">
+      <h3 class="footer__title">Pasarelas de Pago Seguras</h3>
+      <img
+        src="./assets/img/payment-method.png"
+        alt="Métodos de Pago"
+        class="payment__img"
+      />
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <p class="copyright">&copy; 2024 Evara. Todos los derechos reservados</p>
+    <span class="designer">Diseñado por Crypticalcoder</span>
+  </div>
+</footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const idcarrot = "{{userId}}";
+    let shippingCost = 10; // Define la variable de costo de envío
+    // Actualizar el valor de Shipping
+        const shippingCostElement = document.querySelector('.cart__total-Shipping');
+        shippingCostElement.innerText = `$${shippingCost}`;
+    socket.emit('viewcarrito', idcarrot);
+
+    document.getElementById('realtimeproductsUser').addEventListener('click', function () {
+        window.location.href = `/realtimeproductsUser`;
+    });
+
+    document.getElementById('finalizePurchaseButton').addEventListener('click', function() {
+        socket.emit('finalizePurchase', idcarrot);
+        window.location.href = `/api/carts/${idcarrot}/purchase?email=${{{emailId}}}`;
+    });
+
+    
+
+    socket.on('realTimeCarts', carts => {
+        const productList = document.getElementById('productList');
+        productList.innerHTML = '';
+
+        let initialTotal = 0;
+
+        carts.products.forEach(producto => {
+            const productDiv = document.createElement('tr');
+            productDiv.classList.add('product');
+            productDiv.innerHTML = `
+                <td>
+                  <img
+                    src="./assets//img/product-1-2.jpg"
+                    alt=""
+                    class="table__img"
+                  />
+                </td>
+                <td>
+                  <h3 class="table__title">${producto.product.title}</h3>
+                  <p class="table__description">${producto.product.description}</p>
+                </td>
+                <td><span class="table__price">$${producto.product.price}</span></td>
+                <td><input type="number" value="${producto.quantity}" class="quantity" data-product-code="${producto.product.idProduct}" /></td>
+                <td><span class="subtotal">$${producto.productTotalPrice}</span></td>
+                <td><button class="deleteButton" data-product-code="${producto.product.idProduct}"><i class="fi fi-rs-trash table__trash"></i></button></td>
+            `;
+            productList.appendChild(productDiv);
+        });
+
+        
+
+        // Listener para eliminar productos
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function () {
+                const productCode = this.getAttribute('data-product-code');
+                socket.emit('elimProduccarrito', { idcarrot, productCode });
+            });
+        });
+
+        // Listener para cambiar la cantidad y actualizar el subtotal y el total del carrito
+        document.querySelectorAll('.quantity').forEach(input => {
+            input.addEventListener('input', function () {
+                const productCode = this.getAttribute('data-product-code');
+                const quantity = parseInt(this.value);
+                const priceElement = this.parentElement.previousElementSibling.querySelector('.table__price');
+                const price = parseFloat(priceElement.innerText.replace('$', ''));
+
+                // Emitir el evento para actualizar el carrito en el servidor
+                socket.emit('updateQuantity', { idcarrot, productCode, quantity });
+
+                // Actualizar el total del carrito
+                updateCartTotal();
+            });
+        });
+
+        // Inicializar los valores de Cart Subtotal y Total con el costo de envío
+        updateCartTotal(initialTotal);
+
+        // Función para recalcular el subtotal y el total del carrito
+
+
+        function updateCartTotal() {
+    let subtotal = 0;
+
+    // Recorre todos los elementos del carrito para calcular el subtotal
+    document.querySelectorAll('.subtotal').forEach(subtotalElement => {
+        const itemSubtotal = parseFloat(subtotalElement.innerText.replace('$', ''));
+        subtotal += itemSubtotal;
+    });
+
+    // Actualizar el Cart Subtotal (sin costo de envío)
+    document.querySelector('.cart__total-Subtotal').innerText = `$${subtotal.toFixed(2)}`;
+
+    // Calcular el total sumando el shipping
+    const total = subtotal + shippingCost;
+
+    // Actualizar el total en el carrito (con el costo de envío sumado)
+    document.querySelector('.cart__total-price').innerText = `$${total.toFixed(2)}`;
+}
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    updateCartTotal(); // Al cargar la página, calcular el total
+});
+
+// Agregar listener a los inputs de cantidad
+document.querySelectorAll('.quantity').forEach(input => {
+    input.addEventListener('input', function () {
+        updateProductSubtotal(this); // Actualizar el subtotal cuando cambie la cantidad
+    });
+});
+
+    });
+
+// Función para recalcular el subtotal y total al cargar la página
+    // Si quieres cambiar dinámicamente el valor de shippingCost en algún momento, puedes hacerlo:
+    function updateShippingCost(newCost) {
+        shippingCost = newCost;
+        updateCartTotal(); // Actualizar el total con el nuevo costo de envío
+    }
 </script>
+
+

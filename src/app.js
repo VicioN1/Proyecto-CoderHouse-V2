@@ -72,10 +72,11 @@ app.use('/api/docs',swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 const socketServer = new Server(httpServer);
 handleSocketConnection(socketServer);
 
+app.use(express.static(path.join(__dirname, "/public")));
 app.engine("handlebars", handlebars.engine());
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "handlebars");
-app.use(express.static(path.join(__dirname, "/public")));
+
 
 app.use("/mocking" , mockingRouter);
 app.use('/Testlogger', loggerRouter );

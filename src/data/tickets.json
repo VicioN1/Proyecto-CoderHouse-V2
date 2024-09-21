@@ -58,5 +58,73 @@
     },
     "userid": "fercba5678@gmail.com",
     "code": "53d143a4-b2ba-4772-a709-d913218e9b98"
+  },
+  {
+    "amount": 7.25,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 6,
+          "quantity": 1,
+          "product": {
+            "idProduct": 6,
+            "title": "Arroz",
+            "description": "Ingrediente básico para muchas comidas",
+            "code": "RIC567",
+            "price": 3.25,
+            "status": true,
+            "stock": 1,
+            "category": "Granos",
+            "thumbnails": [
+              "https://example.com/rice1.jpg",
+              "https://example.com/rice2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        },
+        {
+          "product_id": 8,
+          "quantity": 1,
+          "product": {
+            "idProduct": 8,
+            "title": "Naranjas",
+            "description": "Fruta cítrica y refrescante",
+            "code": "ORN111",
+            "price": 2.25,
+            "status": true,
+            "stock": 16,
+            "category": "Frutas",
+            "thumbnails": [
+              "https://example.com/orange1.jpg",
+              "https://example.com/orange2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        },
+        {
+          "product_id": 4,
+          "quantity": 1,
+          "product": {
+            "idProduct": 4,
+            "title": "Yogur",
+            "description": "Fuente de proteínas y calcio",
+            "code": "YOG101",
+            "price": 1.75,
+            "status": true,
+            "stock": 1,
+            "category": "Lácteos",
+            "thumbnails": [
+              "https://example.com/yogurt1.jpg",
+              "https://example.com/yogurt2.jpg"
+            ],
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fer@fer.com",
+    "code": "13f09b9f-77e9-4c5f-ad4c-e47e5a61d98f"
   }
 ]
