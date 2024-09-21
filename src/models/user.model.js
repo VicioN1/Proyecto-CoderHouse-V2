@@ -27,7 +27,11 @@ const userSchema = new mongoose.Schema({
           ref: 'Carts' 
         }
       }],
-    role: { type: String, enum: ['user', 'admin'], default: 'user' }
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    last_connection: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 userSchema.pre('save', async function(next) {

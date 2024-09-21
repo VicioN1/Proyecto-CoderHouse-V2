@@ -71,6 +71,9 @@ exports.login = async (req, res) => {
       role: user.role,
     };
 
+    req.user.last_connection = Date.now();
+    await userService.updateUserById(req.user._id, req.user);
+
     // Redirigir según el rol del usuario
     switch (user.role) {
       case "user":
@@ -128,6 +131,9 @@ exports.githubCallback = (req, res, next) => {
           cart: carts.cart_id,
           role: user.role,
         };
+
+        req.user.last_connection = Date.now();
+        await userService.updateUserById(req.user._id, req.user);
 
         switch (user.role) {
           case "user":

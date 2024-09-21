@@ -1,0 +1,154 @@
+<div class="container mt-4">
+    <div class="card mb-3 bg-transparent text-light">
+        <div class="card-header">
+            <h1 class="mb-3 text-light">👤 Mi Perfil</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent text-light">👥 <strong>Nombre:</strong> {{user.first_name}} {{user.last_name}}</li>
+                        <li class="list-group-item bg-transparent text-light">📧 <strong>Correo Electrónico:</strong> {{user.email}}</li>
+                        <li class="list-group-item bg-transparent text-light">🎫 <strong>ID de Usuario:</strong> {{user._id}}</li>
+                        <li class="list-group-item bg-transparent text-light">🎂 <strong>Edad:</strong> {{user.age}}</li>
+                        <li class="list-group-item bg-transparent text-light">🏷️ <strong>Tipo de Usuario:</strong> {{user.role}}</li>
+                        <li class="list-group-item bg-transparent text-light">🛒 <strong>ID de Carrito:</strong> {{cartId}}</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bg-transparent text-light">
+                        <div class="card-header">
+                            📄 <strong>Documentos:</strong>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                {{#each user.documents}}
+                                    <li>{{this.name}}</li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="card bg-transparent text-light">
+        <div class="card-header">
+            <h2 class="text-light">⭐ Actualización a Usuario Premium</h2>
+        </div>
+        <div class="card-body">
+            <p class="text-light">Para proceder con la actualización a usuario premium, es necesario que cargue los siguientes documentos:</p>
+            <ol class="list-group">
+                <li class="list-group-item bg-transparent text-light"><strong>1- Identificación</strong> - Denominación del archivo: <strong>identification</strong></li>
+                <li class="list-group-item bg-transparent text-light"><strong>2- Comprobante de domicilio</strong> - Denominación del archivo: <strong>address_proof</strong></li>
+                <li class="list-group-item bg-transparent text-light"><strong>3- Comprobante de estado de cuenta</strong> - Denominación del archivo: <strong>account_statement</strong></li>
+            </ol>
+            <div class="d-flex justify-content-around my-3">
+                <a href="/api/users/{{user._id}}/documents" class="btn btn-outline-info">📤 Cargar Documentos</a>
+            </div>
+            <div class="d-flex justify-content-around my-3">
+                <a href="/api/users/premium/{{user._id}}" class="btn btn-outline-success">⭐ Actualizar a Premium</a>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer mt-auto py-3 bg-dark text-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <p>Disclaimer: This is a demo website. The products listed here are not for sale. The chat is not real. This website is for demonstration purposes only.</p>
+                <p>© 2023 Coder Backend - Developed by Luciano Alessi</p>
+            </div>
+            <div class="col-md-6">
+                <h5>Contacto:</h5>
+                <a href="https://www.linkedin.com/in/lucianoalessi/" class="text-light"><i class="fab fa-linkedin"></i> LinkedIn</a><br>
+                <a href="https://github.com/lucianoalessi" class="text-light"><i class="fab fa-github"></i> GitHub</a><br>
+                <a class="text-light">📧 lucianoalessi9@hotmail.com</a><br>
+                <p class="text-light">📍  Quilmes, Buenos Aires.</p>
+            </div>            
+        </div>
+    </div>
+</footer>
+
+<style>
+body {
+    background: linear-gradient(45deg,#06c -52%,#000 81%,#a044e3 95%);
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 960px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card-body {
+    background-color: rgba(255, 252, 252, 0.1);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform .2s;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.btn {
+    border: none;
+    border-radius: 50px;
+    padding: 15px 30px;
+    font-size: 18px;
+    transition: background-color .2s, transform .2s;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+}
+
+.btn-outline-info {
+    background-color: transparent;
+    color: #17a2b8;
+}
+
+.btn-outline-info:hover {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-outline-success {
+    background-color: transparent;
+    color: #28a745;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.footer {
+    margin-top: auto;
+}
+</style>
+
+
+{{!-- <div class="container mt-4">
+    <h4>Sube tu Foto de Perfil</h4>
+    <form action="/api/users/{{user._id}}/documents" method="post" enctype="multipart/form-data" class="my-3">
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFile" name="profile" accept="image/*">
+            <label class="custom-file-label" for="customFile">Elige una imagen</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-upload"></i> Subir Foto de Perfil</button>
+    </form>
+</div> --}}
+

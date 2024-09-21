@@ -1,8 +1,18 @@
-const {users} = require('../dao/factory.js');
+const { users } = require("../dao/factory.js");
 class UsersRepository {
   constructor() {
     this.dao = users;
   }
+
+  getUsers = async (filter) => {
+    const users = await this.dao.getUsers(filter);
+    return users;
+  };
+
+  getConectionById = async (last_connection) => {
+    const users = await this.dao.getUsers(last_connection);
+    return users;
+  };
 
   async getCartsById(userId) {
     return await this.dao.getCartsById(userId);
@@ -29,10 +39,15 @@ class UsersRepository {
   }
 
   async addUser(first_name, last_name, email, age, password, idcarrito) {
-    return await this.dao.addUser(first_name, last_name, email, age, password, idcarrito);
+    return await this.dao.addUser(
+      first_name,
+      last_name,
+      email,
+      age,
+      password,
+      idcarrito
+    );
   }
 }
-
-
 
 module.exports = UsersRepository;

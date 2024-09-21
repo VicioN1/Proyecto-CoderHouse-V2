@@ -1,28 +1,30 @@
-const fs = require('fs').promises;
-const path = require('path');
-const bcrypt = require('bcrypt');
+const fs = require("fs").promises;
+const path = require("path");
+const bcrypt = require("bcrypt");
 
 class UserServiceFS {
   constructor() {
-    this.filePath = path.join(__dirname, '../../data/users.json');
+    this.filePath = path.join(__dirname, "../../data/users.json");
   }
 
-  async readUsers() {
+  async getUsers() {
     try {
       await fs.access(this.filePath);
     } catch (error) {
-      if (error.code === 'ENOENT') {
-        await this.writeUsers([]); 
+      if (error.code === "ENOENT") {
+        await this.writeUsers([]);
       } else {
-        throw new Error('Error al acceder al archivo de usuarios: ' + error.message);
+        throw new Error(
+          "Error al acceder al archivo de usuarios: " + error.message
+        );
       }
     }
 
     try {
-      const data = await fs.readFile(this.filePath, 'utf8');
+      const data = await fs.readFile(this.filePath, "utf8");
       return JSON.parse(data);
     } catch (error) {
-      throw new Error('Error al leer los usuarios: ' + error.message);
+      throw new Error("Error al leer los usuarios: " + error.message);
     }
   }
 
@@ -30,33 +32,39 @@ class UserServiceFS {
     try {
       await fs.writeFile(this.filePath, JSON.stringify(users, null, 2));
     } catch (error) {
-      throw new Error('Error al escribir los usuarios: ' + error.message);
+      throw new Error("Error al escribir los usuarios: " + error.message);
     }
   }
 
   async addUser(first_name, last_name, email, age, password, idcarrito) {
     try {
-      const users = await this.readUsers();
-      console.log("-------------------------idcarrito------------------")
-      console.log(idcarrito)
+      const users = await this.getUsers();
+      console.log("-------------------------idcarrito------------------");
+      console.log(idcarrito);
 
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
       const newUser = {
-        id: (users.length > 0 ? parseInt(users[users.length - 1].id) + 1 : 1).toString(),
+        id: (users.length > 0
+          ? parseInt(users[users.length - 1].id) + 1
+          : 1
+        ).toString(),
         first_name,
         last_name,
         email,
         age,
         password: hashedPassword,
-        carts: [{
-          cart_id: idcarrito.id,
-          cart: idcarrito.id
-        }],
-        role: 'user',
-        documents: [], 
-        hasUploadedDocuments: false 
+        carts: [
+          {
+            cart_id: idcarrito.id,
+            cart: idcarrito.id,
+          },
+        ],
+        role: "user",
+        documents: [],
+        hasUploadedDocuments: false,
+        last_connection: Date.now(),
       };
 
       users.push(newUser);
@@ -71,8 +79,20 @@ class UserServiceFS {
 
   async getUserByEmail(email) {
     try {
-      const users = await this.readUsers();
-      return users.find(user => user.email === email);
+      const users = await this.getUsers();
+      return users.find((user) => user.email === email);
+    } catch (error) {
+      console.error("Error al consultar Usuario", error);
+      return null;
+    }
+  }
+
+  async getConectionById(last_connection) {
+    try {
+      const users = await this.getUsers();
+      // Asegurarse de que last_connection sea un objeto Date
+      const targetDate = new Date(last_connection);
+      return users.find((user) => new Date(user.last_connection) >= targetDate);
     } catch (error) {
       console.error("Error al consultar Usuario", error);
       return null;
@@ -81,8 +101,8 @@ class UserServiceFS {
 
   async getUserById(id) {
     try {
-      const users = await this.readUsers();
-      return users.find(user => user.id === id);
+      const users = await this.getUsers();
+      return users.find((user) => user.id === id);
     } catch (error) {
       console.error("Error al consultar Usuario", error);
       return null;
@@ -91,10 +111,10 @@ class UserServiceFS {
 
   async getCartsById(userId) {
     try {
-      const users = await this.readUsers();
-      const user = users.find(user => user.id === userId);
+      const users = await this.getUsers();
+      const user = users.find((user) => user.id === userId);
       if (!user) {
-        throw new Error('Usuario no encontrado');
+        throw new Error("Usuario no encontrado");
       }
       const firstCart = user.carts[0];
       return firstCart;
@@ -106,12 +126,12 @@ class UserServiceFS {
 
   async updateUserByEmail(email, updates) {
     try {
-      let Hashpass
-      const users = await this.readUsers();
-      const userIndex = users.find(user => user.email === email);
+      let Hashpass;
+      const users = await this.getUsers();
+      const userIndex = users.find((user) => user.email === email);
 
-      if (!userIndex ) {
-        throw new Error('Usuario no encontrado');
+      if (!userIndex) {
+        throw new Error("Usuario no encontrado");
       }
 
       if (updates) {
@@ -121,7 +141,7 @@ class UserServiceFS {
 
       if (userIndex) {
         userIndex.password = Hashpass;
-      } 
+      }
 
       await this.writeUsers(users);
       return userIndex;
@@ -131,18 +151,17 @@ class UserServiceFS {
     }
   }
 
-  
   async updateRolUserById(userID, newRol) {
     try {
-      const users = await this.readUsers();
-      const userIndex = users.find(user => user.id === userID);
+      const users = await this.getUsers();
+      const userIndex = users.find((user) => user.id === userID);
 
-      if (!userIndex ) {
-        throw new Error('Usuario no encontrado');
+      if (!userIndex) {
+        throw new Error("Usuario no encontrado");
       }
       if (userIndex) {
         userIndex.role = newRol;
-      } 
+      }
 
       await this.writeUsers(users);
       return userIndex;
@@ -154,23 +173,36 @@ class UserServiceFS {
 
   async updateUserById(userId, updates) {
     try {
-      const users = await this.readUsers(); 
-      const userIndex = users.findIndex(user => user.id === userId); 
+      const users = await this.getUsers();
+      const userIndex = users.findIndex((user) => user.id === userId);
 
       if (userIndex === -1) {
-        throw new Error('Usuario no encontrado'); 
+        throw new Error("Usuario no encontrado");
       }
 
       users[userIndex] = { ...users[userIndex], ...updates };
 
-      await this.writeUsers(users); 
-      return users[userIndex]; 
+      await this.writeUsers(users);
+      return users[userIndex];
     } catch (error) {
       console.error("Error al actualizar Usuario:", error);
       throw error;
     }
   }
-  
+  async deleteUser(idUser) {
+    try {
+      const users = await this.getUsers();
+      const updatedUsers = users.filter((u) => u._id !== idUser);
+      await fs.promises.writeFile(
+        this.path,
+        JSON.stringify(updatedUsers, null, 2)
+      );
+      return updatedUsers;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }
 
 module.exports = UserServiceFS;
