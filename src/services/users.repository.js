@@ -4,12 +4,17 @@ class UsersRepository {
     this.dao = users;
   }
 
-  getUsers = async (filter) => {
+  async getUsers (filter) {
     const users = await this.dao.getUsers(filter);
     return users;
   };
 
-  getConectionById = async (last_connection) => {
+  async getUsersQuery(limit, page, sort, query, status) {
+    const result = await this.dao.getUsersQuery(limit, page, sort, query, status);
+    return result;
+  }
+
+  async getConectionById (last_connection) {
     const users = await this.dao.getUsers(last_connection);
     return users;
   };

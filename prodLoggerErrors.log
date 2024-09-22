@@ -64,3 +64,26 @@ info: Contraseña incorrecta Usuario email: fer@fer.com
 info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
 info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
 info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+error: Error al inciar sesión: TypeError: Cannot set properties of undefined (setting 'last_connection')
+error: Error al inciar sesión: TypeError: Cannot set properties of undefined (setting 'last_connection')
+info: Contraseña incorrecta Usuario email: fer@fer.com
+error: Error al inciar sesión: TypeError: Cannot set properties of undefined (setting 'last_connection')
+error: Error al inciar sesión: TypeError: Cannot set properties of undefined (setting 'last_connection')
+info: Contraseña incorrecta Usuario email: fer4@fer.com
+error: Error al inciar sesión: TypeError: Cannot set properties of undefined (setting 'last_connection')
+info: Contraseña incorrecta Usuario email: fer4@fer.com
+error: Error al inciar sesión: TypeError: Cannot set properties of undefined (setting 'last_connection')
+error: Error al inciar sesión: Error: Usuario no encontrado
+error: Error al inciar sesión: Error: Usuario no encontrado
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+error: Error al inciar sesión: TypeError: this.dao.getCartsById is not a function
+error: Error al inciar sesión: TypeError: this.dao.getCartsById is not a function
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+info: Contraseña incorrecta Usuario email: fer4@fer.com
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com

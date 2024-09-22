@@ -2,6 +2,7 @@ const { productService } = require("./services/repository.js");
 const { chatService } = require("./services/chat.repository");
 const { cartService } = require("./services/repository.js");
 const { ticketService } = require("./services/repository.js");
+const { userService } = require("./services/repository.js");
 const CustomError = require("./services/errors/CustomError.js");
 const EErrors = require("./services/errors/enums.js");
 const { generarErrorProducto } = require("./services/errors/info.js");
@@ -48,6 +49,24 @@ function handleSocketConnection(socketServer) {
         socketServer.emit("realTimeCarts", carrito);
       } catch (error) {
         console.error("Error adding carrito:", error);
+      }
+    });
+
+    socket.on("viewUsers", async (user) => {
+      try {
+        console.log("viewUsers");
+        const Users = await userService.getUsersQuery(
+          null,
+          user.page,
+          null,
+          null,
+          null
+        );
+
+        console.log(Users)
+        socketServer.emit("realTimeUsers", Users);
+      } catch (error) {
+        console.error("Error read Users:", error);
       }
     });
     socket.on("viewpurchase", async (purchase) => {

@@ -6,12 +6,12 @@ class UserManagerMongo {
     this.User = {};
   }
 
-  async getUsers(filter) {
+  async getUsers(filter = {}) {
     try {
       const users = await UserModel.find(filter).lean();
       return users;
     } catch (error) {
-      console.log(error);
+      console.error("Error al consultar usuarios en MongoDB: ", error);
       throw error;
     }
   }
@@ -157,6 +157,74 @@ class UserManagerMongo {
       throw error;
     }
   }
+
+  async getUsersQuery(limit = 5, page = 1, sort, query, minAge, maxAge, role) {
+    try {
+      let filter = {};
+  
+      // Aplicar filtros
+      if (query) {
+        filter.$or = [
+          { first_name: { $regex: query, $options: "i" } },
+          { last_name: { $regex: query, $options: "i" } }
+        ];
+      }
+  
+      if (role) {
+        filter.role = role;
+      }
+  
+      if (minAge) {
+        filter.age = { $gte: parseInt(minAge) };
+      }
+  
+      if (maxAge) {
+        filter.age = { ...filter.age, $lte: parseInt(maxAge) };
+      }
+  
+      // Paginación y orden
+      const skip = (page - 1) * limit;
+      let users = await UserModel.find(filter)
+        .select('-password') // Excluir el campo password
+        .sort(sort ? { age: sort === 'asc' ? 1 : -1 } : {})
+        .skip(skip)
+        .limit(limit)
+        .lean();
+  
+      // Formatear last_connection
+      users = users.map(user => ({
+        ...user,
+        last_connection: user.last_connection ? formatDate(user.last_connection) : null,
+      }));
+  
+      const totalDocs = await UserModel.countDocuments(filter);
+  
+      return {
+        docs: users,
+        totalDocs: totalDocs,
+        limit: limit,
+        totalPages: Math.ceil(totalDocs / limit),
+        page: page,
+        hasPrevPage: page > 1,
+        hasNextPage: page * limit < totalDocs,
+        prevPage: page > 1 ? page - 1 : null,
+        nextPage: page * limit < totalDocs ? page + 1 : null,
+      };
+    } catch (error) {
+      console.error("Error al consultar usuarios en MongoDB:", error);
+      throw error;
+    }
+  }
+  
 }
+
+function formatDate(date) {
+  const d = new Date(date);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
 
 module.exports = UserManagerMongo;

@@ -20,7 +20,7 @@
     "code": "CHI234",
     "price": 5.5,
     "status": true,
-    "stock": 3,
+    "stock": 1,
     "category": "Carnes",
     "thumbnails": [
       "https://example.com/chicken1.jpg",

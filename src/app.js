@@ -11,6 +11,7 @@ const { Server } = require("socket.io");
 
 const mockingRouter = require("./routers/mockingRouter");
 const viewsRouter = require("./routers/views.router.js");
+const thumbnailsRouter = require("./routers/thumbnailsRouter.js");
 const productsRoutes = require("./routers/productRouter.js");
 const cartsRoutes = require("./routers/cartRouter.js");
 const sessionsRoutes = require("./routers/sessionsRoutes");
@@ -85,3 +86,4 @@ app.use("/api/carts/", cartsRoutes);
 app.use("/api/sessions", sessionsRoutes);
 app.use("/api/user", userRoutes);
 app.use("/", viewsRouter);
+app.use("/api/thumbnails", thumbnailsRouter);

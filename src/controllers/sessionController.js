@@ -51,6 +51,7 @@ exports.login = async (req, res) => {
       return res.status(404).render("login"); // Renderiza la vista con el mensaje
     }
 
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       req.logger.info(`Contraseña incorrecta Usuario email: ${email}`);
@@ -71,8 +72,8 @@ exports.login = async (req, res) => {
       role: user.role,
     };
 
-    req.user.last_connection = Date.now();
-    await userService.updateUserById(req.user._id, req.user);
+    user.last_connection = Date.now();
+    await userService.updateUserById(user._id || user.id, req.user);
 
     // Redirigir según el rol del usuario
     switch (user.role) {

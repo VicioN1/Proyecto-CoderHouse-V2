@@ -64,5 +64,23 @@
       }
     ],
     "hasUploadedDocuments": true
+  },
+  {
+    "id": "4",
+    "first_name": "fer4",
+    "last_name": "fer",
+    "email": "fer4@fer.com",
+    "age": "12",
+    "password": "$2b$10$wUoFFResO.pUdhUCRE4C/eBLe7O2T4eWSobw3n7KLKDEIwNZ0z2Va",
+    "carts": [
+      {
+        "cart_id": "4",
+        "cart": "4"
+      }
+    ],
+    "role": "user",
+    "documents": [],
+    "hasUploadedDocuments": false,
+    "last_connection": 1726946037606
   }
 ]

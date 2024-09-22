@@ -5,27 +5,26 @@ const bcrypt = require("bcrypt");
 class UserServiceFS {
   constructor() {
     this.filePath = path.join(__dirname, "../../data/users.json");
+    this.defaultLimit = 5;
   }
 
-  async getUsers() {
+  // Método privado para verificar y leer el archivo
+  async _ensureFileExists() {
     try {
       await fs.access(this.filePath);
     } catch (error) {
       if (error.code === "ENOENT") {
-        await this.writeUsers([]);
+        await this.writeUsers([]); // Si no existe, crear un archivo vacío
       } else {
-        throw new Error(
-          "Error al acceder al archivo de usuarios: " + error.message
-        );
+        throw new Error("Error al acceder al archivo: " + error.message);
       }
     }
+  }
 
-    try {
-      const data = await fs.readFile(this.filePath, "utf8");
-      return JSON.parse(data);
-    } catch (error) {
-      throw new Error("Error al leer los usuarios: " + error.message);
-    }
+  async _readFile() {
+    await this._ensureFileExists();
+    const data = await fs.readFile(this.filePath, "utf8");
+    return JSON.parse(data);
   }
 
   async writeUsers(users) {
@@ -36,31 +35,32 @@ class UserServiceFS {
     }
   }
 
+  async getUsers(filter = {}) {
+    try {
+      const users = await this._readFile();
+      return users.filter(user =>
+        Object.keys(filter).every(key => user[key] === filter[key])
+      );
+    } catch (error) {
+      console.error("Error al obtener usuarios:", error);
+      throw error;
+    }
+  }
+
   async addUser(first_name, last_name, email, age, password, idcarrito) {
     try {
-      const users = await this.getUsers();
-      console.log("-------------------------idcarrito------------------");
-      console.log(idcarrito);
-
+      const users = await this._readFile();
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
       const newUser = {
-        id: (users.length > 0
-          ? parseInt(users[users.length - 1].id) + 1
-          : 1
-        ).toString(),
+        id: (users.length > 0 ? parseInt(users[users.length - 1].id) + 1 : 1).toString(),
         first_name,
         last_name,
         email,
         age,
         password: hashedPassword,
-        carts: [
-          {
-            cart_id: idcarrito.id,
-            cart: idcarrito.id,
-          },
-        ],
+        carts: [{ cart_id: idcarrito.id, cart: idcarrito.id }],
         role: "user",
         documents: [],
         hasUploadedDocuments: false,
@@ -72,40 +72,8 @@ class UserServiceFS {
 
       return newUser;
     } catch (error) {
-      console.error("Error al agregar Usuario:", error);
-      return "Error al agregar Usuario: " + error.message;
-    }
-  }
-
-  async getUserByEmail(email) {
-    try {
-      const users = await this.getUsers();
-      return users.find((user) => user.email === email);
-    } catch (error) {
-      console.error("Error al consultar Usuario", error);
-      return null;
-    }
-  }
-
-  async getConectionById(last_connection) {
-    try {
-      const users = await this.getUsers();
-      // Asegurarse de que last_connection sea un objeto Date
-      const targetDate = new Date(last_connection);
-      return users.find((user) => new Date(user.last_connection) >= targetDate);
-    } catch (error) {
-      console.error("Error al consultar Usuario", error);
-      return null;
-    }
-  }
-
-  async getUserById(id) {
-    try {
-      const users = await this.getUsers();
-      return users.find((user) => user.id === id);
-    } catch (error) {
-      console.error("Error al consultar Usuario", error);
-      return null;
+      console.error("Error al agregar usuario:", error);
+      throw new Error("Error al agregar usuario: " + error.message);
     }
   }
 
@@ -124,85 +92,128 @@ class UserServiceFS {
     }
   }
 
-  async updateUserByEmail(email, updates) {
+  async getUserByEmail(email) {
     try {
-      let Hashpass;
-      const users = await this.getUsers();
-      const userIndex = users.find((user) => user.email === email);
-
-      if (!userIndex) {
-        throw new Error("Usuario no encontrado");
-      }
-
-      if (updates) {
-        const salt = await bcrypt.genSalt(10);
-        Hashpass = await bcrypt.hash(String(updates), salt);
-      }
-
-      if (userIndex) {
-        userIndex.password = Hashpass;
-      }
-
-      await this.writeUsers(users);
-      return userIndex;
+      const users = await this.getUsers({ email });
+      return users.length ? users[0] : null;
     } catch (error) {
-      console.error("Error al actualizar Usuario:", error);
-      return null;
+      console.error("Error al consultar usuario:", error);
+      throw error;
     }
   }
 
-  async updateRolUserById(userID, newRol) {
+  async getUserById(id) {
     try {
-      const users = await this.getUsers();
-      const userIndex = users.find((user) => user.id === userID);
-
-      if (!userIndex) {
-        throw new Error("Usuario no encontrado");
-      }
-      if (userIndex) {
-        userIndex.role = newRol;
-      }
-
-      await this.writeUsers(users);
-      return userIndex;
+      const users = await this.getUsers({ id });
+      return users.length ? users[0] : null;
     } catch (error) {
-      console.error("Error al actualizar Usuario:", error);
-      return null;
+      console.error("Error al consultar usuario:", error);
+      throw error;
     }
   }
 
   async updateUserById(userId, updates) {
     try {
-      const users = await this.getUsers();
-      const userIndex = users.findIndex((user) => user.id === userId);
+      const users = await this._readFile();
+      const userIndex = users.findIndex(user => user.id === userId);
 
-      if (userIndex === -1) {
-        throw new Error("Usuario no encontrado");
-      }
+      if (userIndex === -1) throw new Error("Usuario no encontrado");
 
       users[userIndex] = { ...users[userIndex], ...updates };
-
       await this.writeUsers(users);
+
       return users[userIndex];
     } catch (error) {
-      console.error("Error al actualizar Usuario:", error);
+      console.error("Error al actualizar usuario:", error);
       throw error;
     }
   }
-  async deleteUser(idUser) {
+
+  async deleteUser(userId) {
     try {
-      const users = await this.getUsers();
-      const updatedUsers = users.filter((u) => u._id !== idUser);
-      await fs.promises.writeFile(
-        this.path,
-        JSON.stringify(updatedUsers, null, 2)
-      );
+      const users = await this._readFile();
+      const updatedUsers = users.filter(user => user.id !== userId);
+
+      if (updatedUsers.length === users.length) throw new Error("Usuario no encontrado");
+
+      await this.writeUsers(updatedUsers);
       return updatedUsers;
     } catch (error) {
-      console.error(error);
+      console.error("Error al eliminar usuario:", error);
       throw error;
     }
   }
+
+  async getUsersQuery(limit, page = 1, sort, query, minAge, maxAge, role) {
+    try {
+      let users = await this._readFile();
+      limit = parseInt(limit) || this.defaultLimit;
+  
+      // Aplicar filtros
+      if (query) {
+        users = users.filter(user =>
+          user.first_name.toLowerCase().includes(query.toLowerCase()) ||
+          user.last_name.toLowerCase().includes(query.toLowerCase())
+        );
+      }
+  
+      if (role) {
+        users = users.filter(user => user.role === role);
+      }
+  
+      if (minAge) {
+        users = users.filter(user => user.age >= parseInt(minAge));
+      }
+  
+      if (maxAge) {
+        users = users.filter(user => user.age <= parseInt(maxAge));
+      }
+  
+      // Aplicar orden
+      if (sort) {
+        users.sort((a, b) => (sort === "asc" ? a.age - b.age : b.age - a.age));
+      }
+  
+      // Omitir el campo password y formatear last_connection
+      users = users.map(user => {
+        const { password, last_connection, ...userWithoutPassword } = user;
+        return {
+          ...userWithoutPassword,
+          last_connection: last_connection ? formatDate(last_connection) : null,
+        };
+      });
+  
+      // Paginación
+      const offset = (page - 1) * limit;
+      const paginatedUsers = users.slice(offset, offset + limit);
+  
+      return {
+        docs: paginatedUsers,
+        totalDocs: users.length,
+        limit,
+        totalPages: Math.ceil(users.length / limit),
+        page,
+        hasPrevPage: page > 1,
+        hasNextPage: page * limit < users.length,
+        prevPage: page > 1 ? page - 1 : null,
+        nextPage: page * limit < users.length ? page + 1 : null,
+      };
+    } catch (error) {
+      console.error("Error al consultar usuarios:", error);
+      throw error;
+    }
+  }
+  
+  
 }
+
+function formatDate(date) {
+  const d = new Date(date);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
 
 module.exports = UserServiceFS;

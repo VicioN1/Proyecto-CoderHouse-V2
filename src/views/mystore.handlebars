@@ -1,0 +1,421 @@
+{{!-- <style>
+    .product {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    }
+    button:disabled {
+    background-color: #d3d3d3; 
+    color: #7a7a7a; 
+    cursor: not-allowed;
+    }
+</style>
+<div>
+    <h1>Perfil de {{user.first_name}} {{user.last_name}}</h1>
+    <p>Email: {{user.email}}</p>
+    <p>Edad: {{user.age}}</p>
+    <p>Rol: {{user.role}}</p>
+    <p>cart: {{user.cart}}</p>
+    <form action="/api/sessions/logout" method="POST">
+        <button type="submit">Cerrar Sesión</button>
+    </form>
+    <form id="productForm">
+        <h2>Agregar Nuevo Producto</h2>
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" ><br>
+        <label for="description">Descripción:</label>
+        <input type="text" id="description" name="description" required><br>
+        <label for="code">Código:</label>
+        <input type="text" id="code" name="code" required><br>
+        <label for="price">Precio:</label>
+        <input type="number" id="price" name="price" required><br>
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" required><br>
+        <label for="category">Categoría:</label>
+        <input type="text" id="category" name="category" required><br>
+        <button type="submit">Agregar Producto</button>
+    </form>
+    <h1>Lista de Productos</h1>
+    <div id="productList"></div>
+    <button id="prevButton" disabled>Anterior</button>
+    <button id="nextButton" disabled>Siguiente</button>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    let currentPage = 1;
+    let hasPrevPage, hasNextPage, prevPage, nextPage;
+    let idcarrot= {{user.cart}}
+
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+
+    function loadProducts(page) {
+        socket.emit('new', { page: page });
+    }
+
+
+    document.getElementById('productForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const newProduct = {};
+        formData.forEach((value, key) => {
+            newProduct[key] = value;
+        });
+        socket.emit('productos', newProduct);
+        event.target.reset();
+    });
+
+
+    
+
+    prevButton.addEventListener('click', () => {
+        if (hasPrevPage) {
+            loadProducts(prevPage);
+        }
+    });
+
+    nextButton.addEventListener('click', () => {
+        if (hasNextPage) {
+            loadProducts(nextPage);
+        }
+    });
+
+
+    socket.on('realTimeProducts', productos => {
+        const productList = document.getElementById('productList');
+        productList.innerHTML = '';
+
+
+        hasPrevPage = productos.hasPrevPage
+        hasNextPage = productos.hasNextPage
+        prevPage = productos.prevPage
+        nextPage = productos.nextPage
+
+        prevButton.disabled = !hasPrevPage;
+        nextButton.disabled = !hasNextPage;
+        productos.docs.forEach(producto => {
+            const productDiv = document.createElement('div');
+            productDiv.classList.add('product');
+            productDiv.innerHTML = `
+                <h2>${producto.idProduct}</h2>
+                <h2>${producto.title}</h2>
+                <p>${producto.description}</p>
+                <p>Código: ${producto.code}</p>
+                <p>Precio: $${producto.price}</p>
+                <p>Stock: ${producto.stock}</p>
+                <p>Categoría: ${producto.category}</p>
+                <button class="deleteButton" data-product-code="${producto.idProduct}">Eliminar</button>
+                 <div>
+                    <button class="decreaseQuantity" data-product-code="${producto.idProduct}">-</button>
+                    <span id="quantity-${producto.idProduct}">1</span>
+                    <button class="increaseQuantity" data-product-code="${producto.idProduct}">+</button>
+                </div> 
+                <button class="addToCartButton" data-product-code="${producto.idProduct}">Agregar al Carrito</button>
+            `;
+            productList.appendChild(productDiv);
+        });
+
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function () {
+                const productCode = this.getAttribute('data-product-code');
+                socket.emit('eliminarProducto', { currentPage ,productCode: productCode});
+            });
+        });
+    });
+
+    loadProducts(currentPage);
+</script> --}}
+<style>
+    /* FORMULARIO */
+/* formStyles.css */
+.form-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #0056b3;
+}
+
+
+</style>
+<link rel="stylesheet" href="/admin/assets/style.css">
+<!-- SIDEBAR -->
+<section id="sidebar">
+    <a href="#" class="brand">
+        <i class='bx bxs-smile'></i>
+        <span class="text">AdminHub</span>
+    </a>
+    <ul class="side-menu top">
+        <li class="active">
+            <a href="#">
+                <i class='bx bxs-dashboard'></i>
+                <span class="text">Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" id="viewmystore">
+                <i class='bx bxs-shopping-bag-alt'></i>
+                <span class="text">My Store</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="#" class="logout">
+                <i class='bx bxs-log-out-circle'></i>
+                <form action="/api/sessions/logout" method="POST">
+                    <span class="text"><button type="submit">Cerrar Sesión</button></span>
+                </form>
+            </a>
+        </li>
+    </ul>
+</section>
+<!-- SIDEBAR -->
+
+<!-- CONTENT -->
+<section id="content">
+    <!-- NAVBAR -->
+    <nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">Categories</a>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a>
+			<a href="#" class="profile">
+				<img src="/admin/assets/img/people.png" alt="people" />
+			</a>
+		</nav>
+    <!-- NAVBAR -->
+
+    <!-- MAIN -->
+    <main>
+        <div class="head-title">
+            <div class="left">
+                <h1>Dashboard</h1>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="#">Dashboard</a>
+                    </li>
+                    <li><i class='bx bx-chevron-right'></i></li>
+                    <li>
+                        <a class="active" href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Formulario para agregar nuevo producto -->
+        <div class="form-container">
+    <h2>Create Product</h2>
+    <form action="/add-product" method="POST" enctype="multipart/form-data" id="productForm">
+        <div class="form-group">
+            <label for="name">Product Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" id="price" name="price" required>
+        </div>
+
+        <div class="form-group">
+            <label for="thumbnail">Select Thumbnail</label>
+            <select id="thumbnail" name="thumbnail">
+                <!-- Options for thumbnails will be loaded dynamically -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+        <!-- Lista de productos -->
+        <div class="table-data">
+            <div class="order">
+                <div class="head">
+                    <h3>Productos</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Descripción</th>
+                            <th>Código</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Categoría</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productList">
+                    </tbody>
+                </table>
+                <button id="prevButton" disabled>Anterior</button>
+                <button id="nextButton" disabled>Siguiente</button>
+            </div>
+        </div>
+    </main>
+    <!-- MAIN -->
+</section>
+<!-- CONTENT -->
+
+<script src="/admin/assets/script.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    let currentPage = 1;
+    let hasPrevPage, hasNextPage, prevPage, nextPage;
+
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+
+    // Evento para agregar nuevo producto
+    document.getElementById('productForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const newProduct = {};
+        formData.forEach((value, key) => {
+            newProduct[key] = value;
+        });
+        socket.emit('addProduct', newProduct);  // Envío de datos del producto a través del socket
+        event.target.reset();
+    });
+
+    // Evento para cargar productos con paginación
+    prevButton.addEventListener('click', () => {
+        if (hasPrevPage) {
+            loadProducts(prevPage);
+        }
+    });
+
+    nextButton.addEventListener('click', () => {
+        if (hasNextPage) {
+            loadProducts(nextPage);
+        }
+    });
+
+    function loadProducts(page) {
+        socket.emit('viewProducts', { page: page });
+    }
+
+	window.onload = function() {
+        fetch('/api/thumbnails')
+            .then(response => response.json())
+            .then(images => {
+                const thumbnailSelect = document.getElementById('thumbnail');
+
+                images.forEach(image => {
+                    const option = document.createElement('option');
+                    option.value = `/carts/assets/img/${image}`;
+                    option.textContent = image;
+                    thumbnailSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching thumbnails:', error);
+            });
+    };
+
+    // Recepción de productos en tiempo real
+    socket.on('realTimeProducts', products => {
+        const productList = document.getElementById('productList');
+        productList.innerHTML = '';
+
+        prevPage = products.prevPage;
+        nextPage = products.nextPage;
+
+        hasPrevPage = products.hasPrevPage;
+        hasNextPage = products.hasNextPage;
+
+        prevButton.disabled = !hasPrevPage;
+        nextButton.disabled = !hasNextPage;
+
+        products.docs.forEach(product => {
+            const productRow = document.createElement('tr');
+            productRow.innerHTML = `
+                <td>${product.title}</td>
+                <td>${product.description}</td>
+                <td>${product.code}</td>
+                <td>$${product.price}</td>
+                <td>${product.stock}</td>
+                <td>${product.category}</td>
+                <td>
+                    <button class="deleteButton" data-product-code="${product.code}">Eliminar</button>
+                </td>
+            `;
+            productList.appendChild(productRow);
+        });
+
+        // Agregar evento para los botones de eliminar
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function () {
+                const productCode = this.getAttribute('data-product-code');
+                socket.emit('deleteProduct', { productCode: productCode });
+            });
+        });
+    });
+
+    // Cargar los productos de la primera página
+    loadProducts(currentPage);
+</script>

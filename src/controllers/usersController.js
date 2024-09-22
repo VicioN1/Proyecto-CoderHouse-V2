@@ -37,10 +37,20 @@ exports.premiumController = async (req, res) => {
 
 
 
-exports.getUsers = async (req, res) => {
-  const users = await userService.getUsers();
-  req.logger.error(`Usuarios obtenidos: ${users.length}`);
-  res.status(200).send({ status: "success", users: users });
+
+exports.readUsers = async (req, res) => {
+  try {
+    // Parámetros de consulta (paginación y filtros)
+    const { page = 1, limit = 10, role, minAge, maxAge, query, sort } = req.query;
+
+    // Obtener los usuarios paginados y filtrados
+    const result = await userManager.getUsersQuery(limit, page, sort, query, minAge, maxAge, role);
+
+    res.json(result);
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).json({ message: 'Error al obtener usuarios' });
+  }
 };
 
 exports.uploadDocuments = async (req, res) => {
