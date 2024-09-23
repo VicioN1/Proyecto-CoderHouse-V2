@@ -9,6 +9,7 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
 
+
 const mockingRouter = require("./routers/mockingRouter");
 const viewsRouter = require("./routers/views.router.js");
 const thumbnailsRouter = require("./routers/thumbnailsRouter.js");
@@ -17,19 +18,16 @@ const cartsRoutes = require("./routers/cartRouter.js");
 const sessionsRoutes = require("./routers/sessionsRoutes");
 const userRoutes = require("./routers/usersRouter.js");
 const loggerRouter = require("./routers/loggerRouter.js");
-const config = require("./config/config.js");
 const { handleSocketConnection } = require("./SocketService.js");
-const connectDB = require('./config/dbConfig.js');
 const initializePassport = require('./config/passport.config.js');
 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUiExpress = require('swagger-ui-express');
-
+require('dotenv').config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-connectDB();
 
 app.use(
   session({
@@ -37,7 +35,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: config.MONGO_URL
+      mongoUrl: process.env.MONGO_URL
     }),
     // cookie: { maxAge: 180 * 60 * 1000 },
   })
@@ -50,9 +48,8 @@ app.use(passport.session());
 
 app.use(cookieParser());
 
-const httpServer = app.listen(
-  config.PORT || 8080,
-  () => console.log(`Server running on port ${config.PORT || 8080}`)
+const httpServer = app.listen(8080,
+  () => console.log(`Server running on port ${ 8080}`)
 );
 
 const swaggerOptions = {

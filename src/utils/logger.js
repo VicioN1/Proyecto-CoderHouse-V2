@@ -1,5 +1,6 @@
 const winston = require('winston');
-const config = require('../config/config.js');
+const dotenv = require('dotenv');
+require('dotenv').config();
 
 const customLevelsOptions = {
     levels: {
@@ -56,7 +57,7 @@ const prodLogger = winston.createLogger({
     ]
 });
 
-const environment = config.NODE_ENV || 'DEVELOPMENT';
+const environment = 'PRODUCTION';
 
 const Logger = (req, res, next) => {
     if (environment === 'DEVELOPMENT') {

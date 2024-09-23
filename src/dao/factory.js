@@ -1,4 +1,3 @@
-const config = require("../config/config.js");
 const mongoose = require("mongoose");
 
 const CartsMongo = require("./managerMongoDB/CartsManagerMongo.js");
@@ -24,7 +23,7 @@ let chat;
 let ticket;
 let ResetPassCode;
 
-switch (config.PERSISTENCE) {
+switch ("FILE_SYSTEM") {
   case "MONGO":
     console.log("---------------Estoy Usando MONGO--------------");
 
