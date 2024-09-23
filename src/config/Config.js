@@ -15,7 +15,7 @@ const options = {
 const args = minimist(process.argv.slice(2), options);
 const { environment, persistence } = args;
 
-const envFileName = environment === 'development' ? '.env.development' : '.env.production';
+const envFileName = environment === 'development' ? '.env' : '.env';
 dotenv.config({ path: `./${envFileName}` });
 
 const PORT = environment === 'development' ? 3000 : 8080;
