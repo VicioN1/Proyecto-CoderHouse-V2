@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const ticketModel = require("../../models/ticket.model.js");
+const ticketModel = require("../models/ticket.model.js");
 const { v4: uuidv4 } = require('uuid');
 
 class TicketManager {
