@@ -6,6 +6,12 @@ const { userService } = require("./services/repository.js");
 const CustomError = require("./services/errors/CustomError.js");
 const EErrors = require("./services/errors/enums.js");
 const { generarErrorProducto } = require("./services/errors/info.js");
+const path = require('path');
+const fs = require('fs');
+
+
+const { deleteProductemail } = require('./utils/nodemailer.js'); 
+
 
 
 function handleSocketConnection(socketServer) {
@@ -95,16 +101,37 @@ function handleSocketConnection(socketServer) {
       }
     });
 
-    socket.on("productos", async (product) => {
+    socket.on('productos', async (productData) => {
       try {
-        console.log("----------socket productos---------------");
-        await writeProducts(product);
-        const products = await readProducts();
-        socketServer.emit("realTimeProducts", products);
+        console.log("----------cargarproducto productos---------------");
+        console.log(productData);
+    
+        // Manejar imagen si está presente
+        if (productData.image && Buffer.isBuffer(productData.image)) {
+          const imageName = Date.now() + ".jpg"; // Puedes cambiar la extensión según el formato de la imagen
+          saveImage(productData.image, imageName);
+          
+          // Agrega la ruta de la imagen al producto
+          productData.thumbnails = `./public/product/img/${imageName}`;
+      }
+    
+        // Procesar el producto
+        await writeProducts(productData);
+        
+        const products = await productService.getProductsQuery(
+          null,
+          null,
+          null,
+          null,
+          null
+        );
+        socketServer.emit('realTimeProducts', products);
+        
       } catch (error) {
         console.error("Error adding product:", error);
       }
     });
+    
 
     socket.on("updateQuantity", async (product) => {
       try {
@@ -125,7 +152,7 @@ function handleSocketConnection(socketServer) {
     socket.on("eliminarProducto", async (Data) => {
       try {
         console.log(Data.productCode);
-        await productService.deleteProduct(Data.productCode);
+        await deleteProducts(Data.productCode, Data.emailUser, Data.rol);
         const products = await productService.getProductsQuery(
           null,
           Data.currentPage,
@@ -179,6 +206,7 @@ async function readProducts() {
 async function writeProducts(products) {
   try {
     if (
+      !products.user_owner ||
       !products.title ||
       !products.description ||
       !products.code ||
@@ -193,25 +221,63 @@ async function writeProducts(products) {
         code: EErrors.INVALID_TYPES_ERROR,
       });
     }
+
     const producto = await productService.addProduct(
+      products.user_owner,
       products.title,
       products.description,
       products.code,
       products.price,
       products.stock,
       products.category,
-      products.thumbnails
+      products.thumbnails // Puede ser una imagen subida o las preexistentes
     );
+    
     console.log(producto);
   } catch (error) {
     throw error;
   }
 }
-async function deleteProducts(product_id) {
+function saveImage(imageBuffer, imageName) {
+  const imagePath = path.join(__dirname, './public/product/img/', imageName);
+
+  if (Buffer.isBuffer(imageBuffer)) {
+      try {
+          // Guardar la imagen usando writeFileSync
+          fs.writeFileSync(imagePath, imageBuffer);
+          console.log(`Imagen guardada en: ${imagePath}`);
+      } catch (error) {
+          console.error('Error al guardar la imagen:', error);
+          throw new Error('Error al guardar la imagen');
+      }
+  } else {
+      throw new TypeError('El argumento imageBuffer debe ser de tipo Buffer');
+  }
+}
+async function deleteProducts(id, user_owner, rol) {
   try {
-    const id = parseInt(product_id);
-    await productService.deleteProduct(product_id);
-    console.log("Producto eliminado:", id);
+    const product_id = parseInt(id);
+
+    const product = await productService.getProductById(product_id);
+    if (!product) {
+      return "Producto no encontrado" 
+    }
+
+    if (product.user_owner === user_owner) {
+      console.log("Es el owner, puede borrar el producto");
+      await productService.deleteProduct(product_id);
+      return  "Producto eliminado por el owner."
+    }
+
+    if (rol === "admin") {
+      console.log("Es admin, puede borrar el producto");
+      await productService.deleteProduct(product_id);
+
+      await deleteProductemail(product, user_owner );
+
+      return  "Producto eliminado por el admin y notificación enviada."
+    }
+
   } catch (error) {
     console.error("Error deleting product:", error);
     throw error;
@@ -228,17 +294,16 @@ async function getCartById(cart_id) {
     const products = cart || [];
     let totalPrice = 0;
 
-    // Recorre los productos para calcular el precio total según la cantidad
     const updatedProducts = products.map(product => {
-      const productTotalPrice = product.product.price * product.quantity; // Calcula el precio total del producto
-      totalPrice += productTotalPrice; // Suma al precio total del carrito
+      const productTotalPrice = product.product.price * product.quantity; 
+      totalPrice += productTotalPrice; 
       product.productTotalPrice= productTotalPrice
       return {
-        ...product // Incluye el precio total por producto
+        ...product
       };
     });
 
-    return ({ products: updatedProducts, totalPrice }) // Devuelve los productos y el precio total
+    return ({ products: updatedProducts, totalPrice }) 
   } catch (error) {
     return null
   }

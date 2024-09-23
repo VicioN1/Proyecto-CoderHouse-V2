@@ -87,3 +87,5 @@ info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
 info: Contraseña incorrecta Usuario email: fer4@fer.com
 info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
 info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+info: Contraseña incorrecta Usuario email: fercba5678@gmail.com
+error: Error al inciar sesión: TypeError: Cannot set properties of undefined (setting 'last_connection')

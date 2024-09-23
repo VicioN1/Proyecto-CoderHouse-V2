@@ -23,8 +23,8 @@ router.get('/realtimeproductsUser',isAuthenticated, ensureUser, (req, res) => {
 router.get('/realtimeproductsAdmin', isAuthenticated, ensureAdmin, (req, res) => {
   res.render('realtimeproductsAdmin', { user: req.session.user, title: 'Dashboard'});
 });
-router.get('/mystore', isAuthenticated, ensureAdmin, (req, res) => {
-  res.render('mystore', { user: req.session.user, title: 'Mis Productos'});
+router.get('/Premiumstore', isAuthenticated, ensurePremium, (req, res) => {
+  res.render('Premiumstore', { user: req.session.user, title: 'Mis Productos'});
 });
 
 router.get('/realtimeproductsPremium', isAuthenticated, ensurePremium, (req, res) => {

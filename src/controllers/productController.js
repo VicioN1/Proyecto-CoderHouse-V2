@@ -2,6 +2,7 @@ const { productService } = require('../services/repository.js');
 const CustomError = require('../services/errors/CustomError.js');
 const EErrors = require('../services/errors/enums.js');
 const { generarErrorProducto } = require('../services/errors/info.js');
+const { deleteProductemail } = require('../utils/nodemailer.js'); 
 
 exports.getProducts = async (req, res) => {
   try {
@@ -56,9 +57,15 @@ exports.getProductById = async (req, res) => {
 
 exports.addProduct = async (req, res) => {
   try {
-    const { title, description, code, price, stock, category, thumbnails } = req.body;
+    const { user_owner, title, description, code, price, stock, category, thumbnails } = req.body;
 
-    if (!title || !description || !code || !price || !stock || !category) {
+    let selectedThumbnail = thumbnails;  
+    
+    if (req.file) {
+        selectedThumbnail = req.file.filename;
+    }
+
+    if (!user_owner || !title || !description || !code || !price || !stock || !category) {
       throw CustomError.createError({
         name:"Error al crear Producto",
         cause: generarErrorProducto({title, description, code, price, stock, category}),
@@ -68,6 +75,7 @@ exports.addProduct = async (req, res) => {
     }
 
     const product = {
+      user_owner,
       title,
       description,
       code,
@@ -91,6 +99,7 @@ exports.updateProduct = async (req, res) => {
 
   try {
     const {
+      user_owner,
       title,
       description,
       code,
@@ -102,6 +111,7 @@ exports.updateProduct = async (req, res) => {
     } = req.body;
 
     const newProduct = {
+      user_owner,
       title,
       description,
       code,
@@ -125,14 +135,43 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
+
+
 exports.deleteProduct = async (req, res) => {
-  const product_id = parseInt(req.params.pid);
+  const user = req.session.user; // Usuario que está haciendo la solicitud
+  const product_id = parseInt(req.params.pid); // ID del producto a eliminar
 
   try {
-    const message = await productService.deleteProduct(product_id);
-    res.json({ message });
+    const product = await productService.getProductById(product_id); // Buscar el producto por su ID
+    if (!product) {
+      req.logger.info(`Producto no encontrado con ID: ${product_id}`);
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    // Verificar si el usuario es el propietario del producto
+    if (product.user_owner === user.email) {
+      console.log("Es el owner, puede borrar el producto");
+      await productService.deleteProduct(product_id);
+      return res.status(200).json({ message: "Producto eliminado por el owner." });
+    }
+
+    // Verificar si el usuario es admin
+    if (user.role === "admin") {
+      console.log("Es admin, puede borrar el producto");
+      await productService.deleteProduct(product_id);
+
+      // Enviar correo al owner notificando que el admin eliminó el producto
+      await deleteProductemail( product, user.email );
+
+      return res.status(200).json({ message: "Producto eliminado por el admin y notificación enviada." });
+    }
+
+    // Si el usuario no es ni owner ni admin, no puede eliminar el producto
+    return res.status(403).json({ message: "No tienes permiso para eliminar este producto." });
+
   } catch (error) {
     console.error('Error al eliminar el producto:', error);
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
+

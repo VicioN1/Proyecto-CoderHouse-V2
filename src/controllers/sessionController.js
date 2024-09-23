@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
     };
 
     user.last_connection = Date.now();
-    await userService.updateUserById(user._id || user.id, req.user);
+    await userService.updateUserById(user._id || user.id, user);
 
     // Redirigir según el rol del usuario
     switch (user.role) {

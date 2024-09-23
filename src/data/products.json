@@ -1,5 +1,6 @@
 [
   {
+    "user_owner": "fercba.com",
     "idProduct": 4,
     "title": "Yogur",
     "description": "Fuente de proteínas y calcio",
@@ -14,6 +15,7 @@
     ]
   },
   {
+    "user_owner": "fer@gmail.com",
     "idProduct": 5,
     "title": "Pollo",
     "description": "Carne magra y saludable",
@@ -95,25 +97,15 @@
     "thumbnails": []
   },
   {
+    "user_owner": "fercba5678@gmail.com",
     "idProduct": 11,
-    "title": "fff",
-    "description": "fff",
-    "code": "fff",
-    "price": "12",
-    "stock": "212",
+    "title": "prueba",
+    "description": "preuba",
+    "code": "prueba",
+    "price": "8",
+    "stock": "23",
     "status": true,
-    "category": "fer",
-    "thumbnails": []
-  },
-  {
-    "idProduct": 12,
-    "title": "",
-    "description": "ref",
-    "code": "ref",
-    "price": "4",
-    "stock": "4",
-    "status": true,
-    "category": "ref",
+    "category": "prueba",
     "thumbnails": []
   }
 ]

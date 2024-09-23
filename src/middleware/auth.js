@@ -32,9 +32,20 @@ const isAdmin = (req, res, next) => {
   if (req.session.user && req.session.user.role === "admin") {
     return next();
   } else {
-    return res.status(403).json({ message: 'Forbidden' });
+    
   }
 };
+
+const isAuthorized = (req, res, next) => {
+  const user = req.session.user;
+
+  if (user && (user.role === 'admin' || user.role === 'premiun')) {
+    return next();
+  } else {
+    return res.status(403).json({ message: 'Acceso denegado. Se requiere ser administrador o usuario premium.' });
+  }
+};
+
 
 const ensureUser = (req, res, next) => {
   if (req.session.user && req.session.user.role !== "admin") {
@@ -45,7 +56,7 @@ const ensureUser = (req, res, next) => {
 };
 
 const ensurePremium = (req, res, next) => {
-  if (req.session.user && req.session.user.role !== "admin") {
+  if (req.session.user && req.session.user.role !== "premiun") {
     return next();
   } else {
     return res.redirect("/realtimeproductsPremium");
@@ -58,5 +69,6 @@ module.exports = {
   ensurePremium,
   isAuthenticated,
   isNotAuthenticated,
-  isAdmin
+  isAdmin,
+  isAuthorized
 };

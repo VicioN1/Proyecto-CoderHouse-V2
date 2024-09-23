@@ -20,7 +20,8 @@ class ProductManagerMongo {
         status: true,
         stock: productData.stock,
         category: productData.category,
-        thumbnails: productData.thumbnails || []
+        thumbnails: productData.thumbnails || [],
+        user_owner : productData.user_owner
       });
       return "Producto agregado exitosamente";
     } catch (error) {

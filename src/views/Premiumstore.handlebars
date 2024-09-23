@@ -192,19 +192,19 @@
 <section id="sidebar">
     <a href="#" class="brand">
         <i class='bx bxs-smile'></i>
-        <span class="text">AdminHub</span>
+        <span class="text">{{user.email}}</span>
     </a>
     <ul class="side-menu top">
-        <li class="active">
+        <li >
             <a href="#">
                 <i class='bx bxs-dashboard'></i>
-                <span class="text">Dashboard</span>
+                <span class="text">Usuarios</span>
             </a>
         </li>
-        <li>
+        <li class="active">
             <a href="#" id="viewmystore">
                 <i class='bx bxs-shopping-bag-alt'></i>
-                <span class="text">My Store</span>
+                <span class="text">Mi Productos</span>
             </a>
         </li>
     </ul>
@@ -235,10 +235,6 @@
 			</form>
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
-			<a href="#" class="notification">
-				<i class='bx bxs-bell' ></i>
-				<span class="num">8</span>
-			</a>
 			<a href="#" class="profile">
 				<img src="/admin/assets/img/people.png" alt="people" />
 			</a>
@@ -247,46 +243,52 @@
 
     <!-- MAIN -->
     <main>
-        <div class="head-title">
-            <div class="left">
-                <h1>Dashboard</h1>
-                <ul class="breadcrumb">
-                    <li>
-                        <a href="#">Dashboard</a>
-                    </li>
-                    <li><i class='bx bx-chevron-right'></i></li>
-                    <li>
-                        <a class="active" href="#">Home</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
 
         <!-- Formulario para agregar nuevo producto -->
         <div class="form-container">
     <h2>Create Product</h2>
-    <form action="/add-product" method="POST" enctype="multipart/form-data" id="productForm">
-        <div class="form-group">
-            <label for="name">Product Name</label>
-            <input type="text" id="name" name="name" required>
-        </div>
+<form  id="productForm">
+    <div class="form-group">
+        <label for="name">Nombre del Producto</label>
+        <input type="text" id="name" name="name" required>
+    </div>
 
-        <div class="form-group">
-            <label for="price">Price</label>
-            <input type="number" id="price" name="price" required>
-        </div>
+    <div class="form-group">
+        <label for="category">Categoria del Producto</label>
+        <input type="text" id="category" name="category" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="code">Codigo del Producto</label>
+        <input type="text" id="code" name="code" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Descripción del Producto</label>
+        <input type="text" id="description" name="description" required>
+    </div>
 
-        <div class="form-group">
-            <label for="thumbnail">Select Thumbnail</label>
-            <select id="thumbnail" name="thumbnail">
-                <!-- Options for thumbnails will be loaded dynamically -->
-            </select>
-        </div>
+    <div class="form-group">
+        <label for="price">Precio</label>
+        <input type="number" id="price" name="price" required>
+    </div>
 
-        <div class="form-group">
-            <button type="submit">Submit</button>
-        </div>
-    </form>
+    <div class="form-group">
+        <label for="stock">Stock</label>
+        <input type="number" id="stock" name="stock" required>
+    </div>
+    <input type="hidden" id="userEmail" name="userEmail" value="{{user.email}}">
+
+    <!-- Subir una nueva imagen -->
+    <div class="form-group">
+        <label for="image">Upload New Thumbnail</label>
+        <input type="file" id="image" name="image" accept="image/*">
+    </div>
+
+    <div class="form-group">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
 </div>
 
 
@@ -326,56 +328,59 @@
     const socket = io();
     let currentPage = 1;
     let hasPrevPage, hasNextPage, prevPage, nextPage;
+    let emailUser = "{{user.email}}";
+    let rol = "{{user.role}}";
+
 
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
 
-    // Evento para agregar nuevo producto
-    document.getElementById('productForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const newProduct = {};
-        formData.forEach((value, key) => {
-            newProduct[key] = value;
-        });
-        socket.emit('addProduct', newProduct);  // Envío de datos del producto a través del socket
-        event.target.reset();
-    });
 
     // Evento para cargar productos con paginación
     prevButton.addEventListener('click', () => {
         if (hasPrevPage) {
             loadProducts(prevPage);
+            currentPage -= 1
         }
     });
 
     nextButton.addEventListener('click', () => {
         if (hasNextPage) {
             loadProducts(nextPage);
+            currentPage += 1
         }
     });
 
     function loadProducts(page) {
-        socket.emit('viewProducts', { page: page });
+        socket.emit('new', { page: page });
+    }
+    const form = document.getElementById('productForm');
+
+    form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    
+    // Extraer los datos
+    const productData = {
+        title: formData.get('name'),
+        description: formData.get('description'),
+        code: formData.get('code'),
+        price: formData.get('price'),
+        stock: formData.get('stock'),
+        category: formData.get('category'),
+        user_owner: formData.get('userEmail'),
+    };
+
+    // Comprobar si se seleccionó una imagen
+    const imageFile = formData.get('image');
+    if (imageFile && imageFile.size > 0) {
+        productData.image = imageFile;
     }
 
-	window.onload = function() {
-        fetch('/api/thumbnails')
-            .then(response => response.json())
-            .then(images => {
-                const thumbnailSelect = document.getElementById('thumbnail');
-
-                images.forEach(image => {
-                    const option = document.createElement('option');
-                    option.value = `/carts/assets/img/${image}`;
-                    option.textContent = image;
-                    thumbnailSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching thumbnails:', error);
-            });
-    };
+    // Emitir el producto y la imagen por socket
+    socket.emit('productos', productData);
+    });
 
     // Recepción de productos en tiempo real
     socket.on('realTimeProducts', products => {
@@ -401,7 +406,7 @@
                 <td>${product.stock}</td>
                 <td>${product.category}</td>
                 <td>
-                    <button class="deleteButton" data-product-code="${product.code}">Eliminar</button>
+                    <button class="deleteButton" data-product-code="${product.idProduct}">Eliminar</button>
                 </td>
             `;
             productList.appendChild(productRow);
@@ -411,7 +416,7 @@
         document.querySelectorAll('.deleteButton').forEach(button => {
             button.addEventListener('click', function () {
                 const productCode = this.getAttribute('data-product-code');
-                socket.emit('deleteProduct', { productCode: productCode });
+                socket.emit('eliminarProducto', { currentPage, productCode: productCode, emailUser, rol});
             });
         });
     });

@@ -31,7 +31,7 @@ class ProductManagerFileSystem {
     }
   }
 
-  async addProduct(title, description, code, price, stock, category, thumbnails) {
+  async addProduct(user_owner, title, description, code, price, stock, category, thumbnails) {
     try {
       const products = await this._readFile();
       const lastProduct = products[products.length - 1];
@@ -43,6 +43,7 @@ class ProductManagerFileSystem {
       }
 
       const newProduct = {
+        user_owner,
         idProduct: nextId,
         title, 
         description, 
@@ -155,11 +156,13 @@ class ProductManagerFileSystem {
       const products = await this._readFile();
       const productIndex = products.findIndex(product => product.idProduct === productId);
       if (productIndex === -1) {
+        console.log("Producto no encontrado")
         return "Producto no encontrado";
       }
 
       products.splice(productIndex, 1);
       await this._writeFile(products);
+      console.log("Producto eliminado exitosamente")
       return "Producto eliminado exitosamente";
     } catch (error) {
       console.error("Error al eliminar producto", error);
