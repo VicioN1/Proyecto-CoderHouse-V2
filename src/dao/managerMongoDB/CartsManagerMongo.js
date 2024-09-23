@@ -1,7 +1,7 @@
 const cartsModel = require('../../models/carts.model.js');
 const ProductManagerMongo = require('./ProductManagerMongo.js');
 const UserManagerMongo = require('./UserManagerMongo.js');
-const TicketManagerMongo = require('../TicketManagerMongo.js');
+const TicketManagerMongo = require('./TicketManagerMongo.js');
 
 const productService = new ProductManagerMongo();
 const ticketService = new TicketManagerMongo();

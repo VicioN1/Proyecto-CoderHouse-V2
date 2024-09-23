@@ -4,7 +4,7 @@ const CartsMongo = require("./managerMongoDB/CartsManagerMongo.js");
 const ProductsMongo = require("./managerMongoDB/ProductManagerMongo.js");
 const UsersMongo = require("./managerMongoDB/UserManagerMongo.js");
 const ChatMongo = require("./managerMongoDB/ChatManagerMongo.js");
-const TicketMongo = require("./TicketManagerMongo.js");
+const TicketMongo = require("./managerMongoDB/TicketManagerMongo.js");
 const ResetPass = require("./managerMongoDB/ResetPassCodeManagerMongo.js");
 
 const CartsFS = require("./managersFileSystem/CartManagerFileSystem.js");
