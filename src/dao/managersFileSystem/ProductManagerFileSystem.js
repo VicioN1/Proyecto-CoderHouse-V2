@@ -52,7 +52,7 @@ class ProductManagerFileSystem {
         stock, 
         status: true,
         category, 
-        thumbnails:  thumbnails || []
+        thumbnails
       };
 
       products.push(newProduct);
