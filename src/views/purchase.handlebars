@@ -1,150 +1,123 @@
- {{!-- <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+{{!-- <style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-            margin: 20px;
-        }
+  .container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    margin: 20px;
+  }
 
-        h1, h2 {
-            color: #333;
-        }
+  h1,
+  h2 {
+    color: #333;
+  }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
-        h2 {
-            margin-top: 20px;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 5px;
-        }
+  h2 {
+    margin-top: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+  }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
 
-        li {
-            background-color: #f1f1f1;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 4px;
-        }
+  li {
+    background-color: #f1f1f1;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 4px;
+  }
 
-        li span {
-            font-weight: bold;
-        }
-    </style>
-    <div class="container">
-        <h1>Estado de la Compra</h1>
-        <h1>Precio Total: {{datapurchase.amount}}</h1>
-        <h2>Productos Comprados</h2>
-        <ul id="complete-list">
-        </ul>
-        <h2>Productos sin Stock</h2>
-        <ul id="incomplete-list">
-        </ul>
-    </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-    const socket = io();
-    let code = '{{datapurchase.code}}'
-    socket.emit('viewpurchase', code );
+  li span {
+    font-weight: bold;
+  }
+</style>
+<div class="container">
+  <h1>Estado de la Compra</h1>
+  <h1>Precio Total: {{datapurchase.amount}}</h1>
+  <h2>Productos Comprados</h2>
+  <ul id="complete-list">
+  </ul>
+  <h2>Productos sin Stock</h2>
+  <ul id="incomplete-list">
+  </ul>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  let code = '{{datapurchase.code}}'
+  socket.emit('viewpurchase', code);
 
-    socket.on('realTimePurchase', Purchase => {
-        let purchasecomplete = Purchase.purchaser
-        const completeList = document.getElementById('complete-list');
-        completeList.innerHTML = '';
-       
-        purchasecomplete.Complete.forEach(producto => {
-             console.log(producto.quantity)
-            const productDiv = document.createElement('div');
-            productDiv.classList.add('product');
-            productDiv.innerHTML = `
+  socket.on('realTimePurchase', Purchase => {
+    let purchasecomplete = Purchase.purchaser
+    const completeList = document.getElementById('complete-list');
+    completeList.innerHTML = '';
+
+    purchasecomplete.Complete.forEach(producto => {
+      console.log(producto.quantity)
+      const productDiv = document.createElement('div');
+      productDiv.classList.add('product');
+      productDiv.innerHTML = `
                 <h3>${producto.product.title}</h3>
                 <p>${producto.product.description}</p>
                 <p>Código: ${producto.product.code}</p>
                 <p>Precio: $${producto.product.price}</p>
-                <p>cantidad: ${producto.product.cantcompra || producto.quantity }</p>
+                <p>cantidad: ${producto.product.cantcompra || producto.quantity}</p>
             `;
-            completeList.appendChild(productDiv);
-        });
-        const incompleteList = document.getElementById('incomplete-list');
-        incompleteList.innerHTML = '';
-        purchasecomplete.Incomplete.forEach(producto => {
-            const productDiv = document.createElement('div');
-            productDiv.classList.add('product');
-            productDiv.innerHTML = `
-                <h3>${producto.product.title}</h3>
-                <p>${producto.product.description}</p>
-                <p>Código: ${producto.product.code}</p>
-                <p>Precio: $${producto.product.price}</p>
-            `;
-            incompleteList.appendChild(productDiv);
-        });
+      completeList.appendChild(productDiv);
     });
+    const incompleteList = document.getElementById('incomplete-list');
+    incompleteList.innerHTML = '';
+    purchasecomplete.Incomplete.forEach(producto => {
+      const productDiv = document.createElement('div');
+      productDiv.classList.add('product');
+      productDiv.innerHTML = `
+                <h3>${producto.product.title}</h3>
+                <p>${producto.product.description}</p>
+                <p>Código: ${producto.product.code}</p>
+                <p>Precio: $${producto.product.price}</p>
+            `;
+      incompleteList.appendChild(productDiv);
+    });
+  });
 
-    </script> --}}
-    <!--=============== HEADER ===============-->
-    <header class="header">
+</script> --}}
+<!--=============== HEADER ===============-->
+<header class="header">
 
   <nav class="nav container">
     <a href="#" id="realtimeproductsUser" class="nav__logo">
-      <img
-        class="nav__logo-img"
-        src="assets/img/logo.svg"
-        alt="logo del sitio web"
-      />
+      <img class="nav__logo-img" src="assets/img/logo.svg" alt="logo del sitio web" />
     </a>
     <div class="nav__menu" id="nav-menu">
       <ul class="nav__list">
         <li class="nav__item">
-          <a href="#" id="realtimeproductsUser" class="nav__link">Inicio</a>
+          <a href="#" class="nav__link" id="realtimeproductsUser">Tienda</a>
         </li>
         <li class="nav__item">
-          <a href="shop.html" class="nav__link">Tienda</a>
-        </li>
-        <li class="nav__item">
-          <a href="accounts.html" class="nav__link">Mi Cuenta</a>
+          <a href="#" class="nav__link" id="profile">Mi Cuenta</a>
         </li>
       </ul>
-      <div class="header__search">
-        <input
-          type="text"
-          placeholder="Buscar productos..."
-          class="form__input"
-        />
-        <button class="search__btn">
-          <img src="assets/img/search.png" alt="icono de búsqueda" />
-        </button>
-      </div>
-    </div>
-    <div class="header__user-actions">
-      <a href="wishlist.html" class="header__action-btn" title="Lista de deseos">
-        <img src="assets/img/icon-heart.svg" alt="lista de deseos" />
-        <span class="count"></span>
-      </a>
-      <a href="cart.html" class="header__action-btn" title="Carrito">
-        <img src="assets/img/icon-cart.svg" alt="carrito" />
-        <span class="count"></span>
-      </a>
-    </div>
   </nav>
 </header>
 
@@ -153,8 +126,6 @@
   <!--=============== BREADCRUMB ===============-->
   <section class="breadcrumb">
     <ul class="breadcrumb__list flex container">
-      <li><a href="index.html" class="breadcrumb__link">Inicio</a></li>
-      <li><span class="breadcrumb__link">></span></li>
       <li><span class="breadcrumb__link">Tienda</span></li>
       <li><span class="breadcrumb__link">></span></li>
       <li><span class="breadcrumb__link">Pagar</span></li>
@@ -202,42 +173,52 @@
           <tbody id="incomplete-list">
           </tbody>
         </table>
+        <div class="cart__actions"></div>
+        <a href="#" class="btn flex btn__md" id="realtimeproductsUser">
+          <i class="fi-rs-shopping-bag"></i> Continuar Comprando
+        </a>
       </div>
+    </div>
     </div>
   </section>
 </main>
 
 <script src="/socket.io/socket.io.js"></script>
-    <script>
-    const socket = io();
-    let code = '{{datapurchase.code}}'
-    let shippingCost = 10;
-    let subtotal = '{{datapurchase.amount}}';
-    let total = parseFloat(shippingCost) + parseFloat(subtotal)
-    const shippingCostElement = document.querySelector('.table__price_Shipping');
-    shippingCostElement.innerText = `$${shippingCost}`;
-    const subtotalElement = document.querySelector('.table__price_Subtotal');
-    subtotalElement.innerText = `$${subtotal}`;
-    const totalElement = document.querySelector('.order__grand-total');
-    totalElement.innerText = `$${total}`;
+<script>
+  const socket = io();
+  let code = '{{datapurchase.code}}'
+  let shippingCost = 10;
+  let subtotal = '{{datapurchase.amount}}';
+  let total = parseFloat(shippingCost) + parseFloat(subtotal)
 
-    document.getElementById('realtimeproductsUser').addEventListener('click', function () {
-        window.location.href = `/realtimeproductsUser`;
-    });
+  document.getElementById('profile').addEventListener('click', function () {
+    window.location.href = `/profile`;
+  });
+
+  const shippingCostElement = document.querySelector('.table__price_Shipping');
+  shippingCostElement.innerText = `$${shippingCost}`;
+  const subtotalElement = document.querySelector('.table__price_Subtotal');
+  subtotalElement.innerText = `$${subtotal}`;
+  const totalElement = document.querySelector('.order__grand-total');
+  totalElement.innerText = `$${total}`;
+
+  document.getElementById('realtimeproductsUser').addEventListener('click', function () {
+    window.location.href = `/realtimeproductsUser`;
+  });
 
 
-    socket.emit('viewpurchase', code );
+  socket.emit('viewpurchase', code);
 
-    socket.on('realTimePurchase', Purchase => {
-        let purchasecomplete = Purchase.purchaser
-        const completeList = document.getElementById('complete-list');
-        completeList.innerHTML = '';
-       
-        purchasecomplete.Complete.forEach(producto => {
-             console.log(producto.quantity)
-            const productDiv = document.createElement('tr');
-            productDiv.classList.add('product');
-            productDiv.innerHTML = `
+  socket.on('realTimePurchase', Purchase => {
+    let purchasecomplete = Purchase.purchaser
+    const completeList = document.getElementById('complete-list');
+    completeList.innerHTML = '';
+
+    purchasecomplete.Complete.forEach(producto => {
+      console.log(producto.quantity)
+      const productDiv = document.createElement('tr');
+      productDiv.classList.add('product');
+      productDiv.innerHTML = `
                   <td>
                     <img
                       src="./assets/img/product-1-2.jpg"
@@ -247,18 +228,18 @@
                   </td>
                   <td>
                     <h3 class="table__title">${producto.product.title}</h3>
-                    <p class="table__quantity">Cantidad: ${producto.product.cantcompra || producto.quantity }</p>
+                    <p class="table__quantity">Cantidad: ${producto.product.cantcompra || producto.quantity}</p>
                   </td>
                   <td><span class="table__price">$${(producto.product.price * producto.quantity).toFixed(2)}</span></td>
             `;
-            completeList.appendChild(productDiv);
-        });
-        const incompleteList = document.getElementById('incomplete-list');
-        incompleteList.innerHTML = '';
-        purchasecomplete.Incomplete.forEach(producto => {
-            const productDiv = document.createElement('tr');
-            productDiv.classList.add('product');
-            productDiv.innerHTML = `
+      completeList.appendChild(productDiv);
+    });
+    const incompleteList = document.getElementById('incomplete-list');
+    incompleteList.innerHTML = '';
+    purchasecomplete.Incomplete.forEach(producto => {
+      const productDiv = document.createElement('tr');
+      productDiv.classList.add('product');
+      productDiv.innerHTML = `
                   <td>
                     <img
                       src="./assets/img/product-1-2.jpg"
@@ -271,8 +252,8 @@
                   </td>
                   <td></td>
             `;
-            incompleteList.appendChild(productDiv);
-        });
+      incompleteList.appendChild(productDiv);
     });
+  });
 
-    </script> 
+</script>

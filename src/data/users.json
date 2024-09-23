@@ -1,5 +1,21 @@
 [
   {
+    "id": "1",
+    "first_name": "fer",
+    "last_name": "cba",
+    "email": "fer@fer.com",
+    "age": "12",
+    "password": "$2b$10$y4cH2niQUO4ucmbJ9EJkzu8lCRz44GBndRacYE2dWGwc6yCJGQrEe",
+    "carts": [
+      {
+        "cart_id": "1",
+        "cart": "1"
+      }
+    ],
+    "role": "user",
+    "last_connection": 1726702653000
+  },
+  {
     "id": "2",
     "first_name": "ferrr",
     "last_name": "cba",
@@ -13,7 +29,7 @@
       }
     ],
     "role": "admin",
-    "last_connection": 1727115429581
+    "last_connection": 1726946037606
   },
   {
     "id": "3",
@@ -29,7 +45,7 @@
       }
     ],
     "role": "user",
-    "last_connection": 1727125884055,
+    "last_connection": 1727134410835,
     "documents": [
       {
         "reference": "uploads\\documents\\1725567092216.zip"
@@ -65,22 +81,63 @@
         "cart": "4"
       }
     ],
-    "role": "premium",
-    "documents": [
+    "role": "user",
+    "documents": [],
+    "hasUploadedDocuments": false,
+    "last_connection": 1726946037606
+  },
+  {
+    "id": "5",
+    "first_name": "CoderHouse",
+    "last_name": "Admin",
+    "email": "CoderHouse@Admin.com",
+    "age": "30",
+    "password": "$2b$10$7O.e4hnt7ieufgnj8I3pcuQzNUtLhC2HmdD27gj3jdX4EI0W6Uuy6",
+    "carts": [
       {
-        "name": "FONDOS_2023_4.jpg",
-        "reference": "uploads/documents/1727108486212.jpg"
-      },
-      {
-        "name": "FONDOS_2023_4.jpg",
-        "reference": "uploads/documents/1727108486218.jpg"
-      },
-      {
-        "name": "FONDOS_2023_4.jpg",
-        "reference": "uploads/documents/1727108486222.jpg"
+        "cart_id": "4",
+        "cart": "4"
       }
     ],
-    "hasUploadedDocuments": true,
-    "last_connection": 1727119056946
+    "role": "admin",
+    "documents": [],
+    "hasUploadedDocuments": false,
+    "last_connection": 1727134348771
+  },
+  {
+    "id": "6",
+    "first_name": "CoderHouse",
+    "last_name": "Premium",
+    "email": "CoderHouse@Premium.com",
+    "age": "31",
+    "password": "$2b$10$JO.h17MMOTm4ZSxd.pbiyOJ1roO/46X8kQtc3sT8cJyQ5IC4kSIxq",
+    "carts": [
+      {
+        "cart_id": "5",
+        "cart": "5"
+      }
+    ],
+    "role": "premium",
+    "documents": [],
+    "hasUploadedDocuments": false,
+    "last_connection": 1727134393732
+  },
+  {
+    "id": "7",
+    "first_name": "CoderHouse",
+    "last_name": "User",
+    "email": "CoderHouse@User.com",
+    "age": "32",
+    "password": "$2b$10$gCzxCMAup/sqRTS7txb5ZOvHH8y2uiiZ0HOifCxWGYjkRyQWoaJFS",
+    "carts": [
+      {
+        "cart_id": "6",
+        "cart": "6"
+      }
+    ],
+    "role": "user",
+    "documents": [],
+    "hasUploadedDocuments": false,
+    "last_connection": 1727134445827
   }
 ]

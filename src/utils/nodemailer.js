@@ -173,7 +173,7 @@ const deleteProductemail = async (producto, email) => {
 
   try {
     let result = await transport.sendMail({
-      from: `coder test <${config.EMAIL_USER}>`,
+      from: `coder test <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Borrado de Producto",
       html: htmlContent,
@@ -241,7 +241,7 @@ const deleteUseremail = async (emailuser,emailadmin) => {
 
   try {
     let result = await transport.sendMail({
-      from: `coder test <${config.EMAIL_USER}>`,
+      from: `coder test <${process.env.EMAIL_USER}>`,
       to: emailuser,
       subject: "Usuario Borrado",
       html: htmlContent,

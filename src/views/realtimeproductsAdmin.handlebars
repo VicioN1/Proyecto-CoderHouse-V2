@@ -215,8 +215,8 @@
         socket.emit('updateUserRole', { userId, role: selectedRole });
     }
 
-    function deleteUser(userId) {
-        socket.emit('deleteUser', { userId });
+    function deleteUser(user) {
+        socket.emit('deleteUser', { user, emailUser });
     }
 
     document.getElementById('deleteAllInactive').addEventListener('click', () => {

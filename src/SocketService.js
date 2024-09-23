@@ -167,6 +167,23 @@ function handleSocketConnection(socketServer) {
         console.error("Error deleting product:", error);
       }
     });
+    socket.on("deleteUser", async (Data) => {
+      try {
+        console.log("--------deleteUser-------");
+        await deleteUser(Data);
+        console.log("viewUsers");
+        const Users = await userService.getUsersQuery(
+          null,
+          Data.page,
+          null,
+          null,
+          null
+        );
+        socketServer.emit("realTimeUsers", Users);
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    });
 
     socket.on("updateUserRole", async (Data) => {
       try {
@@ -280,9 +297,15 @@ async function writeProducts(products) {
 }
 async function saveImage(imageBuffer, imageName) {
   const imagePath = path.join(__dirname, './public/product/img/', imageName);
+  const dirPath = path.dirname(imagePath);  // Obtiene solo la parte del directorio
 
   if (Buffer.isBuffer(imageBuffer)) {
       try {
+          // Verifica si la carpeta existe, si no, la crea
+          if (!fs.existsSync(dirPath)) {
+              fs.mkdirSync(dirPath, { recursive: true });
+          }
+
           // Guardar la imagen usando writeFileSync
           fs.writeFileSync(imagePath, imageBuffer);
           console.log(`Imagen guardada en: ${imagePath}`);
@@ -364,6 +387,22 @@ async function deleteUsers (emailUser) {
 
       // Responder que la operación fue exitosa
       console.log('Usuarios eliminados correctamente');
+      return true
+
+  } catch (error) {
+      console.log( 'Hubo un error al eliminar los usuarios', error);
+  }
+};
+async function deleteUser (Data) {
+  try {
+    const user=await userService.getUserById(Data.user)
+    const cart =user.carts
+    await deleteUseremail(user.email,Data.emailUser)
+    await cartService.deleteCartById(cart[0].cart_id);
+    await userService.deleteUser(user.id)
+
+      // Responder que la operación fue exitosa
+      console.log('Usuario eliminado correctamente');
       return true
 
   } catch (error) {

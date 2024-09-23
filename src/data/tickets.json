@@ -224,5 +224,33 @@
     },
     "userid": "fer4@fer.com",
     "code": "c18e5f49-ff91-417a-a115-0fdf266a2dbf"
+  },
+  {
+    "amount": 7,
+    "purchaser": {
+      "Estado": 1,
+      "Complete": [
+        {
+          "product_id": 1,
+          "quantity": 1,
+          "product": {
+            "user_owner": "fer4@fer.com",
+            "idProduct": 1,
+            "title": "12",
+            "description": "12",
+            "code": "12",
+            "price": "7",
+            "stock": 11,
+            "status": true,
+            "category": "12",
+            "thumbnails": "/product/img/1727128147817.jpg",
+            "cantcompra": 1
+          }
+        }
+      ],
+      "Incomplete": []
+    },
+    "userid": "fer3@fer.com",
+    "code": "2ea541fa-f3ad-46d4-977d-d318a5ee375e"
   }
 ]
