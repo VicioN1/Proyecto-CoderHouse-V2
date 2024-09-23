@@ -15,8 +15,7 @@ const options = {
 const args = minimist(process.argv.slice(2), options);
 const { environment, persistence } = args;
 
-const envFileName = '.env';
-dotenv.config({ path: `./${envFileName}` });
+dotenv.config({ path: `./.env` });
 
 const PORT = 8080;
 
