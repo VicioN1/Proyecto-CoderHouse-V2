@@ -168,14 +168,15 @@ function handleSocketConnection(socketServer) {
       }
     });
 
-    socket.on("deleteAllInactives", async (Data) => {
+    socket.on("updateUserRole", async (Data) => {
       try {
-        console.log("--------deleteAllInactiveUsers-------");
-        await deleteUsers(Data.emailUser);
+        console.log("--------updateUserRole-------");
+        console.log (Data)
+        await asingrol(Data)
         console.log("viewUsers");
         const Users = await userService.getUsersQuery(
           null,
-          Data.page,
+          1,
           null,
           null,
           null
@@ -364,6 +365,16 @@ async function deleteUsers (emailUser) {
 
   } catch (error) {
       console.log( 'Hubo un error al eliminar los usuarios', error);
+  }
+};
+
+async function asingrol (Data) {
+  try {
+    const updateUser = await userService.updateRolUserById(Data.userId, Data.role);
+    return true
+
+  } catch (error) {
+      console.log( 'Hubo un error al cambiar rol al usuario', error);
   }
 };
 

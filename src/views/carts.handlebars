@@ -1,106 +1,4 @@
-{{!-- <style>
-    .product {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-    }
-    button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-    }
-    button:disabled {
-        background-color: #d3d3d3; 
-        color: #7a7a7a; 
-        cursor: not-allowed;
-    }
-</style>
-<div>
-    <h1>Carrito</h1>
-    <p>Email: {{emailId}}</p>
-    <div id="productList"></div>
-    <button id="finalizePurchaseButton">Finalizar compra</button>
-</div>
-<script src="/socket.io/socket.io.js"></script>
-<script>
-    const socket = io();
 
-    const idcarrot = "{{userId}}";
-
-    socket.emit('viewcarrito', idcarrot);
-
-    
-    socket.on('realTimeCarts', carts => {
-        const productList = document.getElementById('productList');
-        productList.innerHTML = '';
-
-        carts.forEach(producto => {
-            const productDiv = document.createElement('div');
-            productDiv.classList.add('product');
-            productDiv.innerHTML = `
-                <h2>${producto.product.idProduct}</h2>
-                <h2>${producto.product.title}</h2>
-                <p>${producto.product.description}</p>
-                <p>Código: ${producto.product.code}</p>
-                <p>Precio: $${producto.product.price}</p>
-                <p>Stock: ${producto.product.stock}</p>
-                <p>Categoría: ${producto.product.category}</p>
-                <button class="deleteButton" data-product-code="${producto.product.idProduct}">Eliminar</button>
-                <div>
-                    <button class="decreaseQuantity" data-product-code="${producto.product.idProduct}">-</button>
-                    <span id="quantity-${producto.product.idProduct}">${producto.quantity}</span>
-                    <button class="increaseQuantity" data-product-code="${producto.product.idProduct}">+</button>
-                </div>
-                <button class="updateQuantityButton" data-product-code="${producto.product.idProduct}">Actualizar</button>
-            `;
-            productList.appendChild(productDiv);
-        });
-
-        document.querySelectorAll('.deleteButton').forEach(button => {
-            button.addEventListener('click', function () {
-                const productCode = this.getAttribute('data-product-code');
-                socket.emit('elimProduccarrito', { idcarrot, productCode });
-            });
-        });
-
-        document.querySelectorAll('.increaseQuantity').forEach(button => {
-            button.addEventListener('click', function () {
-                const productCode = this.getAttribute('data-product-code');
-                const quantitySpan = document.getElementById(`quantity-${productCode}`);
-                let quantity = parseInt(quantitySpan.innerText);
-                quantity++;
-                quantitySpan.innerText = quantity;
-            });
-        });
-
-        document.querySelectorAll('.decreaseQuantity').forEach(button => {
-            button.addEventListener('click', function () {
-                const productCode = this.getAttribute('data-product-code');
-                const quantitySpan = document.getElementById(`quantity-${productCode}`);
-                let quantity = parseInt(quantitySpan.innerText);
-                if (quantity > 1) {
-                    quantity--;
-                    quantitySpan.innerText = quantity;
-                }
-            });
-        });
-
-        document.querySelectorAll('.updateQuantityButton').forEach(button => {
-            button.addEventListener('click', function () {
-                const productCode = this.getAttribute('data-product-code');
-                const quantity = parseInt(document.getElementById(`quantity-${productCode}`).innerText);
-                socket.emit('updateQuantity', { idcarrot, productCode, quantity });
-            });
-        });
-    });
-
-    document.getElementById('finalizePurchaseButton').addEventListener('click', function() {
-        socket.emit('finalizePurchase', idcarrot);
-        window.location.href = `/api/carts/${idcarrot}/purchase?email=${{{emailId}}}`;
-    });
-</script> --}}
     <!--=============== HEADER ===============-->
     <header class="header">
 
@@ -115,35 +13,12 @@
     <div class="nav__menu" id="nav-menu">
       <ul class="nav__list">
         <li class="nav__item">
-          <a href="#" id="realtimeproductsUser" class="nav__link">Inicio</a>
+          <a href="#" class="nav__link" id="realtimeproductsUser">Tienda</a>
         </li>
         <li class="nav__item">
-          <a href="shop.html" class="nav__link">Tienda</a>
-        </li>
-        <li class="nav__item">
-          <a href="accounts.html" class="nav__link">Mi Cuenta</a>
+          <a href="#" class="nav__link" id="profile">Mi Cuenta</a>
         </li>
       </ul>
-      <div class="header__search">
-        <input
-          type="text"
-          placeholder="Buscar productos..."
-          class="form__input"
-        />
-        <button class="search__btn">
-          <img src="assets/img/search.png" alt="icono de búsqueda" />
-        </button>
-      </div>
-    </div>
-    <div class="header__user-actions">
-      <a href="wishlist.html" class="header__action-btn" title="Lista de Deseos">
-        <img src="assets/img/icon-heart.svg" alt="lista de deseos" />
-        <span class="count">3</span>
-      </a>
-      <a href="cart.html" class="header__action-btn" title="Carrito">
-        <img src="assets/img/icon-cart.svg" alt="carrito" />
-        <span class="count">3</span>
-      </a>
     </div>
   </nav>
 </header>
@@ -153,9 +28,7 @@
   <!--=============== BREADCRUMB ===============-->
   <section class="breadcrumb">
     <ul class="breadcrumb__list flex container">
-      <li><a id="realtimeproductsUser" class="breadcrumb__link">Inicio</a></li>
-      <li><span class="breadcrumb__link">></span></li>
-      <li><span class="breadcrumb__link">Tienda</span></li>
+      <li><a id="realtimeproductsUser" class="breadcrumb__link">Tienda</a></li>
       <li><span class="breadcrumb__link">></span></li>
       <li><span class="breadcrumb__link">Carrito</span></li>
     </ul>
@@ -182,10 +55,7 @@
     </div>
 
     <div class="cart__actions">
-      <a href="#" class="btn flex btn__md">
-        <i class="fi-rs-shuffle"></i> Actualizar Carrito
-      </a>
-      <a href="#" class="btn flex btn__md">
+      <a href="#" class="btn flex btn__md" id="realtimeproductsUser">
         <i class="fi-rs-shopping-bag"></i> Continuar Comprando
       </a>
     </div>
@@ -267,101 +137,6 @@
   </section>
 </main>
 
-<!--=============== FOOTER ===============-->
-<footer class="footer container">
-  <div class="footer__container grid">
-    <div class="footer__content">
-      <a href="index.html" class="footer__logo">
-        <img src="./assets/img/logo.svg" alt="logo del sitio web" class="footer__logo-img" />
-      </a>
-      <h4 class="footer__subtitle">Contacto</h4>
-      <p class="footer__description">
-        <span>Dirección:</span> 13 Tlemcen Road, Calle 32, Beb-Wahren
-      </p>
-      <p class="footer__description">
-        <span>Teléfono:</span> +01 2222 365 /(+91) 01 2345 6789
-      </p>
-      <p class="footer__description">
-        <span>Horario:</span> 10:00 - 18:00, Lun - Sáb
-      </p>
-      <div class="footer__social">
-        <h4 class="footer__subtitle">Sígueme</h4>
-        <div class="footer__links flex">
-          <a href="#">
-            <img
-              src="./assets/img/icon-facebook.svg"
-              alt="Facebook"
-              class="footer__social-icon"
-            />
-          </a>
-          <a href="#">
-            <img
-              src="./assets/img/icon-twitter.svg"
-              alt="Twitter"
-              class="footer__social-icon"
-            />
-          </a>
-          <a href="#">
-            <img
-              src="./assets/img/icon-instagram.svg"
-              alt="Instagram"
-              class="footer__social-icon"
-            />
-          </a>
-          <a href="#">
-            <img
-              src="./assets/img/icon-pinterest.svg"
-              alt="Pinterest"
-              class="footer__social-icon"
-            />
-          </a>
-          <a href="#">
-            <img
-              src="./assets/img/icon-youtube.svg"
-              alt="YouTube"
-              class="footer__social-icon"
-            />
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="footer__content">
-      <h3 class="footer__title">Dirección</h3>
-      <ul class="footer__links">
-        <li><a href="#" class="footer__link">Sobre Nosotros</a></li>
-        <li><a href="#" class="footer__link">Información de Entrega</a></li>
-        <li><a href="#" class="footer__link">Política de Privacidad</a></li>
-        <li><a href="#" class="footer__link">Términos y Condiciones</a></li>
-        <li><a href="#" class="footer__link">Contáctanos</a></li>
-        <li><a href="#" class="footer__link">Centro de Soporte</a></li>
-      </ul>
-    </div>
-    <div class="footer__content">
-      <h3 class="footer__title">Mi Cuenta</h3>
-      <ul class="footer__links">
-        <li><a href="#" class="footer__link">Iniciar Sesión</a></li>
-        <li><a href="#" class="footer__link">Ver Carrito</a></li>
-        <li><a href="#" class="footer__link">Mi Lista de Deseos</a></li>
-        <li><a href="#" class="footer__link">Rastrear Mi Pedido</a></li>
-        <li><a href="#" class="footer__link">Ayuda</a></li>
-        <li><a href="#" class="footer__link">Ordenar</a></li>
-      </ul>
-    </div>
-    <div class="footer__content">
-      <h3 class="footer__title">Pasarelas de Pago Seguras</h3>
-      <img
-        src="./assets/img/payment-method.png"
-        alt="Métodos de Pago"
-        class="payment__img"
-      />
-    </div>
-  </div>
-  <div class="footer__bottom">
-    <p class="copyright">&copy; 2024 Evara. Todos los derechos reservados</p>
-    <span class="designer">Diseñado por Crypticalcoder</span>
-  </div>
-</footer>
-
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
@@ -376,6 +151,9 @@
 
     document.getElementById('realtimeproductsUser').addEventListener('click', function () {
         window.location.href = `/realtimeproductsUser`;
+    });
+    document.getElementById('profile').addEventListener('click', function () {
+        window.location.href = `/profile`;
     });
 
     document.getElementById('finalizePurchaseButton').addEventListener('click', function() {

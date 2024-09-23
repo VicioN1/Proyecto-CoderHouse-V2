@@ -14,12 +14,7 @@
   },
   {
     "id": "4",
-    "products": [
-      {
-        "product_id": 4,
-        "quantity": 3
-      }
-    ],
+    "products": [],
     "Cart_Subtotal": 0
   }
 ]

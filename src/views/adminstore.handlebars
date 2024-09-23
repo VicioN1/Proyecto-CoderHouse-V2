@@ -1,0 +1,199 @@
+
+<style>
+    /* FORMULARIO */
+/* formStyles.css */
+.form-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #0056b3;
+}
+
+
+</style>
+<link rel="stylesheet" href="/admin/assets/style.css">
+<!-- SIDEBAR -->
+<section id="sidebar">
+    <a href="#" class="brand">
+        <i class='bx bxs-smile'></i>
+        <span class="text">Admin</span>
+    </a>
+    <ul class="side-menu top">
+        <li >
+            <a href="#" id="Usuarios">
+                <i class='bx bxs-dashboard'></i>
+                <span class="text">Usuarios</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="#" id="viewmystore">
+                <i class='bx bxs-shopping-bag-alt'></i>
+                <span class="text">Productos</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="#" class="logout">
+                <i class='bx bxs-log-out-circle'></i>
+                <form action="/api/sessions/logout" method="POST">
+                    <span class="text"><button type="submit">Cerrar Sesión</button></span>
+                </form>
+            </a>
+        </li>
+    </ul>
+</section>
+<section id="content">
+    <main>
+
+
+        <!-- Lista de productos -->
+        <div class="table-data">
+            <div class="order">
+                <div class="head">
+                    <h3>Productos</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Descripción</th>
+                            <th>Código</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Categoría</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productList">
+                    </tbody>
+                </table>
+                <button id="prevButton" disabled>Anterior</button>
+                <button id="nextButton" disabled>Siguiente</button>
+            </div>
+        </div>
+    </main>
+    <!-- MAIN -->
+</section>
+<!-- CONTENT -->
+
+<script src="/admin/assets/script.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    let currentPage = 1;
+    let hasPrevPage, hasNextPage, prevPage, nextPage;
+    let emailUser = "{{user.email}}";
+    let rol = "{{user.role}}";
+
+    document.getElementById('Usuarios').addEventListener('click', function () {
+        window.location.href = `/realtimeproductsAdmin`;
+    });
+
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+
+
+    // Evento para cargar productos con paginación
+    prevButton.addEventListener('click', () => {
+        if (hasPrevPage) {
+            loadProducts(prevPage);
+            currentPage -= 1
+        }
+    });
+
+    nextButton.addEventListener('click', () => {
+        if (hasNextPage) {
+            loadProducts(nextPage);
+            currentPage += 1
+        }
+    });
+
+    function loadProducts(page) {
+        socket.emit('new', { page: page });
+    }
+
+    // Recepción de productos en tiempo real
+    socket.on('realTimeProducts', products => {
+        const productList = document.getElementById('productList');
+        productList.innerHTML = '';
+
+        prevPage = products.prevPage;
+        nextPage = products.nextPage;
+
+        hasPrevPage = products.hasPrevPage;
+        hasNextPage = products.hasNextPage;
+
+        prevButton.disabled = !hasPrevPage;
+        nextButton.disabled = !hasNextPage;
+
+        products.docs.forEach(product => {
+            const productRow = document.createElement('tr');
+            productRow.innerHTML = `
+                <td>${product.title}</td>
+                <td>${product.description}</td>
+                <td>${product.code}</td>
+                <td>$${product.price}</td>
+                <td>${product.stock}</td>
+                <td>${product.category}</td>
+                <td>
+                    <button class="deleteButton" data-product-code="${product.idProduct}">Eliminar</button>
+                </td>
+            `;
+            productList.appendChild(productRow);
+        });
+
+        // Agregar evento para los botones de eliminar
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function () {
+                const productCode = this.getAttribute('data-product-code');
+                socket.emit('eliminarProducto', { currentPage, productCode: productCode, emailUser, rol});
+            });
+        });
+    });
+
+    // Cargar los productos de la primera página
+    loadProducts(currentPage);
+</script>

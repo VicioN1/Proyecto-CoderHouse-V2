@@ -65,7 +65,7 @@ exports.uploadDocuments = async (req, res) => {
     }
     
 
-    const documents = req.files.map(doc =>console.log(doc) ({
+    const documents = req.files.map(doc => ({
       name: doc.originalname,
       reference: doc.path
     }));
@@ -87,48 +87,41 @@ exports.uploadDocuments = async (req, res) => {
 
 exports.deleteUsers = async (req, res) => {
   try {
-      // Calcula la fecha y hora de hace 30 minutos
-      const thirtyMinutesAgo = moment().subtract(30, 'minutes').toDate();
-      req.logger.info(`Fecha y hora de hace 30 minutos: ${thirtyMinutesAgo}`);
+      const emailUser = req.session.user.email;
+      if (!emailUser) {
+          return res.status(401).json({ message: 'Usuario no autenticado o sesión inválida' });
+      }
 
-      // Recupera una lista de usuarios cuya última conexión fue antes de 'thirtyMinutesAgo'
-      const usersToDelete = await userService.getConectionById({ last_connection: { $lt: thirtyMinutesAgo } });
+      // Calcula la fecha de hace 2 días
+      const twoDaysAgo = Date.now() - (2 * 24 * 60 * 60 * 1000); 
+      req.logger.info(`Fecha y hora de hace 2 días: ${new Date(twoDaysAgo).toISOString()}`);
+
+      // Recupera una lista de usuarios cuya última conexión fue antes de 'twoDaysAgo'
+      const usersToDelete = await userService.getConectionById({ last_connection: { $lt: new Date(twoDaysAgo) } });
       req.logger.info(`Usuarios a eliminar: ${usersToDelete.length}`);
 
-      // Configuración de nodemailer
-      const transport = nodemailer.createTransport({
-          service: 'gmail',
-          port: 587,
-          auth: {
-              user: process.env.EMAIL_USER,
-              pass: process.env.EMAIL_PASSWORD
+      // Eliminar cada usuario inactivo
+      for (const user of usersToDelete) {
+          req.logger.info(`Eliminando usuario inactivo: ${user.email}`);
+
+          // Eliminar el carrito asociado al usuario
+          if (user.carts && user.carts.length > 0) {
+              const cartId = user.carts[0].cart_id;
+              req.logger.info(`Eliminando carrito con ID: ${cartId}`);
+              await cartService.deleteCartById(cartId);
           }
-      });
 
-      // for (const user of usersToDelete) {
-      //     // Enviar correo electrónico de notificación
-      //     if (user.email) {
-      //         await transport.sendMail({
-      //             from: `Coder App <${process.env.EMAIL_USER}>`,
-      //             to: user.email,
-      //             subject: 'Tu cuenta ha sido eliminada',
-      //             text: `Hola ${user.first_name}, tu cuenta ha sido eliminada por inactividad de más de 30 minutos.`,
-      //         });
-      //         req.logger.info(`Correo enviado a: ${user.email}`);
-      //     } else {
-      //         req.logger.warning(`No se pudo enviar correo a un usuario debido a que no tiene una dirección de correo electrónico definida.`);
-      //     }
+          // Eliminar el usuario
+          await userService.deleteUser(user._id);
+          req.logger.info(`Usuario eliminado: ${user.email}`);
 
-      //     // Eliminar carrito del usuario
-      //     await cartService.deleteCart(user.cart[0]._id);
-      //     req.logger.info(`Carrito eliminado para el usuario: ${user._id}`);
-      // }
-
-      // Eliminar los usuarios de la base de datos
-      await userService.deleteUsers({ _id: { $in: usersToDelete.map(user => user._id) } });
-      req.logger.info(`Usuarios eliminados correctamente. Total eliminados: ${usersToDelete.length}`);
+          // Enviar correo electrónico de eliminación, utilizando el email del usuario autenticado
+          await deleteUseremail(user.email, emailUser);
+          req.logger.info(`Correo de eliminación enviado desde ${emailUser} a: ${user.email}`);
+      }
 
       // Responder que la operación fue exitosa
+      req.logger.info(`Usuarios eliminados correctamente. Total eliminados: ${usersToDelete.length}`);
       res.json({ message: 'Usuarios eliminados correctamente' });
 
   } catch (error) {
@@ -136,6 +129,7 @@ exports.deleteUsers = async (req, res) => {
       res.status(500).json({ message: 'Hubo un error al eliminar los usuarios' });
   }
 };
+
 
 
 

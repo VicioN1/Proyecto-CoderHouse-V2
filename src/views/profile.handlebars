@@ -1,6 +1,360 @@
-<h1>Perfil de {{user.first_name}} {{user.last_name}}</h1>
+{{!-- <h1>Perfil de {{user.first_name}} {{user.last_name}}</h1>
 <p>Email: {{user.email}}</p>
 <p>Rol: {{user.role}}</p>
 <form action="/api/sessions/logout" method="POST">
     <button type="submit">Cerrar Sesión</button>
-</form>
+</form> --}}
+
+{{!--
+<!--=============== CSS ===============-->
+<link rel="stylesheet" href="/assets/css/styles.css" />
+
+
+<nav class="nav container">
+    <a href="#" class="nav__logo">
+        <img class="nav__logo-img" src="assets/img/logo.svg" alt="logo del sitio web" />
+    </a>
+    <div class="nav__menu" id="nav-menu">
+        <div class="nav__menu-top">
+            <a href="#" class="nav__menu-logo">
+                <img src="./assets/img/logo.svg" alt="">
+            </a>
+            <div class="nav__close" id="nav-close">
+                <i class="fi fi-rs-cross-small"></i>
+            </div>
+        </div>
+        <ul class="nav__list">
+            <li class="nav__item">
+                <a href="#" class="nav__link active-link">Tienda</a>
+            </li>
+            <li class="nav__item">
+                <a href="#" class="nav__link" id="profile">Mi Cuenta</a>
+            </li>
+        </ul>
+    </div>
+    <div class="header__user-actions">
+        <a href="#" id="viewCart" class="header__action-btn" title="Carrito">
+            <img src="assets/img/icon-cart.svg" alt="" />
+        </a>
+        <div class="header__action-btn nav__toggle" id="nav-toggle">
+            <img src="./assets//img/menu-burger.svg" alt="">
+        </div>
+    </div>
+</nav>
+</header>
+
+<!--=============== MAIN ===============-->
+<main class="main">
+    <!--=============== BREADCRUMB ===============-->
+    <section class="breadcrumb">
+        <ul class="breadcrumb__list flex container">
+            <li><a href="#" class="breadcrumb__link">Tienda</a></li>
+            <li><span class="breadcrumb__link">></span></li>
+            <li><span class="breadcrumb__link">Mi Cuenta</span></li>
+        </ul>
+    </section>
+
+    <!--=============== ACCOUNTS ===============-->
+    <section class="accounts section--lg">
+        <div class="accounts__container container grid">
+            <div class="account__tabs">
+                <p class="account__tab active-tab" data-target="#dashboard">
+                    <i class="fi fi-rs-settings-sliders"></i> Solicitar Premium
+                </p>
+                <p class="account__tab" data-target="#orders">
+                    <i class="fi fi-rs-shopping-bag"></i> Orders
+                </p>
+                <p class="account__tab" data-target="#update-profile">
+                    <i class="fi fi-rs-user"></i> Update Profile
+                </p>
+                <p class="account__tab" data-target="#address">
+                    <i class="fi fi-rs-marker"></i> My Address
+                </p>
+                <p class="account__tab" data-target="#change-password">
+                    <i class="fi fi-rs-settings-sliders"></i> Change Password
+                </p>
+                <p class="account__tab"><i class="fi fi-rs-exit"></i> Logout</p>
+            </div>
+            <div class="tab__content" content id="orders">
+                <h3 class="tab__header">Your Orders</h3>
+                <div class="tab__body">
+                    <table class="placed__order-table">
+                        <thead>
+                            <tr>
+                                <th>Orders</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Totals</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#1357</td>
+                                <td>March 19, 2022</td>
+                                <td>Processing</td>
+                                <td>$125.00</td>
+                                <td><a href="#" class="view__order">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>#2468</td>
+                                <td>June 29, 2022</td>
+                                <td>Completed</td>
+                                <td>$364.00</td>
+                                <td><a href="#" class="view__order">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>#2366</td>
+                                <td>August 02, 2022</td>
+                                <td>Completed</td>
+                                <td>$280.00</td>
+                                <td><a href="#" class="view__order">View</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab__content" content id="update-profile">
+                <h3 class="tab__header">Update Profile</h3>
+                <div class="tab__body">
+                    <form class="form grid">
+                        <input type="text" placeholder="Username" class="form__input" />
+                        <div class="form__btn">
+                            <button class="btn btn--md">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="tab__content" content id="address">
+                <h3 class="tab__header">Shipping Address</h3>
+                <div class="tab__body">
+                    <address class="address">
+                        3522 Interstate <br />
+                        75 Business Spur, <br />
+                        Sault Ste. <br />
+                        Marie, Mi 49783
+                    </address>
+                    <p class="city">New York</p>
+                    <a href="#" class="edit">Edit</a>
+                </div>
+            </div>
+            <div class="tab__content" content id="change-password">
+                <h3 class="tab__header">Change Password</h3>
+                <div class="tab__body">
+                    <form class="form grid">
+                        <input type="password" placeholder="Current Password" class="form__input" />
+                        <input type="password" placeholder="New Password" class="form__input" />
+                        <input type="password" placeholder="Confirm Password" class="form__input" />
+                        <div class="form__btn">
+                            <button class="btn btn--md">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!--=============== NEWSLETTER ===============-->
+
+
+    <!--=============== SWIPER JS ===============-->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!--=============== MAIN JS ===============-->
+    <script src="assets/js/main.js"></script>
+    </body>
+
+    </html> --}}
+
+    <!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Solicitar Premium</title>
+        <link rel="stylesheet" href="/assets/css/styles.css" />
+    </head>
+
+    <body>
+        <nav class="nav container">
+            <nav class="nav container">
+                <a href="#" class="nav__logo">
+                    <img class="nav__logo-img" src="assets/img/logo.svg" alt="logo del sitio web" />
+                </a>
+                <div class="nav__menu" id="nav-menu">
+                    <div class="nav__menu-top">
+                        <a href="#" class="nav__menu-logo">
+                            <img src="./assets/img/logo.svg" alt="">
+                        </a>
+                        <div class="nav__close" id="nav-close">
+                            <i class="fi fi-rs-cross-small"></i>
+                        </div>
+                    </div>
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="#" class="nav__link " id="realtimeproductsUser">Tienda</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="#" class="nav__link active-link" id="profile">Mi Cuenta</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="header__user-actions">
+                    <a href="#" id="viewCart" class="header__action-btn" title="Carrito">
+                        <img src="assets/img/icon-cart.svg" alt="" />
+                    </a>
+                    <div class="header__action-btn nav__toggle" id="nav-toggle">
+                        <img src="./assets//img/menu-burger.svg" alt="">
+                    </div>
+                </div>
+            </nav>
+        </nav>
+
+        <main class="main">
+            <section class="breadcrumb">
+                <ul class="breadcrumb__list flex container">
+                    <li><a href="#" class="breadcrumb__link">Tienda</a></li>
+                    <li><span class="breadcrumb__link">></span></li>
+                    <li><span class="breadcrumb__link">Mi Cuenta</span></li>
+                </ul>
+            </section>
+
+            <section class="accounts section--lg">
+                <div class="accounts__container container grid">
+                    <div class="account__tabs">
+                        <p class="account__tab" data-target="#dashboard">
+                            <i class="fi fi-rs-settings-sliders"></i> Solicitar Premium
+                        </p>
+                        <p class="account__tab" data-target="#logout">
+                            <i class="fi fi-rs-exit"></i> Logout
+                        </p>
+                    </div>
+
+                    <div class="tabs__content">
+                        <!-- Pestaña de Dashboard -->
+                        <div class="tab__content" id="dashboard">
+                            <h3 class="tab__header">Solicitar Premium</h3>
+                            <div class="tab__body">
+                                <button id="solicitarPremium" class="btn">Solicitar Premium</button>
+                            </div>
+                        </div>
+
+                        <!-- Pestaña de Logout -->
+                        <div class="tab__content" id="logout">
+                            <h3 class="tab__header">Cerrar Sesión</h3>
+                            <div class="tab__body">
+                                <form action="/api/sessions/logout" method="POST">
+                                    <button type="submit" class="btn">Cerrar Sesión</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="tab__content" id="cargarDocumentos" style="display: none;">
+                    <div class="tab__body">
+                        <h1>Cargar Documentación Requerida</h1>
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <div>
+                                <label for="identificacion">Identificación:</label>
+                                <input type="file" name="documents" id="identificacion" required>
+                            </div>
+                            <div>
+                                <label for="comprobanteDomicilio">Comprobante de Domicilio:</label>
+                                <input type="file" name="documents" id="comprobanteDomicilio" required>
+                            </div>
+                            <div>
+                                <label for="comprobanteCuenta">Comprobante de Estado de Cuenta:</label>
+                                <input type="file" name="documents" id="comprobanteCuenta" required>
+                            </div>
+                            <button type="submit">Subir Documentos</button>
+                        </form>
+                        <div id="message" class="hidden"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <script>
+            let userId = "{{user.id}}";
+
+            document.getElementById('realtimeproductsUser').addEventListener('click', function () {
+                window.location.href = `/realtimeproductsUser`;
+            });
+            // Manejar el cambio de vista al solicitar premium
+            document.getElementById('solicitarPremium').addEventListener('click', function () {
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('cargarDocumentos').style.display = 'block';
+            });
+            document.addEventListener('DOMContentLoaded', () => {
+                const tabs = document.querySelectorAll('.account__tab');
+                const contents = document.querySelectorAll('.tab__content');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        // Eliminar la clase active-tab de todas las tabs y contenido
+                        tabs.forEach(t => t.classList.remove('active-tab'));
+                        contents.forEach(content => content.classList.remove('active-tab'));
+
+                        // Agregar la clase active-tab al tab clickeado
+                        tab.classList.add('active-tab');
+
+                        // Mostrar el contenido relacionado con el tab clickeado
+                        const target = tab.getAttribute('data-target');
+                        document.querySelector(target).classList.add('active-tab');
+                    });
+                });
+            });
+
+
+
+            // Manejar la subida de documentos
+            document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const form = event.target;
+                const formData = new FormData(form);
+
+                try {
+                    const response = await fetch(`/api/user/${userId}/documents`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        const result = await response.json();
+                        if (response.ok) {
+                            document.getElementById('message').textContent = 'Documentación subida exitosamente.';
+                            document.getElementById('message').classList.remove('hidden');
+                            document.getElementById('message').classList.add('success');
+
+                            await fetch(`/api/user/premium/${userId}`, { method: 'PUT' });
+                            setTimeout(() => {
+                                document.querySelector('form[action="/api/sessions/logout"]').submit();
+                            }, 3000);
+                        } else {
+                            document.getElementById('message').textContent = `Error: ${result.message || 'Hubo un problema al subir la documentación.'}`;
+                            document.getElementById('message').classList.remove('hidden');
+                            document.getElementById('message').classList.add('error');
+                        }
+                    } else {
+                        const errorMessage = await response.text();
+                        document.getElementById('message').textContent = `Error: ${errorMessage}`;
+                        document.getElementById('message').classList.remove('hidden');
+                        document.getElementById('message').classList.add('error');
+                    }
+                } catch (error) {
+                    document.getElementById('message').textContent = `Error: ${error.message}`;
+                    document.getElementById('message').classList.remove('hidden');
+                    document.getElementById('message').classList.add('error');
+                }
+            });
+        </script>
+
+        <script src="assets/js/main.js"></script>
+    </body>
+
+    </html>

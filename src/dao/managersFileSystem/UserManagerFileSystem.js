@@ -77,6 +77,34 @@ class UserServiceFS {
     }
   }
 
+  async updateRolUserById(userID, newRol) {
+    try {
+      // Leer los usuarios del archivo
+      const users = await this._readFile();
+  
+      // Buscar el índice del usuario por su ID
+      const userIndex = users.findIndex(user => user.id === userID);
+  
+      // Verificar si el usuario existe
+      if (userIndex === -1) {
+        throw new Error("Usuario no encontrado");
+      }
+  
+      // Actualizar el rol del usuario
+      users[userIndex].role = newRol;
+  
+      // Escribir los cambios de nuevo en el archivo
+      await this.writeUsers(users);
+  
+      // Retornar el usuario actualizado
+      return users[userIndex];
+    } catch (error) {
+      console.error("Error al actualizar el rol del usuario:", error);
+      return null;
+    }
+  }
+  
+
   async getCartsById(userId) {
     try {
       const users = await this.getUsers();

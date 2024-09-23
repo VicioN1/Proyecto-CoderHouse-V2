@@ -13,7 +13,7 @@
       }
     ],
     "role": "admin",
-    "last_connection": 1726946037606
+    "last_connection": 1727097201810
   },
   {
     "id": "3",
@@ -66,8 +66,21 @@
       }
     ],
     "role": "user",
-    "documents": [],
-    "hasUploadedDocuments": false,
-    "last_connection": 1726946037606
+    "documents": [
+      {
+        "name": "FONDOS_2023_4.jpg",
+        "reference": "uploads/documents/1727108486212.jpg"
+      },
+      {
+        "name": "FONDOS_2023_4.jpg",
+        "reference": "uploads/documents/1727108486218.jpg"
+      },
+      {
+        "name": "FONDOS_2023_4.jpg",
+        "reference": "uploads/documents/1727108486222.jpg"
+      }
+    ],
+    "hasUploadedDocuments": true,
+    "last_connection": 1727108585595
   }
 ]
