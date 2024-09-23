@@ -21,7 +21,7 @@ dotenv.config({ path: `./${envFileName}` });
 const PORT = environment === 'development' ? 3000 : 8080;
 
 module.exports = {
-  PORT: process.env.PORT || PORT,
+  PORT: 8080,
   MONGO_URL: process.env.MONGO_URL,
   clientID: process.env.clientID,
   clientSecret: process.env.clientSecret,
