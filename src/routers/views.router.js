@@ -33,7 +33,7 @@ router.get('/adminstore', isAuthenticated, ensureAdmin, (req, res) => {
 });
 
 router.get('/realtimeproductsPremium', isAuthenticated, ensurePremium, (req, res) => {
-  res.render('realtimeproductsPremium', { user: req.session.user});
+  res.render('Premiumstore', { user: req.session.user});
 });
 
 router.get("/chat", (req, res) => {

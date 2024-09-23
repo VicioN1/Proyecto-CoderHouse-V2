@@ -4,17 +4,19 @@
         padding: 10px;
         margin-bottom: 10px;
     }
+
     button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
     }
+
     button:disabled {
-    background-color: #d3d3d3; 
-    color: #7a7a7a; 
-    cursor: not-allowed;
+        background-color: #d3d3d3;
+        color: #7a7a7a;
+        cursor: not-allowed;
     }
 </style>
 <div>
@@ -29,7 +31,7 @@
     <form id="productForm">
         <h2>Agregar Nuevo Producto</h2>
         <label for="title">Título:</label>
-        <input type="text" id="title" name="title" ><br>
+        <input type="text" id="title" name="title"><br>
         <label for="description">Descripción:</label>
         <input type="text" id="description" name="description" required><br>
         <label for="code">Código:</label>
@@ -52,7 +54,7 @@
     const socket = io();
     let currentPage = 1;
     let hasPrevPage, hasNextPage, prevPage, nextPage;
-    let idcarrot= {{user.cart}}
+    let idcarrot = {{ user.cart }}
 
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
@@ -74,7 +76,7 @@
     });
 
 
-    
+
 
     prevButton.addEventListener('click', () => {
         if (hasPrevPage) {
@@ -126,7 +128,7 @@
         document.querySelectorAll('.deleteButton').forEach(button => {
             button.addEventListener('click', function () {
                 const productCode = this.getAttribute('data-product-code');
-                socket.emit('eliminarProducto', { currentPage ,productCode: productCode});
+                socket.emit('eliminarProducto', { currentPage, productCode: productCode });
             });
         });
     });
@@ -135,57 +137,55 @@
 </script> --}}
 <style>
     /* FORMULARIO */
-/* formStyles.css */
-.form-container {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
+    /* formStyles.css */
+    .form-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
 
-.form-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-.form-group {
-    margin-bottom: 15px;
-}
+    .form-group {
+        margin-bottom: 15px;
+    }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
 
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
 
-.form-group button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+    .form-group button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-.form-group button:hover {
-    background-color: #0056b3;
-}
-
-
+    .form-group button:hover {
+        background-color: #0056b3;
+    }
 </style>
 <link rel="stylesheet" href="/admin/assets/style.css">
 <!-- SIDEBAR -->
@@ -195,12 +195,6 @@
         <span class="text">{{user.email}}</span>
     </a>
     <ul class="side-menu top">
-        <li >
-            <a href="#">
-                <i class='bx bxs-dashboard'></i>
-                <span class="text">Usuarios</span>
-            </a>
-        </li>
         <li class="active">
             <a href="#" id="viewmystore">
                 <i class='bx bxs-shopping-bag-alt'></i>
@@ -223,73 +217,56 @@
 
 <!-- CONTENT -->
 <section id="content">
-    <!-- NAVBAR -->
-    <nav>
-			<i class='bx bx-menu' ></i>
-			<a href="#" class="nav-link">Categories</a>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
-			<a href="#" class="profile">
-				<img src="/admin/assets/img/people.png" alt="people" />
-			</a>
-		</nav>
-    <!-- NAVBAR -->
 
     <!-- MAIN -->
     <main>
 
         <!-- Formulario para agregar nuevo producto -->
         <div class="form-container">
-    <h2>Create Product</h2>
-<form  id="productForm">
-    <div class="form-group">
-        <label for="name">Nombre del Producto</label>
-        <input type="text" id="name" name="name" required>
-    </div>
+            <h2>Create Product</h2>
+            <form id="productForm">
+                <div class="form-group">
+                    <label for="name">Nombre del Producto</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
 
-    <div class="form-group">
-        <label for="category">Categoria del Producto</label>
-        <input type="text" id="category" name="category" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="code">Codigo del Producto</label>
-        <input type="text" id="code" name="code" required>
-    </div>
-    <div class="form-group">
-        <label for="description">Descripción del Producto</label>
-        <input type="text" id="description" name="description" required>
-    </div>
+                <div class="form-group">
+                    <label for="category">Categoria del Producto</label>
+                    <input type="text" id="category" name="category" required>
+                </div>
 
-    <div class="form-group">
-        <label for="price">Precio</label>
-        <input type="number" id="price" name="price" required>
-    </div>
+                <div class="form-group">
+                    <label for="code">Codigo del Producto</label>
+                    <input type="text" id="code" name="code" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción del Producto</label>
+                    <input type="text" id="description" name="description" required>
+                </div>
 
-    <div class="form-group">
-        <label for="stock">Stock</label>
-        <input type="number" id="stock" name="stock" required>
-    </div>
-    <input type="hidden" id="userEmail" name="userEmail" value="{{user.email}}">
+                <div class="form-group">
+                    <label for="price">Precio</label>
+                    <input type="number" id="price" name="price" required>
+                </div>
 
-    <!-- Subir una nueva imagen -->
-    <div class="form-group">
-        <label for="image">Upload New Thumbnail</label>
-        <input type="file" id="image" name="image" accept="image/*">
-    </div>
+                <div class="form-group">
+                    <label for="stock">Stock</label>
+                    <input type="number" id="stock" name="stock" required>
+                </div>
+                <input type="hidden" id="userEmail" name="userEmail" value="{{user.email}}">
 
-    <div class="form-group">
-        <button type="submit">Submit</button>
-    </div>
-</form>
+                <!-- Subir una nueva imagen -->
+                <div class="form-group">
+                    <label for="image">Upload New Thumbnail</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
 
-</div>
+                <div class="form-group">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+
+        </div>
 
 
         <!-- Lista de productos -->
@@ -357,29 +334,29 @@
     const form = document.getElementById('productForm');
 
     form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData(form);
-    
-    // Extraer los datos
-    const productData = {
-        title: formData.get('name'),
-        description: formData.get('description'),
-        code: formData.get('code'),
-        price: formData.get('price'),
-        stock: formData.get('stock'),
-        category: formData.get('category'),
-        user_owner: formData.get('userEmail'),
-    };
+        e.preventDefault();
 
-    // Comprobar si se seleccionó una imagen
-    const imageFile = formData.get('image');
-    if (imageFile && imageFile.size > 0) {
-        productData.image = imageFile;
-    }
+        const formData = new FormData(form);
 
-    // Emitir el producto y la imagen por socket
-    socket.emit('productos', productData);
+        // Extraer los datos
+        const productData = {
+            title: formData.get('name'),
+            description: formData.get('description'),
+            code: formData.get('code'),
+            price: formData.get('price'),
+            stock: formData.get('stock'),
+            category: formData.get('category'),
+            user_owner: formData.get('userEmail'),
+        };
+
+        // Comprobar si se seleccionó una imagen
+        const imageFile = formData.get('image');
+        if (imageFile && imageFile.size > 0) {
+            productData.image = imageFile;
+        }
+
+        // Emitir el producto y la imagen por socket
+        socket.emit('productos', productData);
     });
 
     // Recepción de productos en tiempo real
@@ -398,28 +375,33 @@
 
         products.docs.forEach(product => {
             const productRow = document.createElement('tr');
+
+            // Verificar si el correo del propietario coincide con el correo del usuario conectado
+            const isOwner = product.user_owner === emailUser;
+
             productRow.innerHTML = `
-                <td>${product.title}</td>
-                <td>${product.description}</td>
-                <td>${product.code}</td>
-                <td>$${product.price}</td>
-                <td>${product.stock}</td>
-                <td>${product.category}</td>
-                <td>
-                    <button class="deleteButton" data-product-code="${product.idProduct}">Eliminar</button>
-                </td>
-            `;
+            <td>${product.title}</td>
+            <td>${product.description}</td>
+            <td>${product.code}</td>
+            <td>$${product.price}</td>
+            <td>${product.stock}</td>
+            <td>${product.category}</td>
+            <td>
+                ${isOwner ? `<button class="deleteButton" data-product-code="${product.idProduct}">Eliminar</button>` : ''}
+            </td>
+        `;
             productList.appendChild(productRow);
         });
 
-        // Agregar evento para los botones de eliminar
+        // Agregar evento para los botones de eliminar (solo los que existen)
         document.querySelectorAll('.deleteButton').forEach(button => {
             button.addEventListener('click', function () {
                 const productCode = this.getAttribute('data-product-code');
-                socket.emit('eliminarProducto', { currentPage, productCode: productCode, emailUser, rol});
+                socket.emit('eliminarProducto', { currentPage, productCode: productCode, emailUser, rol });
             });
         });
     });
+
 
     // Cargar los productos de la primera página
     loadProducts(currentPage);

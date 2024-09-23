@@ -13,7 +13,7 @@
       }
     ],
     "role": "admin",
-    "last_connection": 1727097201810
+    "last_connection": 1727115429581
   },
   {
     "id": "3",
@@ -29,7 +29,7 @@
       }
     ],
     "role": "user",
-    "last_connection": 1727307453000,
+    "last_connection": 1727115491139,
     "documents": [
       {
         "reference": "uploads\\documents\\1725567092216.zip"
@@ -65,7 +65,7 @@
         "cart": "4"
       }
     ],
-    "role": "user",
+    "role": "premium",
     "documents": [
       {
         "name": "FONDOS_2023_4.jpg",
@@ -81,6 +81,6 @@
       }
     ],
     "hasUploadedDocuments": true,
-    "last_connection": 1727108585595
+    "last_connection": 1727116343376
   }
 ]
