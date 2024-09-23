@@ -7,7 +7,7 @@ const options = {
     p: 'persistence'  
   },
   default: { 
-    environment: process.env.NODE_ENV === 'production' ? 'production' : 'development',  
+    environment: 'production',  
     persistence: 'file_system' 
   }
 };
@@ -15,10 +15,10 @@ const options = {
 const args = minimist(process.argv.slice(2), options);
 const { environment, persistence } = args;
 
-const envFileName = environment === 'development' ? '.env' : '.env';
+const envFileName = '.env';
 dotenv.config({ path: `./${envFileName}` });
 
-const PORT = environment === 'development' ? 3000 : 8080;
+const PORT = 8080;
 
 module.exports = {
   PORT: 8080,
