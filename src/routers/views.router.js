@@ -8,12 +8,7 @@ const { isAuthenticated, isNotAuthenticated, ensureAdmin, ensureUser, ensurePrem
 
 
 router.get("/", (req, res) => {
-  productService
-    .getProducts()
-    .then((productos) => {
-      res.render("index", { productos });
-    })
-    .catch((error) => ({ message: error }));
+  res.render("login")
 });
 
 router.get('/realtimeproductsUser',isAuthenticated, ensureUser, (req, res) => {
