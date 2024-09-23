@@ -27,6 +27,21 @@ class CartsManagerMongo {
     }
   }
 
+  async deleteCartById(cartId) {
+    try {
+      const result = await Cart.findByIdAndDelete(cartId); 
+  
+      if (!result) {
+        throw new Error("ID de carrito no encontrado");
+      }
+  
+      return { message: `Carrito con ID ${cartId} eliminado con éxito` };
+    } catch (error) {
+      console.error("Error al eliminar el carrito", error);
+      throw new Error("Error al eliminar el carrito: " + error.message);
+    }
+  }
+
   async getCartById(cart_id) {
     try {
       const cart = await cartsModel

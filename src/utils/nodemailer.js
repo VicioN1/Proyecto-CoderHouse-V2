@@ -108,6 +108,7 @@ const mailingController = async (email, purchaseData) => {
     return "Error sending email";
   }
 };
+
 const deleteProductemail = async (producto, email) => {
   const htmlContent = `
       <style>
@@ -184,6 +185,74 @@ const deleteProductemail = async (producto, email) => {
     return "Error sending email";
   }
 };
+const deleteUseremail = async (emailuser,emailadmin) => {
+  const htmlContent = `
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f8f9fa;
+              margin: 0;
+              padding: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+          }
+          .container {
+              background-color: #fff;
+              padding: 20px;
+              border-radius: 8px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              max-width: 600px;
+              width: 100%;
+              margin: 20px;
+          }
+          h1, h2 {
+              color: #333;
+          }
+          h1 {
+              text-align: center;
+              margin-bottom: 20px;
+          }
+          h2 {
+              margin-top: 20px;
+              border-bottom: 2px solid #007bff;
+              padding-bottom: 5px;
+          }
+          ul {
+              list-style-type: none;
+              padding: 0;
+          }
+          li {
+              background-color: #f1f1f1;
+              margin: 5px 0;
+              padding: 10px;
+              border-radius: 4px;
+          }
+          li span {
+              font-weight: bold;
+          }
+      </style>
+      <div class="container">
+          <h1>El administrador ${emailadmin} elimino tu usuario por inactividad</h1>
+      </div>
+  `;
+
+  try {
+    let result = await transport.sendMail({
+      from: `coder test <${config.EMAIL_USER}>`,
+      to: emailuser,
+      subject: "Usuario Borrado",
+      html: htmlContent,
+      attachments: [],
+    });
+    console.log("Email sent successfully");
+    return "Email sent successfully";
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return "Error sending email";
+  }
+};
 
 const mailing_Reset_Pass = async (email, code) => {
   try {
@@ -226,5 +295,6 @@ const mailing_Reset_Pass = async (email, code) => {
 module.exports = {
   mailingController,
   mailing_Reset_Pass,
-  deleteProductemail
+  deleteProductemail,
+  deleteUseremail
 };

@@ -353,25 +353,6 @@
 <!-- CONTENT -->
 <section id="content">
     <!-- NAVBAR -->
-    <nav>
-        <i class='bx bx-menu'></i>
-        <form action="#">
-            <div class="form-input">
-                <input type="search" placeholder="Search...">
-                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-            </div>
-        </form>
-        <input type="checkbox" id="switch-mode" hidden>
-        <label for="switch-mode" class="switch-mode"></label>
-        <a href="#" class="notification">
-            <i class='bx bxs-bell'></i>
-            <span class="num">8</span>
-        </a>
-        <a href="#" class="profile">
-            <img src="/admin/assets/img/people.png" alt="people" />
-        </a>
-    </nav>
-    <!-- NAVBAR -->
 
     <!-- MAIN -->
     <main>
@@ -416,6 +397,7 @@
     const socket = io();
     let currentPage = 1;
     let hasPrevPage, hasNextPage, prevPage, nextPage;
+	let emailUser = "{{user.email}}";
 
     document.getElementById('mystore').addEventListener('click', function () {
         window.location.href = `/mystore`;
@@ -452,12 +434,20 @@
 
         prevButton.disabled = !hasPrevPage;
         nextButton.disabled = !hasNextPage;
-
+		function formatDate(date) {
+			const d = new Date(date);
+			const day = String(d.getDate()).padStart(2, '0');
+			const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
+			const year = d.getFullYear();
+			return `${day}-${month}-${year}`;
+		}
         users.docs.forEach(user => {
             const userRow = document.createElement('tr');
-            const lastConnection = new Date(user.last_connection);
-            const now = new Date();
-            const diffInDays = Math.floor((now - lastConnection) / (1000 * 60 * 60 * 24));
+            const lastConnection = formatDate(user.last_connection)
+			console.log(lastConnection)
+            const now = Date.now();
+			console.log(now)
+            const diffInDays = Math.floor((now - user.last_connection) / (1000 * 60 * 60 * 24));
 
             userRow.classList.add('user');
             if (diffInDays > 2) {
@@ -467,7 +457,7 @@
             userRow.innerHTML = `
                 <td>${user.email}</td>
                 <td>${user.first_name} ${user.last_name}</td>
-                <td>${user.last_connection}</td>
+                <td>${lastConnection}</td>
                 <td>
                     <select id="role-${user._id}">
                         <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
@@ -476,7 +466,7 @@
                     <button onclick="updateRole('${user._id}')">Actualizar</button>
                 </td>
                 <td>
-                    ${diffInDays > 2 ? `<button class="btn-delete" onclick="deleteUser('${user._id}')">Eliminar</button>` : ''}
+                    <button class="btn-delete" onclick="deleteUser('${user._id}')">Eliminar</button>
                 </td>
             `;
             userList.appendChild(userRow);
@@ -493,7 +483,7 @@
     }
 
     document.getElementById('deleteAllInactive').addEventListener('click', () => {
-        socket.emit('deleteAllInactiveUsers');
+        socket.emit('deleteAllInactiveUsers', { page: currentPage, emailUser });
     });
 
     loadUsers(currentPage);

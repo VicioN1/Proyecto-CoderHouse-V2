@@ -145,15 +145,15 @@ class UserManagerMongo {
 
   async deleteUser(idUser) {
     try {
-      const users = await this.getUsers();
-      const updatedUsers = users.filter((u) => u._id !== idUser);
-      await fs.promises.writeFile(
-        this.path,
-        JSON.stringify(updatedUsers, null, 2)
-      );
-      return updatedUsers;
+      const result = await User.findByIdAndDelete(idUser); // Busca y elimina el usuario por su ID
+  
+      if (!result) {
+        throw new Error(`Usuario con ID ${idUser} no encontrado`);
+      }
+  
+      return { message: `Usuario con ID ${idUser} eliminado con éxito` };
     } catch (error) {
-      console.error(error);
+      console.error("Error al eliminar el usuario", error);
       throw error;
     }
   }
@@ -193,8 +193,7 @@ class UserManagerMongo {
   
       // Formatear last_connection
       users = users.map(user => ({
-        ...user,
-        last_connection: user.last_connection ? formatDate(user.last_connection) : null,
+        ...user
       }));
   
       const totalDocs = await UserModel.countDocuments(filter);
@@ -215,16 +214,21 @@ class UserManagerMongo {
       throw error;
     }
   }
+
+  async getConectionById(filter) {
+    try {
+        // Realizamos la búsqueda basada en el timestamp Epoch
+        const users = await User.find(filter);
+        return users;
+    } catch (error) {
+        console.error("Error al obtener usuarios por conexión:", error);
+        throw error;
+    }
+}
   
 }
 
-function formatDate(date) {
-  const d = new Date(date);
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
-  const year = d.getFullYear();
-  return `${day}-${month}-${year}`;
-}
+
 
 
 module.exports = UserManagerMongo;

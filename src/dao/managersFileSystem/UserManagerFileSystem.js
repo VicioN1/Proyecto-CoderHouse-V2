@@ -148,7 +148,7 @@ class UserServiceFS {
     try {
       let users = await this._readFile();
       limit = parseInt(limit) || this.defaultLimit;
-  
+
       // Aplicar filtros
       if (query) {
         users = users.filter(user =>
@@ -156,37 +156,36 @@ class UserServiceFS {
           user.last_name.toLowerCase().includes(query.toLowerCase())
         );
       }
-  
+
       if (role) {
         users = users.filter(user => user.role === role);
       }
-  
+
       if (minAge) {
         users = users.filter(user => user.age >= parseInt(minAge));
       }
-  
+
       if (maxAge) {
         users = users.filter(user => user.age <= parseInt(maxAge));
       }
-  
+
       // Aplicar orden
       if (sort) {
         users.sort((a, b) => (sort === "asc" ? a.age - b.age : b.age - a.age));
       }
-  
+
       // Omitir el campo password y formatear last_connection
       users = users.map(user => {
-        const { password, last_connection, ...userWithoutPassword } = user;
+        const { password, ...userWithoutPassword } = user;
         return {
           ...userWithoutPassword,
-          last_connection: last_connection ? formatDate(last_connection) : null,
         };
       });
-  
+
       // Paginación
       const offset = (page - 1) * limit;
       const paginatedUsers = users.slice(offset, offset + limit);
-  
+
       return {
         docs: paginatedUsers,
         totalDocs: users.length,
@@ -203,17 +202,24 @@ class UserServiceFS {
       throw error;
     }
   }
-  
-  
+
+  async getConectionById(filter) {
+    try {
+      const users = await this._readFile();
+      console.log("filter")
+      console.log(filter)
+      // Filtrar usuarios según el timestamp Epoch
+      const filteredUsers = users.filter(user => user.last_connection < filter);
+
+      return filteredUsers;
+    } catch (error) {
+      console.error("Error al obtener usuarios por conexión:", error);
+      throw error;
+    }
+  }
 }
 
-function formatDate(date) {
-  const d = new Date(date);
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
-  const year = d.getFullYear();
-  return `${day}-${month}-${year}`;
-}
+
 
 
 module.exports = UserServiceFS;

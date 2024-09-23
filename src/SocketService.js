@@ -8,9 +8,10 @@ const EErrors = require("./services/errors/enums.js");
 const { generarErrorProducto } = require("./services/errors/info.js");
 const path = require('path');
 const fs = require('fs');
+const moment = require('moment');
 
 
-const { deleteProductemail } = require('./utils/nodemailer.js'); 
+const { deleteProductemail, deleteUseremail} = require('./utils/nodemailer.js'); 
 
 
 
@@ -69,7 +70,7 @@ function handleSocketConnection(socketServer) {
           null
         );
 
-        console.log(Users)
+        // console.log(Users)
         socketServer.emit("realTimeUsers", Users);
       } catch (error) {
         console.error("Error read Users:", error);
@@ -149,6 +150,41 @@ function handleSocketConnection(socketServer) {
       }
     });
 
+    socket.on("deleteAllInactiveUsers", async (Data) => {
+      try {
+        console.log("--------deleteAllInactiveUsers-------");
+        await deleteUsers(Data.emailUser);
+        console.log("viewUsers");
+        const Users = await userService.getUsersQuery(
+          null,
+          Data.page,
+          null,
+          null,
+          null
+        );
+        socketServer.emit("realTimeUsers", Users);
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    });
+
+    socket.on("deleteAllInactives", async (Data) => {
+      try {
+        console.log("--------deleteAllInactiveUsers-------");
+        await deleteUsers(Data.emailUser);
+        console.log("viewUsers");
+        const Users = await userService.getUsersQuery(
+          null,
+          Data.page,
+          null,
+          null,
+          null
+        );
+        socketServer.emit("realTimeUsers", Users);
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    });
     socket.on("eliminarProducto", async (Data) => {
       try {
         console.log(Data.productCode);
@@ -306,6 +342,28 @@ async function getCartById(cart_id) {
     return ({ products: updatedProducts, totalPrice }) 
   } catch (error) {
     return null
+  }
+};
+
+async function deleteUsers (emailUser) {
+  try {
+      const twoDaysAgo = Date.now() - (2 * 24 * 60 * 60 * 1000); 
+
+        const usersToDelete = await userService.getConectionById( twoDaysAgo );
+            usersToDelete.forEach(async user => {
+            console.log(`Eliminar usuario inactivo: `, user);
+            console.log(user.carts[0].cart_id);
+            await deleteUseremail(user.email,emailUser)
+            await cartService.deleteCartById(user.carts[0].cart_id);
+            await userService.deleteUser(user.id)
+            })
+
+      // Responder que la operación fue exitosa
+      console.log('Usuarios eliminados correctamente');
+      return true
+
+  } catch (error) {
+      console.log( 'Hubo un error al eliminar los usuarios', error);
   }
 };
 

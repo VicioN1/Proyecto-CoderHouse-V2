@@ -88,6 +88,27 @@ class CartManagerFileSystem {
       throw new Error("Error al consultar Carrito: " + error.message);
     }
   }
+
+  async deleteCartById(cartId) {
+    try {
+      let carts = await this._readFile();  // Leer los carritos del archivo
+      const cartIndex = carts.findIndex(cart => cart.id === cartId);
+  
+      if (cartIndex === -1) {
+        throw new Error("ID de carrito no encontrado");
+      }
+  
+      carts.splice(cartIndex, 1);  // Eliminar el carrito de la lista
+      await this._writeFile(carts);  // Guardar los cambios en el archivo
+  
+      return { message: `Carrito con ID ${cartId} eliminado con éxito` };
+    } catch (error) {
+      console.error("Error al eliminar el carrito", error);
+      throw new Error("Error al eliminar el carrito: " + error.message);
+    }
+  }
+
+  
   async getCartId(cart_id) {
     try {
       let cartsId = cart_id.toString();

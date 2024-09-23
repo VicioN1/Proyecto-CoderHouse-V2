@@ -19,6 +19,10 @@ class CartsRepository {
     return await this.dao.purchase(userId);
   }
 
+  async deleteCartById(cartId) {
+    return await this.dao.deleteCartById(cartId);
+  }
+
   async addProductToCart(cartId, productId) {
     return await this.dao.addProductToCart(cartId, productId);
   }

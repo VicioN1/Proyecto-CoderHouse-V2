@@ -15,12 +15,16 @@ class UsersRepository {
   }
 
   async getConectionById (last_connection) {
-    const users = await this.dao.getUsers(last_connection);
+    const users = await this.dao.getConectionById(last_connection);
     return users;
   };
 
   async getCartsById(userId) {
     return await this.dao.getCartsById(userId);
+  }
+
+  async deleteUser(userId) {
+    return await this.dao.deleteUser(userId);
   }
 
   async getUserByEmail(email) {
