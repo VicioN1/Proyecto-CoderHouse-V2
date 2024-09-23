@@ -20,8 +20,9 @@ class ProductsRepository {
     return result;
   }
 
-  async addProduct(title, description, code, price, stock, category, thumbnails) {
+  async addProduct(user_owner,title, description, code, price, stock, category, thumbnails) {
     const result = await this.dao.addProduct(
+      user_owner,
       title,
       description,
       code,

@@ -110,10 +110,10 @@ function handleSocketConnection(socketServer) {
         // Manejar imagen si está presente
         if (productData.image && Buffer.isBuffer(productData.image)) {
           const imageName = Date.now() + ".jpg"; // Puedes cambiar la extensión según el formato de la imagen
-          saveImage(productData.image, imageName);
+          await saveImage(productData.image, imageName);
           
           // Agrega la ruta de la imagen al producto
-          productData.thumbnails = `./public/product/img/${imageName}`;
+          productData.thumbnails = `/product/img/${imageName}`;
       }
     
         // Procesar el producto
@@ -121,7 +121,7 @@ function handleSocketConnection(socketServer) {
         
         const products = await productService.getProductsQuery(
           null,
-          null,
+          1,
           null,
           null,
           null
@@ -259,6 +259,9 @@ async function writeProducts(products) {
       });
     }
 
+    console.log("----------------products.thumbnails----------------")
+    console.log(products.thumbnails)
+
     const producto = await productService.addProduct(
       products.user_owner,
       products.title,
@@ -275,7 +278,7 @@ async function writeProducts(products) {
     throw error;
   }
 }
-function saveImage(imageBuffer, imageName) {
+async function saveImage(imageBuffer, imageName) {
   const imagePath = path.join(__dirname, './public/product/img/', imageName);
 
   if (Buffer.isBuffer(imageBuffer)) {
