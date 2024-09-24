@@ -195,6 +195,9 @@
     window.location.href = `/profile`;
   });
 
+  document.getElementById('realtimeproductsUser').addEventListener('click', function () {
+    window.location.href = `/realtimeproductsUser`;
+  });
   const shippingCostElement = document.querySelector('.table__price_Shipping');
   shippingCostElement.innerText = `$${shippingCost}`;
   const subtotalElement = document.querySelector('.table__price_Subtotal');
@@ -202,9 +205,6 @@
   const totalElement = document.querySelector('.order__grand-total');
   totalElement.innerText = `$${total}`;
 
-  document.getElementById('realtimeproductsUser').addEventListener('click', function () {
-    window.location.href = `/realtimeproductsUser`;
-  });
 
 
   socket.emit('viewpurchase', code);
@@ -221,7 +221,7 @@
       productDiv.innerHTML = `
                   <td>
                     <img
-                      src="./assets/img/product-1-2.jpg"
+                      src="${producto.product.thumbnails}"
                       alt=""
                       class="order__img"
                     />
@@ -242,7 +242,7 @@
       productDiv.innerHTML = `
                   <td>
                     <img
-                      src="./assets/img/product-1-2.jpg"
+                      src="${producto.product.thumbnails}"
                       alt=""
                       class="order__img"
                     />

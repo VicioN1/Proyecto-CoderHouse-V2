@@ -96,7 +96,7 @@ const mailingController = async (email, purchaseData) => {
 
   try {
     let result = await transport.sendMail({
-      from: `coder test <${config.EMAIL_USER}>`,
+      from: `coder test <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Confirmación de compra",
       html: htmlContent,
