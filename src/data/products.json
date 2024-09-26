@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "user_owner": "CoderHouse@Premium.com",
+    "idProduct": 1,
+    "title": "Zapatillas",
+    "description": "Talles del 36 al 40",
+    "code": "thu323",
+    "price": "76000",
+    "stock": "12",
+    "status": true,
+    "category": "Calzado",
+    "thumbnails": "/product/img/1727311171388.jpg"
+  },
+  {
+    "user_owner": "CoderHouse@Premium.com",
+    "idProduct": 2,
+    "title": "PANTALON SLIM MARGOT",
+    "description": "Pantalon sastrero de calce slim. ",
+    "code": "ghj423",
+    "price": "134000",
+    "stock": "3",
+    "status": true,
+    "category": "Pantalones",
+    "thumbnails": "/product/img/1727311681685.jpg"
+  },
+  {
+    "user_owner": "CoderHouse@Premium.com",
+    "idProduct": 3,
+    "title": "Sandalias de Mujer Pepe Jeans Siva Berry Marrón",
+    "description": "Sandalias de Mujer Pepe Jeans Siva Berry Marrón",
+    "code": "jk903",
+    "price": "56400",
+    "stock": "5",
+    "status": true,
+    "category": "Calzado",
+    "thumbnails": "/product/img/1727311994830.jpg"
+  },
+  {
+    "user_owner": "CoderHouse@Premium.com",
+    "idProduct": 4,
+    "title": "Camisa primavera ",
+    "description": "Cierre de botón 100% algodón importado",
+    "code": "hjhj4545",
+    "price": "27500",
+    "stock": "5",
+    "status": true,
+    "category": "Camisa",
+    "thumbnails": "/product/img/1727312183289.jpg"
+  },
+  {
+    "user_owner": "CoderHouse@Premium.com",
+    "idProduct": 5,
+    "title": "Camisa floral",
+    "description": "La camisa de manga corta Baytrail Jacquard para hombre es un clásico cómodo y transpirable.",
+    "code": "hghd677",
+    "price": "37500",
+    "stock": "5",
+    "status": true,
+    "category": "Camisa",
+    "thumbnails": "/product/img/1727312286556.jpg"
+  },
+  {
+    "user_owner": "CoderHouse@Premium.com",
+    "idProduct": 6,
+    "title": "Camisa Lisa Hombre Vestir",
+    "description": "CAMISAS ENTALLADAS, \"ELASTIZADAS\"",
+    "code": "hg6r6",
+    "price": "45000",
+    "stock": "7",
+    "status": true,
+    "category": "Camisa",
+    "thumbnails": "/product/img/1727312582593.jpg"
+  },
+  {
+    "user_owner": "CoderHouse@Premium.com",
+    "idProduct": 7,
+    "title": "Pantalón Cargo Mon Hombre",
+    "description": "CARGO MON DE JEANS Excelente calidad y calce",
+    "code": "323frt",
+    "price": "35700",
+    "stock": "7",
+    "status": true,
+    "category": "Pantalones",
+    "thumbnails": "/product/img/1727312844634.jpg"
+  },
+  {
+    "user_owner": "CoderHouse@Premium.com",
+    "idProduct": 8,
+    "title": "Pantalon Mujer Fila Wide Leg",
+    "description": "Sentite siempre lista para dar lo mejor de vos con el Pantalón Fila Wide Leg para Mujer.",
+    "code": "32de4",
+    "price": "32500",
+    "stock": "7",
+    "status": true,
+    "category": "Pantalones",
+    "thumbnails": "/product/img/1727312944600.jpg"
+  }
+]

@@ -34,9 +34,9 @@ app.use(
     secret: "secretkey",
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URL
-    }),
+    // store: MongoStore.create({
+    //   mongoUrl: process.env.MONGO_URL
+    // }),
     // cookie: { maxAge: 180 * 60 * 1000 },
   })
 );

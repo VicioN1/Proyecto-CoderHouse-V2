@@ -81,7 +81,7 @@ class ProductManagerFileSystem {
   async getProductsQuery(limit, page, sort, query, status) {
     try {
       
-      limit = parseInt(limit) || 5;
+      limit = parseInt(limit) || 10;
   
       let products = await this._readFile();
   
