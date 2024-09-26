@@ -10,7 +10,12 @@
   },
   {
     "id": "3",
-    "products": []
+    "products": [
+      {
+        "product_id": 1,
+        "quantity": 1
+      }
+    ]
   },
   {
     "id": "4",
@@ -24,7 +29,12 @@
   },
   {
     "id": "6",
-    "products": [],
+    "products": [
+      {
+        "product_id": 5,
+        "quantity": 1
+      }
+    ],
     "Cart_Subtotal": 0
   }
 ]
